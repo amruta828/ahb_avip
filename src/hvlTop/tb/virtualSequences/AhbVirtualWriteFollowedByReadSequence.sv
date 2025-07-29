@@ -35,7 +35,7 @@ task AhbVirtualWriteFollowedByReadSequence::body();
     if(!ahbMasterWriteSequence[i].randomize() with {hsizeSeq == WORD;
 	    					    hwriteSeq == 1;
                                                     htransSeq == NONSEQ;
-                                                    hburstSeq == 0;
+                                                    hburstSeq == SINGLE;
  						    foreach(busyControlSeq[i]) 
                                                       busyControlSeq[i] == 0;}
                                                     ) begin
@@ -60,25 +60,46 @@ task AhbVirtualWriteFollowedByReadSequence::body();
   ahbSlaveReadSequence[i].randomize();
  end
 
-  fork
-    begin
-      forever begin
-        foreach(ahbSlaveWriteSequence[i])
-          ahbSlaveWriteSequence[i].start(p_sequencer.ahbSlaveSequencer[i]);
-        foreach(ahbSlaveReadSequence[i])
-          ahbSlaveReadSequence[i].start(p_sequencer.ahbSlaveSequencer[i]);
-      end
-    end
-  join_none
 
   fork
-    begin
-      foreach( ahbMasterWriteSequence[i])
-        ahbMasterWriteSequence[i].start(p_sequencer.ahbMasterSequencer[i]); 
-      foreach(ahbMasterReadSequence[i])
-        ahbMasterReadSequence[i].start(p_sequencer.ahbMasterSequencer[i]); 
-    end
+      
+        foreach( ahbMasterWriteSequence[i]) begin
+          fork  
+            automatic int j = i;
+            ahbMasterWriteSequence[j].start(p_sequencer.ahbMasterSequencer[j]); 
+          join_none
+         end 
+
+        foreach( ahbSlaveWriteSequence[i]) begin
+          fork
+            automatic int j = i;
+            ahbSlaveWriteSequence[j].start(p_sequencer.ahbSlaveSequencer[j]); 
+          join_none
+         end
+
   join	
+  wait fork;
+
+
+  fork
+
+        foreach( ahbMasterReadSequence[i]) begin
+          fork
+            automatic int j = i;
+            ahbMasterReadSequence[j].start(p_sequencer.ahbMasterSequencer[j]);
+          join_none
+         end
+
+        foreach( ahbSlaveReadSequence[i]) begin
+          fork
+            automatic int j = i;
+            ahbSlaveReadSequence[j].start(p_sequencer.ahbSlaveSequencer[j]);  
+          join_none
+         end
+
+  join
+  wait fork;
+
 
 endtask : body
  

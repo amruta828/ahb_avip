@@ -58,7 +58,7 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
     `uvm_fatal("FATAL SDP CANNOT GET SLAVE DRIVER BFM","cannot get() ahbSlaveDriverBFM");
   end
 */
-  ahbSlaveDriverBFM.waitForResetn();
+//  ahbSlaveDriverBFM.waitForResetn();
   
   forever begin
     ahbTransferCharStruct structPacket;
@@ -69,9 +69,9 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
 
     AhbSlaveSequenceItemConverter::fromClass(req, structPacket); 
     AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
-
+    fork
     ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
-
+   join_none
     AhbSlaveSequenceItemConverter::toClass(structPacket, req);  
 
     `uvm_info("SONAL", $sformatf("STRUCTPACKET = %p",req), UVM_LOW)
@@ -88,8 +88,10 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
       begin
         AhbSlaveSequenceItemConverter::fromClass(req, structPacket); 
         AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
+       fork 
        ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
-        AhbSlaveSequenceItemConverter::toClass(structPacket, req); 
+       join_none  
+       AhbSlaveSequenceItemConverter::toClass(structPacket, req); 
       end
      $display("(((((((((((((((SENT ACK)))))))))))))))");
     seq_item_port.item_done();

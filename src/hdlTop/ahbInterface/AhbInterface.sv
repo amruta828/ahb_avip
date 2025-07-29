@@ -5,7 +5,7 @@ import AhbGlobalPackage::*;
 
 interface AhbInterface(input hclk, input hresetn);
   
-  wire  [ADDR_WIDTH-1:0] haddr;
+  logic  [ADDR_WIDTH-1:0] haddr;
   logic hselx;
   
   wire [2:0] hburst;
@@ -25,13 +25,13 @@ interface AhbInterface(input hclk, input hresetn);
   wire [1:0] htrans;
 
 
-  wire [DATA_WIDTH-1:0] hwdata;
+  logic [DATA_WIDTH-1:0] hwdata;
 
   wire [(DATA_WIDTH/8)-1:0] hwstrb;
 
-  wire hwrite;
+  logic hwrite;
 
-  wire [DATA_WIDTH-1:0] hrdata;
+  logic [DATA_WIDTH-1:0] hrdata;
 
   logic hreadyout;
 
@@ -41,8 +41,10 @@ interface AhbInterface(input hclk, input hresetn);
 
   logic hready;
 
- modport ahbinterconnectModport(input hreadyout, output hready,hselx, inout  haddr,hburst,hprot,hmastlock,hsize,hnonsec,hexcl,hmaster,htrans,hwdata,hwstrb,hwrite,hresp,hrdata);
- endinterface : AhbInterface
+ modport ahbSlaveinterconnectModport(input hrdata,hreadyout, output hready,hselx, output  haddr,hburst,hprot,hmastlock,hsize,hnonsec,hexcl,hmaster,htrans,hwdata,hwstrb,hwrite,hresp);
+ modport ahbMasterinterconnectModport(input hreadyout, output hready,hselx, input  haddr,hburst,hprot,hmastlock,hsize,hnonsec,hexcl,hmaster,htrans,hwdata,hwstrb,hwrite,hresp,hrdata);  
+
+endinterface : AhbInterface
 
 `endif
 

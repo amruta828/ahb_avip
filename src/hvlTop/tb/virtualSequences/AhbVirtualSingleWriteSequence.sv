@@ -29,7 +29,7 @@ task AhbVirtualSingleWriteSequence::body();
   
   foreach(ahbMasterSequence[i])begin 
     if(!ahbMasterSequence[i].randomize() with {
-                                                              hsizeSeq dist {BYTE:=1, HALFWORD:=1, WORD:=1};
+                                                              hsizeSeq == WORD;
 							      hwriteSeq ==1;
                                                               htransSeq == NONSEQ;
                                                               hburstSeq == SINGLE;
@@ -40,19 +40,25 @@ task AhbVirtualSingleWriteSequence::body();
     end
    end 
     fork
-       $display("ENTERED FORK &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+       begin 
        foreach(ahbMasterSequence[i]) begin 
          fork
             automatic int j = i;
             ahbMasterSequence[j].start(p_sequencer.ahbMasterSequencer[j]);
          join_none 
        end 
+       wait fork;
+       end 
+
+       begin 
        foreach(ahbSlaveSequence[i]) begin
          fork
           automatic int j =i;
           ahbSlaveSequence[j].start(p_sequencer.ahbSlaveSequencer[j]);
          join_none
-        end 
+        end
+        wait fork; 
+       end 
      join
     wait fork;
    $display("\n\n\n HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE ***************************** \n\n\n");	

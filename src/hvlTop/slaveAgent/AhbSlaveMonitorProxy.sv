@@ -56,7 +56,7 @@ task AhbSlaveMonitorProxy::run_phase(uvm_phase phase);
 */
   ahbSlavePacket = AhbSlaveTransaction::type_id::create("slave Packet");
 
-  ahbSlaveMonitorBFM.waitForResetn();
+//  ahbSlaveMonitorBFM.waitForResetn();
 
   forever begin
     ahbTransferCharStruct structDataPacket;
@@ -66,7 +66,7 @@ task AhbSlaveMonitorProxy::run_phase(uvm_phase phase);
     AhbSlaveConfigConverter :: fromClass (ahbSlaveAgentConfig, structConfigPacket);
     ahbSlaveMonitorBFM.slaveSampleData (structDataPacket, structConfigPacket);
 
-    $display("&&&&values inside monitor proxy %p&&&",structDataPacket);
+    //$display("&&&&values inside monitor proxy %p&&&",structDataPacket);
     AhbSlaveSequenceItemConverter :: toClass (structDataPacket, ahbSlavePacket);
 
 

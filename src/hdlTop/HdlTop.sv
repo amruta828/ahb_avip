@@ -33,34 +33,35 @@ module HdlTop;
   end
 
   initial begin
-    hresetn = 1'b1;
+  hresetn = 1'b1;
    @(posedge hclk) hresetn= 1'b0;
 
-   // repeat(1) begin
+    //repeat(1) begin
       @(posedge hclk);
       $display("@%T H EY MAN",$time);
    // end
-     hresetn = 1'b1;
+   hresetn = 1'b1;
   end
 
 
-  AhbInterface ahbInterface[NO_OF_MASTERS-1:0](hclk,hresetn);
-  AhbInterconnect ahbinterconnect(hclk,hresetn,ahbInterface.ahbinterconnectModport);
-
+  AhbInterface ahbMasterInterface[0 : NO_OF_MASTERS-1](hclk,hresetn);
+  AhbInterface ahbSlaveInterface[0:NO_OF_SLAVES-1](hclk,hresetn);
+  AhbInterconnect ahbinterconnect(hclk,hresetn,ahbMasterInterface.ahbMasterinterconnectModport,ahbSlaveInterface.ahbSlaveinterconnectModport);
+  
    
   
   genvar i;
 
   generate 
-    for(i=0; i < NO_OF_MASTERS ;i++) begin 
-       AhbMasterAgentBFM#(.MASTER_ID(i)) ahbMasterAgentBFM(ahbInterface[i]);
+    for(i= 0 ; i < NO_OF_MASTERS ;i++) begin 
+       AhbMasterAgentBFM#(.MASTER_ID(i)) ahbMasterAgentBFM(ahbMasterInterface[i]);
     end 
   endgenerate 
   genvar j;
 
   generate
-    for(j=0; j < NO_OF_SLAVES ;j++) begin
-       AhbSlaveAgentBFM#(.SLAVE_ID(j)) ahbSlaveAgentBFM(ahbInterface[j]);
+    for(j=0; j< NO_OF_SLAVES;j++) begin
+       AhbSlaveAgentBFM#(.SLAVE_ID(j)) ahbSlaveAgentBFM(ahbSlaveInterface[j]);
     end
   endgenerate
 

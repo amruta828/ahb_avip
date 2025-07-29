@@ -23,7 +23,7 @@ endfunction : new
 
 task AhbSlaveSequence::body();
   req = AhbSlaveTransaction::type_id::create("req");
-  repeat(2) begin
+  repeat(1) begin
   start_item(req); 
   if(!req.randomize() with { foreach(hrdataSeq[i])
     hrdata[i] == hrdataSeq[i];		
@@ -36,6 +36,7 @@ task AhbSlaveSequence::body();
   end
   req.print();
   finish_item(req);
-end 
+end
+$display("SLAVE SEQUENCE DONE "); 
 endtask : body
 `endif

@@ -39,7 +39,7 @@ interface AhbMasterDriverBFM (input  bit   hclk,
   clocking MasterDriverCb @(posedge hclk);
     default input #1step output #1step;
     output haddr,hburst,hmastlock,hprot,hsize,hnonsec,hexcl,hmaster,htrans,hwrite,hwdata,hwstrb;
-    input hreadyout;
+    input hready;
   endclocking
 
   task waitForResetn();
@@ -51,20 +51,16 @@ interface AhbMasterDriverBFM (input  bit   hclk,
   endtask: waitForResetn
 
   task driveToBFM(inout ahbTransferCharStruct dataPacket, input ahbTransferConfigStruct configPacket);
-    `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
-    if(dataPacket.hburst == SINGLE) begin
       driveSingleTransfer(dataPacket,configPacket);
-    end
-    else if(dataPacket.hburst != SINGLE) begin
-      driveBurstTransfer(dataPacket,configPacket);
-    end
   endtask: driveToBFM
 
   task driveSingleTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);
     `uvm_info("INSIDESINGLETRANSFER","BFM",UVM_LOW);
 
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
-    while(MasterDriverCb.hreadyout==0)@(MasterDriverCb); 
+     @(MasterDriverCb);
+    while(MasterDriverCb.hready==0 || $isunknown(MasterDriverCb.hready))@(MasterDriverCb); 
+      $display("ENTERED THE DRIVER @%t when data is %0h",$time,dataPacket.hwdata);
     MasterDriverCb.haddr     <= dataPacket.haddr;
     MasterDriverCb.hburst    <= dataPacket.hburst;
     MasterDriverCb.hmastlock <= dataPacket.hmastlock;
@@ -78,8 +74,9 @@ interface AhbMasterDriverBFM (input  bit   hclk,
     MasterDriverCb.hwrite    <= dataPacket.hwrite;
     //MasterDriverCb.hselx     <= 1'b1;
     MasterDriverCb.hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.hwstrb[0]) : '0;
-    
-    driveIdle();
+//    while(MasterDriverCb.hready==0 || $isunknown(MasterDriverCb.hready))@(MasterDriverCb);
+    //@(MasterDriverCb);
+//    driveIdle();
   endtask
 
   task driveBurstTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);

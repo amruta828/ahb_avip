@@ -20,6 +20,9 @@ function void AhbSlaveConfigConverter::fromClass(input AhbSlaveAgentConfig input
   outputConv.minimumAddress = inputConv.minimumAddress; 
   outputConv.maximumAddress = inputConv.maximumAddress; 
   outputConv.noOfWaitStates = inputConv.noOfWaitStates;
+  $display("CONNVERTER NO OF WAIT STATES IS %0d",inputConv.noOfWaitStates);
+  outputConv.needWaitStates = inputConv.needWaitStates;
+
 
 endfunction : fromClass
 

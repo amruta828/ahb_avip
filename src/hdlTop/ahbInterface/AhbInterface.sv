@@ -8,26 +8,26 @@ interface AhbInterface(input hclk, input hresetn);
   logic  [ADDR_WIDTH-1:0] haddr;
   logic hselx;
   
-  wire [2:0] hburst;
+  logic [2:0] hburst;
 
-  wire hmastlock;
+  logic hmastlock;
 
-  wire [HPROT_WIDTH-1:0] hprot;
+  logic [HPROT_WIDTH-1:0] hprot;
  
-  wire [2:0] hsize;
+  logic [2:0] hsize;
 
-  wire hnonsec;
+  logic hnonsec;
 
-  wire hexcl;
+  logic hexcl;
 
-  wire [HMASTER_WIDTH-1:0] hmaster;
+  logic [HMASTER_WIDTH-1:0] hmaster;
 
-  wire [1:0] htrans;
+  logic [1:0] htrans;
 
 
   logic [DATA_WIDTH-1:0] hwdata;
 
-  wire [(DATA_WIDTH/8)-1:0] hwstrb;
+ logic [(DATA_WIDTH/8)-1:0] hwstrb;
 
   logic hwrite;
 
@@ -35,9 +35,9 @@ interface AhbInterface(input hclk, input hresetn);
 
   logic hreadyout;
 
-  wire hresp;
+  logic  hresp;
 
-  wire hexokay;
+  logic  hexokay;
 
   logic hready;
 

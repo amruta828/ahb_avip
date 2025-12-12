@@ -58,16 +58,17 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
     `uvm_fatal("FATAL SDP CANNOT GET SLAVE DRIVER BFM","cannot get() ahbSlaveDriverBFM");
   end
 */
-//  ahbSlaveDriverBFM.waitForResetn();
+  ahbSlaveDriverBFM.waitForResetn();
   
-  forever begin
+   forever begin
     ahbTransferCharStruct structPacket;
     ahbTransferConfigStruct structConfig;
    
     seq_item_port.get_next_item(req);
     if(req.choosePacketData) begin  
 
-    AhbSlaveSequenceItemConverter::fromClass(req, structPacket); 
+    AhbSlaveSequenceItemConverter::fromClass(req, structPacket);
+    $display("THE RUN PHASE IS %0d",ahbSlaveAgentConfig.noOfWaitStates); 
     AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
     fork
     ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
@@ -86,7 +87,8 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
     end
     else
       begin
-        AhbSlaveSequenceItemConverter::fromClass(req, structPacket); 
+        AhbSlaveSequenceItemConverter::fromClass(req, structPacket);
+        $display("THE RUN PHASE IS %0d",ahbSlaveAgentConfig.noOfWaitStates); 
         AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
        fork 
        ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
@@ -96,6 +98,7 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
      $display("(((((((((((((((SENT ACK)))))))))))))))");
     seq_item_port.item_done();
   end
+
 endtask : run_phase
 
 task AhbSlaveDriverProxy::taskWrite(inout ahbTransferCharStruct structPacket);
@@ -138,6 +141,7 @@ endfunction  : connect_phase
 
 function void AhbSlaveDriverProxy :: setConfig( AhbSlaveAgentConfig ahbSlaveAgentConfig);
    this.ahbSlaveAgentConfig = ahbSlaveAgentConfig;
+   $display("IN THE SLAVE PROXY THE  %0d",this.ahbSlaveAgentConfig.noOfWaitStates);
 endfunction : setConfig    
 
 `endif

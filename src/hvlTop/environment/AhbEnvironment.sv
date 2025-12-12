@@ -105,7 +105,8 @@ function void AhbEnvironment::build_phase(uvm_phase phase);
       ahbMasterAgent[i].ahbMasterAgentConfig=ahbMasterAgentConfig[i];
     end
 
-    foreach(ahbSlaveAgent[i]) begin  
+    foreach(ahbSlaveAgent[i]) begin
+     $display("ASSIGNMENT IN ENV IS %0d",ahbSlaveAgentConfig[i].noOfWaitStates); 
       ahbSlaveAgent[i].ahbSlaveAgentConfig=ahbSlaveAgentConfig[i];
     end
 

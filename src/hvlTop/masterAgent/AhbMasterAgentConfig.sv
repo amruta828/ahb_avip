@@ -21,6 +21,8 @@ class AhbMasterAgentConfig extends uvm_object;
   bit [ADDR_WIDTH-1:0]masterMaximumAddressRangeArray[int];
 
   int noOfWaitStates;
+  
+  bit[3:0]undefinedBurstLength;
 
   virtual AhbMasterDriverBFM ahbMasterDriverBfm;
   
@@ -32,6 +34,7 @@ class AhbMasterAgentConfig extends uvm_object;
   extern function void do_print(uvm_printer printer);
   extern function void masterMinimumAddressRange(int slaveNumber, bit [ADDR_WIDTH-1:0]slaveMinimumAddressRange);
   extern function void masterMaximumAddressRange(int slaveNumber, bit [ADDR_WIDTH-1:0]slaveMaximumAddressRange);
+
 
 endclass : AhbMasterAgentConfig
 

@@ -26,6 +26,7 @@ task AhbVirtualWriteSequence::body();
   foreach(ahbMasterSequence[i])begin : repeat_block 
     if(!ahbMasterSequence[i].randomize() with { hsizeSeq dist {BYTE:=1, HALFWORD:=1, WORD:=1};
 					     hwriteSeq ==1;
+                                             //hmastlockSeq == 1;
                                              htransSeq == NONSEQ;
                                              hburstSeq dist { 2:=1, 3:=1, 4:=1, 5:=2, 6:=2, 7:=2};
  					     foreach(busyControlSeq[i]) 
@@ -34,14 +35,29 @@ task AhbVirtualWriteSequence::body();
       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualWriteSequence")
     end : if_block
    end 
-   foreach(ahbSlaveSequence[i])
-     ahbSlaveSequence[i].randomize();
-    fork
-      foreach(ahbSlaveSequence[i])
-       ahbSlaveSequence[i].start(p_sequencer.ahbSlaveSequencer[i]);
-      foreach(ahbMasterSequence[i])
-       ahbMasterSequence[i].start(p_sequencer.ahbMasterSequencer[i]); 
-    join	
+   fork
+       begin
+       foreach(ahbMasterSequence[i]) begin
+         fork
+            automatic int j = i;
+            ahbMasterSequence[j].start(p_sequencer.ahbMasterSequencer[j]);
+         join_none
+       end
+       wait fork;
+       end
+
+       begin
+       foreach(ahbSlaveSequence[i]) begin
+         fork
+          automatic int j =i;
+          ahbSlaveSequence[j].start(p_sequencer.ahbSlaveSequencer[j]);
+         join_none
+        end
+        wait fork;
+       end
+     join
+    wait fork;
+   $display("\n\n\n HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE ***************************** \n\n\n");
  
 endtask : body
  

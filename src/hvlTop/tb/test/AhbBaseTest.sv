@@ -34,7 +34,7 @@ endfunction : new
 function void AhbBaseTest::build_phase(uvm_phase phase);
   super.build_phase(phase);
   setupAhbEnvironmentConfig();
-  ahbEnvironment = AhbEnvironment::type_id::create("ahbEnvironment",this);
+  ahbEnvironment = AhbEnvironment::type_id::create("swasthik",this);
   
 endfunction : build_phase
 
@@ -60,6 +60,7 @@ function void AhbBaseTest::setupAhbEnvironmentConfig();
   ahbEnvironmentConfig.ahbSlaveAgentConfig = new[ahbEnvironmentConfig.noOfSlaves];
   foreach(ahbEnvironmentConfig.ahbSlaveAgentConfig[i]) begin
     ahbEnvironmentConfig.ahbSlaveAgentConfig[i] = AhbSlaveAgentConfig::type_id::create($sformatf("AhbSlaveAgentConfig[%0d]",i));
+    ahbEnvironmentConfig.ahbSlaveAgentConfig[i].randomize()with{needWaitStates==1;noOfWaitStates==3;};
   end
 
   setupAhbSlaveAgentConfig();

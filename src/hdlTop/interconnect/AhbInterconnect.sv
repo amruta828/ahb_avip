@@ -4,222 +4,388 @@ interface AhbInterconnect(
   input logic hclk,
   input logic hresetn,
   AhbInterface.ahbMasterinterconnectModport ahbMasterInterface[NO_OF_MASTERS],
-   AhbInterface.ahbSlaveinterconnectModport ahbSlaveInterface[NO_OF_SLAVES]
+  AhbInterface.ahbSlaveinterconnectModport ahbSlaveInterface[NO_OF_SLAVES]
 );
-  
 
-  logic [$clog2(NO_OF_MASTERS)-1:0] rr_pointer [NO_OF_SLAVES];
-  // State variables
-  int lastGrantPos[NO_OF_SLAVES];
-  int unsigned slaveThreshold[NO_OF_SLAVES];
-  int unsigned startingPoint;
-  int check_master;  
-  // Loop variables
-  int i, j, m, n;
-  int swasthik;
-  logic[3:0] d;
-  logic grantThisMaster;
-  logic [$clog2(NO_OF_MASTERS)-1:0]tempOwner;
-  logic[$clog2(NO_OF_MASTERS)-1:0]owner;
-  logic arrayFound[NO_OF_MASTERS];
-  // Round-robin arbitration signals
-  logic [NO_OF_MASTERS-1:0] master_request[NO_OF_SLAVES];
-  logic [NO_OF_MASTERS-1:0] master_grant [NO_OF_SLAVES];
-  logic current_owner_locked;
-  int ownerTemp;
-   //int master_to_check; 
-  // Current owner tracking
-  logic [$clog2(NO_OF_MASTERS)-1:0] current_owner [NO_OF_SLAVES];
+  logic [ADDR_WIDTH-1:0] master_haddr[NO_OF_MASTERS];
+  logic [2:0] master_hsize[NO_OF_MASTERS];
+  logic [1:0] master_htrans[NO_OF_MASTERS];
+  logic master_hwrite[NO_OF_MASTERS];
+  logic [2:0] master_hburst[NO_OF_MASTERS];
+  logic [3:0] master_hprot[NO_OF_MASTERS];
+  logic master_hmastlock[NO_OF_MASTERS];
+  logic [31:0] master_hwdata[NO_OF_MASTERS];
+
+    logic [$clog2(NO_OF_MASTERS)-1:0] current_owner [NO_OF_SLAVES];
   logic slave_has_owner [NO_OF_SLAVES];
-      
-  // Address decode signals
-  logic [NO_OF_SLAVES-1:0] slave_match [NO_OF_MASTERS];
-  
+ logic [$clog2(NO_OF_MASTERS)-1:0] previous_owner [NO_OF_SLAVES];
 
-
- initial begin
- startingPoint =0; 
-  for(int k=0;k<NO_OF_SLAVES;k++) begin
-    slaveThreshold[k] = startingPoint + (((2**31)/NO_OF_SLAVES)*2)-1;
-    $display("THE STARTING POINT IS %0h",slaveThreshold[k]);
-          startingPoint = slaveThreshold[k]+1;
-  end
- $display("***************\N\N THE THRESHOLD LIST IS %p\n\n*********************",slaveThreshold);
-end 
-
-
-generate 
-  for(genvar slaveLoop =0 ; slaveLoop < NO_OF_SLAVES ; slaveLoop++) begin 
-    for(genvar masterLoop =0 ; masterLoop < NO_OF_MASTERS ; masterLoop++) begin 
+  generate
+    for (genvar m = 0; m < NO_OF_MASTERS; m++) begin : master_signal_collect
       always_comb begin
-          master_request[slaveLoop][masterLoop] = slaveLoop ==0 ? (ahbMasterInterface[masterLoop].haddr < slaveThreshold[slaveLoop]&& ahbMasterInterface[masterLoop].haddr>=0) : ((ahbMasterInterface[masterLoop].haddr >= slaveThreshold[slaveLoop-1]) && (ahbMasterInterface[masterLoop].haddr < slaveThreshold[slaveLoop] ) );
-          $info("ENTERED THE  COMBI FOR REQUEST"); 
-     end
-   end 
-  end
-endgenerate 
+        master_haddr[m]     = ahbMasterInterface[m].haddr;
+        master_hsize[m]     = ahbMasterInterface[m].hsize;
+        master_htrans[m]    = ahbMasterInterface[m].htrans;
+        master_hwrite[m]    = ahbMasterInterface[m].hwrite;
+        master_hburst[m]    = ahbMasterInterface[m].hburst;
+        master_hprot[m]     = ahbMasterInterface[m].hprot;
+        master_hmastlock[m] = ahbMasterInterface[m].hmastlock;
+        master_hwdata[m]    = ahbMasterInterface[m].hwdata;
+      end
+    end
+  endgenerate
 
-//current owner of the bus
-generate 
-  for(genvar slaveLoop =0; slaveLoop < NO_OF_SLAVES ;slaveLoop++) begin
-    for(genvar masterLoop = 0; masterLoop < NO_OF_MASTERS ; masterLoop++) begin 
-      always_ff@(posedge hclk or hresetn) begin 
-        if(!hresetn) begin 
-          current_owner[slaveLoop] = '0; 
-          slave_has_owner[slaveLoop] = 0;
-        end 
-      
-        else begin 
-           if(master_grant[slaveLoop][masterLoop] == 1) begin
-             current_owner[slaveLoop] = masterLoop;
-             slave_has_owner[slaveLoop] = 1;
-           end 
+  logic slave_hreadyout[NO_OF_SLAVES];
+  logic [31:0] slave_hrdata[NO_OF_SLAVES];
+  logic [1:0] slave_hresp[NO_OF_SLAVES];
+
+    logic[$clog2(NO_OF_MASTERS)-1:0]owner;
+
+
+  generate
+    for (genvar s = 0; s < NO_OF_SLAVES; s++) begin : slave_signal_collect
+      always_comb begin
+        slave_hreadyout[s] = ahbSlaveInterface[s].hreadyout;
+        slave_hrdata[s]    = ahbSlaveInterface[s].hrdata;
+        slave_hresp[s]     = ahbSlaveInterface[s].hresp;
+      end
+    end
+  endgenerate
+
+
+  typedef struct packed {
+    logic [ADDR_WIDTH-1:0] haddr;
+    logic [2:0]            hsize;
+    logic [1:0]            htrans;
+    logic                  hwrite;
+    logic [2:0]            hburst;
+    logic [3:0]            hprot;
+    logic                  hmastlock;
+    logic [$clog2(NO_OF_SLAVES)-1:0] target_slave;
+    logic [$clog2(NO_OF_MASTERS)-1:0] master_id;
+    logic                  valid;
+  } addr_phase_t;
+
+  function automatic logic [$clog2(NO_OF_SLAVES)-1:0] decode_address(
+    logic [ADDR_WIDTH-1:0] addr
+  );
+    return addr[ADDR_WIDTH-1:ADDR_WIDTH-$clog2(NO_OF_SLAVES)];
+  endfunction
+
+  addr_phase_t master_pipeline[NO_OF_MASTERS][2];
+  logic [1:0] master_wr_ptr[NO_OF_MASTERS];
+  logic [1:0] master_rd_ptr[NO_OF_MASTERS];
+  logic [1:0] master_count[NO_OF_MASTERS];
+
+  addr_phase_t slave_data_phase[NO_OF_SLAVES];
+  logic [31:0] slave_hwdata_stable[NO_OF_SLAVES];
+
+  // Round robin arbitration
+  logic [$clog2(NO_OF_MASTERS)-1:0] rr_pointer[NO_OF_SLAVES];
+  logic [NO_OF_MASTERS-1:0] master_request[NO_OF_SLAVES];
+  logic [NO_OF_MASTERS-1:0] master_grant[NO_OF_SLAVES];
+
+  generate
+    for (genvar s = 0; s < NO_OF_SLAVES; s++) begin : request_gen
+      for (genvar m = 0; m < NO_OF_MASTERS; m++) begin
+        always_comb begin
+          master_request[s][m] = (master_htrans[m] != 2'b00) && (decode_address(master_haddr[m]) == s);
+        end
+      end
+    end
+  endgenerate
+
+
+generate
+  for(genvar slaveLoop = 0; slaveLoop < NO_OF_SLAVES; slaveLoop++) begin
+    for(genvar masterLoop = 0; masterLoop < NO_OF_MASTERS; masterLoop++) begin
+      always_ff@(posedge hclk or negedge hresetn) begin
+          // $info("FF BLOCK");
+        if(!hresetn) begin
+          current_owner[slaveLoop] <= '0;
+          previous_owner[slaveLoop] <= '0;
+          slave_has_owner[slaveLoop] <= 1'b0;
+        end
+        else begin
+          // Update previous owner when current owner changes
+          if(master_grant[slaveLoop][masterLoop] == 1'b1) begin
+            previous_owner[slaveLoop] <= current_owner[slaveLoop];  // Store current as previous
+            current_owner[slaveLoop] <= masterLoop;                // Update current
+            slave_has_owner[slaveLoop] <= 1'b1;
+          end
+          
           if(slave_has_owner[slaveLoop]) begin
             owner = current_owner[slaveLoop];
-            if(master_request[slaveLoop][masterLoop]&& 
+            if(master_request[slaveLoop][masterLoop] &&
                (ahbMasterInterface[masterLoop].htrans == 2'b00) &&  // IDLE
-               !ahbMasterInterface[masterLoop].hmastlock && current_owner[slaveLoop]==masterLoop) begin      // No lock
+               !ahbMasterInterface[masterLoop].hmastlock && 
+               current_owner[slaveLoop] == masterLoop) begin        // No lock
+              previous_owner[slaveLoop] <= current_owner[slaveLoop]; // Store current as previous before releasing
               slave_has_owner[slaveLoop] <= 1'b0;
             end
-          end 
-        
-      end 
-    end 
+          end
+        end
+      end
+    end
   end
- end  
 endgenerate
 
-/*
-generate 
 
- for (genvar i =0 ; i<NO_OF_MASTERS ;i++) begin 
-   always_comb begin 
-    if(!hresetn)
-     ahbMasterInterface[i].hready=0;
+
+generate 
+  for(genvar gs=0;gs<NO_OF_SLAVES;gs++) begin 
+    for(genvar gm=0;gm<NO_OF_MASTERS;gm++) begin 
+     always_comb begin
+       $info("THE REQ IS %0b for the slave %0d",master_request[gs],gs); 
+       $info("THE GRANT IS %0d for the slave %0d",master_grant[gs][gm],gs);
+       $display("THE ADDRESS IS %0b for the master =%0d",ahbMasterInterface[gm].haddr,gm);
+
+
+      end 
+
+    end 
   end 
-
- end
-endgenerate 
-*/
-
-
-generate 
-
-  for(genvar slaveLoop = 0 ; slaveLoop < NO_OF_SLAVES ;slaveLoop++) begin 
-//     logic [$clog2(NO_OF_MASTERS)-1:0] rr_pointer [NO_OF_SLAVES];
-   logic [$clog2(NO_OF_MASTERS)-1:0] granted_master_id;
-    logic grant_found;
-    int next_rr_pointer;
-    logic current_owner_locked;
-    int master_to_check;    
-    always_ff @(posedge hclk or negedge hresetn) begin
-        if(!hresetn) begin
-           
-          rr_pointer[slaveLoop] <= NO_OF_MASTERS - 1; // Start with last master, so we begin from master 0
-        end else begin
-          rr_pointer[slaveLoop] <= next_rr_pointer;
+endgenerate
+  // Arbitration logic
+  generate
+    for (genvar s = 0; s < NO_OF_SLAVES; s++) begin : arbitration
+      always_ff @(posedge hclk or negedge hresetn) begin
+        if (!hresetn) begin
+          rr_pointer[s] <= 0;
+        end else if (|master_grant[s]) begin
+          for (int m = 0; m < NO_OF_MASTERS; m++) begin
+        //    $info("ITERATION");
+            if (master_grant[s][m]) begin
+              rr_pointer[s] <= (m + 1) % NO_OF_MASTERS;
+              break;
+            end
+          end
         end
+      end
+
+      always_comb begin
+        logic can_accept;
+        logic locked_present;
+        master_grant[s] = '0;
+        //  $info("ALWAST");
+        for(int i=0;i<NO_OF_MASTERS;i++) 
+         if(master_request[s][i]) 
+           if(master_hmastlock[i]==1) begin 
+              locked_present=1;
+              break;
+           end 
+
+        can_accept = !slave_data_phase[s].valid || slave_hreadyout[s];
+
+
+
+
+       if(locked_present==1 && can_accept==1) 
+          for (int i = 0; i < NO_OF_MASTERS; i++) begin
+            int master_idx;
+            master_idx = (rr_pointer[s] + i) % NO_OF_MASTERS;
+            if (master_request[s][master_idx] && master_hmastlock[master_idx]==1) begin
+              master_grant[s][master_idx] = 1'b1;
+              break;
+            end
+          end
+        else if(can_accept == 1 && master_htrans[current_owner[s]] == 2'b 11 && slave_has_owner[s]==1) 
+          master_grant[s][current_owner[s]] =1;
+        else if (can_accept) begin
+          for (int i = 0; i < NO_OF_MASTERS; i++) begin
+            int master_idx;
+            master_idx = (rr_pointer[s] + i) % NO_OF_MASTERS;
+            if (master_request[s][master_idx] && master_htrans[master_idx] != 2'b 00) begin
+               $info("dead case");
+              master_grant[s][master_idx] = 1'b1;
+              break;
+            end
+          end
+        end
+      end
     end
-  
-    always_comb begin //if my previous master goes idle  transfer ownership to other requested slave
-         master_grant[slaveLoop] = '0;
-        next_rr_pointer = rr_pointer[slaveLoop];
-        granted_master_id = 0;
-        grant_found = 1'b0;
+  endgenerate
+
+  generate
+    for (genvar m = 0; m < NO_OF_MASTERS; m++) begin : master_pipeline_mgmt
+      logic push_req, pop_req;
+
+      always_comb begin
+        //$info("ALWASY");
+        if (!hresetn) begin
+          for (int i = 0; i < 2; i++) master_pipeline[m][i] <= '0;
+          master_wr_ptr[m] <= '0;
+          master_rd_ptr[m] <= '0;
+          master_count[m] <= '0;
+        end else begin
+          // Check for push (grant received)
+          push_req = 1'b0;
+          for (int s = 0; s < NO_OF_SLAVES; s++) begin
+            if (master_grant[s][m]) push_req = 1'b1;
+          end
+
+          pop_req = 1'b0;
+          if (master_count[m] > 0) begin
+            logic [$clog2(NO_OF_SLAVES)-1:0] target_slave;
+            target_slave = master_pipeline[m][master_rd_ptr[m]].target_slave;
+            pop_req = slave_hreadyout[target_slave] && master_pipeline[m][master_rd_ptr[m]].valid;
+          end
+
+          if (push_req && master_count[m] < 2) begin
+            master_pipeline[m][master_wr_ptr[m]].haddr        <= master_haddr[m];
+            master_pipeline[m][master_wr_ptr[m]].hsize        <= master_hsize[m];
+            master_pipeline[m][master_wr_ptr[m]].htrans       <= master_htrans[m];
+            master_pipeline[m][master_wr_ptr[m]].hwrite       <= master_hwrite[m];
+            master_pipeline[m][master_wr_ptr[m]].hburst       <= master_hburst[m];
+            master_pipeline[m][master_wr_ptr[m]].hprot        <= master_hprot[m];
+            master_pipeline[m][master_wr_ptr[m]].hmastlock    <= master_hmastlock[m];
+            master_pipeline[m][master_wr_ptr[m]].target_slave <= decode_address(master_haddr[m]);
+            master_pipeline[m][master_wr_ptr[m]].master_id    <= m;
+            master_pipeline[m][master_wr_ptr[m]].valid        <= 1'b1;
+            master_wr_ptr[m] <= (master_wr_ptr[m] + 1) % 2;
+          end
+
+          if (pop_req) begin
+            master_pipeline[m][master_rd_ptr[m]].valid <= 1'b0;
+            master_rd_ptr[m] <= (master_rd_ptr[m] + 1) % 2;
+          end
+
+          case ({push_req, pop_req})
+            2'b10: master_count[m] <= master_count[m] + 1;
+            2'b01: master_count[m] <= master_count[m] - 1;
+            default: master_count[m] <= master_count[m];
+          endcase
+        end
+      end
+    end
+  endgenerate
 
 
-           if(|master_request[slaveLoop]) begin // Only arbitrate if someone is requesting
-            
-            for(int search_offset = 1; search_offset <= NO_OF_MASTERS; search_offset++) begin //round robin logic 
-              master_to_check = (rr_pointer[slaveLoop] + search_offset) % NO_OF_MASTERS;
-              
-              if(!grant_found && master_request[slaveLoop][master_to_check]) begin
-                master_grant[slaveLoop][master_to_check] = 1'b1;
-                granted_master_id = master_to_check;
-                grant_found = 1'b1;
-                $info("ENTERED THE RR BLOCK ");     
+ generate 
+  for(genvar m=0;m<NO_OF_MASTERS;m++) begin  
+   always_comb begin
+
+    for(int s = 0;s < NO_OF_SLAVES;s++) 
+        if( m == current_owner[s])
+            ahbMasterInterface[m].hrdata = slave_hrdata[s]; 
+
+   end
+
+  end
+endgenerate 
+
+
+
+  generate
+    for (genvar s = 0; s < NO_OF_SLAVES; s++) begin : slave_data_mgmt
+      logic new_data_phase_starting;
+
+      always_comb begin
+	//$info("ALWASY");
+        if (!hresetn) begin
+          slave_data_phase[s] <= '0;
+          slave_hwdata_stable[s] <= '0;
+          new_data_phase_starting <= 1'b0;
+        end else begin
+          new_data_phase_starting <= |master_grant[s];
+           slave_hwdata_stable[s] = master_hwdata[current_owner[s]];
+           
+          if (|master_grant[s]) begin
+            for (int m = 0; m < NO_OF_MASTERS; m++) begin
+              if (master_grant[s][m]) begin
+                slave_data_phase[s].haddr        <= master_haddr[m];
+                slave_data_phase[s].hsize        <= master_hsize[m];
+                slave_data_phase[s].htrans       <= master_htrans[m];
+                slave_data_phase[s].hwrite       <= master_hwrite[m];
+                slave_data_phase[s].hburst       <= master_hburst[m];
+                slave_data_phase[s].hprot        <= master_hprot[m];
+                slave_data_phase[s].hmastlock    <= master_hmastlock[m];
+                slave_data_phase[s].target_slave <= s;
+                slave_data_phase[s].master_id    <= m;
+                slave_data_phase[s].valid        <= 1'b1;
                 break;
               end
             end
-            
-            if(grant_found) begin
-              next_rr_pointer = granted_master_id;
-               $display("THE NEXT POINTER FOR THE SLAVE %0d is %0d @%t",slaveLoop,next_rr_pointer,$time);
-            end
-          end 
-       end
-      end  
-endgenerate 
+          end else if (slave_data_phase[s].valid && slave_hreadyout[s]) begin
+            slave_data_phase[s].valid <= 1'b0;
+          end
 
-
-generate 
- 
-  for(genvar gs = 0 ; gs < NO_OF_SLAVES;gs++) begin 
-    logic[ADDR_WIDTH:0]tempAddr[NO_OF_MASTERS];
-    logic[NO_OF_MASTERS-1:0]master_active;
-    logic [DATA_WIDTH-1:0] masterData[NO_OF_MASTERS];
-    logic masterWrite[NO_OF_MASTERS];
-   
-
-    for(genvar i=0;i<NO_OF_MASTERS; i++) begin 
-      always_comb begin 
-      tempAddr[i] = ahbMasterInterface[i].haddr;
-      master_active[i] = master_request[gs][i] && master_grant[gs][i];
-      masterData[i] = ahbMasterInterface[i].hwdata;
-      masterWrite[i] = ahbMasterInterface[i].hwrite;
-      $info("LAST BLOCK 1");
-    end
-
-    end   
-
-    always_comb begin 
-      for(int i=0;i<NO_OF_MASTERS;i++) 
-        if(master_active[i] ==1 && master_grant[gs][i] == 1) 
-         begin 
-           ahbSlaveInterface[gs].haddr = tempAddr[i];
-           ahbSlaveInterface[gs].hselx = 1;
-           ahbSlaveInterface[gs].hwdata =  masterData[i];
-           ahbSlaveInterface[gs].hwrite =  masterWrite[i];
-           $info("LAST BLOCK 2"); 
-           break;
-         end  
-    end 
-
-  end
-
-endgenerate 
-
-generate 
-
-  for(genvar gm =0 ; gm <NO_OF_MASTERS;gm++) begin 
-    logic readyOut[NO_OF_SLAVES];
-    logic slaveTransfer[NO_OF_SLAVES];
-    for(genvar gs =0 ; gs<NO_OF_SLAVES;gs++) begin
-     always_comb begin  
-     slaveTransfer[gs] = master_request[gs][gm] && master_grant[gs][gm];
-     readyOut[gs] = ahbSlaveInterface[gs].hreadyout;
-     end 
-    end 
-
-    always_comb begin 
-      for(int i=0;i<NO_OF_SLAVES;i++) begin 
-        if(slaveTransfer[i] ==1 && master_grant[i][gm] ==1 &&hresetn != 0) begin 
-         ahbMasterInterface[gm].hready= readyOut[i];
-         break;
         end
-        else if(hresetn ==0)
-         ahbMasterInterface[gm].hready= 1;
-       else 
-         ahbMasterInterface[gm].hready ='b x;
-
-
-      end 
- 
+      end
     end
+  endgenerate
 
-   end 
-endgenerate 
+  generate
+    for (genvar s = 0; s < NO_OF_SLAVES; s++) begin : slave_interface
+      always_comb begin
+        //$info("ALWAYS");
+             ahbSlaveInterface[s].hwdata     = slave_hwdata_stable[s];
+        //if (slave_data_phase[s].valid && slave_hreadyout[s]) begin
+          ahbSlaveInterface[s].haddr      = slave_data_phase[s].haddr;
+          ahbSlaveInterface[s].hsize      = slave_data_phase[s].hsize;
+          ahbSlaveInterface[s].htrans     = slave_data_phase[s].htrans;
+          ahbSlaveInterface[s].hwrite     = slave_data_phase[s].hwrite;
+          ahbSlaveInterface[s].hburst     = slave_data_phase[s].hburst;
+          ahbSlaveInterface[s].hprot      = slave_data_phase[s].hprot;
+          ahbSlaveInterface[s].hmastlock  = slave_data_phase[s].hmastlock;
+          ahbSlaveInterface[s].hselx      = 1'b1;
 
+          ahbSlaveInterface[s].hwdata     = slave_hwdata_stable[s];
+        //end
+  /* else begin
+          ahbSlaveInterface[s].haddr      = '0;
+          ahbSlaveInterface[s].hsize      = '0;
+          ahbSlaveInterface[s].htrans     = 2'b00; // IDLE
+          ahbSlaveInterface[s].hwrite     = 1'b0;
+          ahbSlaveInterface[s].hburst     = '0;
+          ahbSlaveInterface[s].hprot      = '0;
+          ahbSlaveInterface[s].hmastlock  = 1'b0;
+          ahbSlaveInterface[s].hselx      = 1'b0;
+          ahbSlaveInterface[s].hwdata     = '0;
+        end*/
+      end
+    end
+  endgenerate
 
+  generate
+    for (genvar m = 0; m < NO_OF_MASTERS; m++) begin : master_interface
+      logic oldest_is_valid;
+      logic oldest_is_ready;
+      logic pipeline_has_space;
+      logic can_accept_new_transfer;
 
-endinterface 
+      always_comb begin
+	//$info("ALWAYS");
+        //ahbMasterInterface[m].hrdata = '0;
+        ahbMasterInterface[m].hresp  = 2'b00;
+
+ //       oldest_is_valid = (master_count[m] > 0) && master_pipeline[m][master_rd_ptr[m]].valid;
+      oldest_is_ready = 1'b1; // Default to ready if no active transaction
+
+        for(int s=0;s <NO_OF_SLAVES;s++)
+         if(m == owner[s])
+           begin 
+            oldest_is_ready = slave_hreadyout[s];        
+           end 
+        pipeline_has_space = (master_count[m] < 2);
+
+        can_accept_new_transfer = 1'b0;
+        if (pipeline_has_space && (master_htrans[m] != 2'b00)) begin
+          for (int s = 0; s < NO_OF_SLAVES; s++) begin
+            if (master_grant[s][m]) begin
+              can_accept_new_transfer = 1'b1;
+              break;
+            end
+          end
+        end
+
+        if (master_htrans[m] == 2'b00) begin
+          ahbMasterInterface[m].hready = 1'b1;
+        end else begin
+          ahbMasterInterface[m].hready = can_accept_new_transfer && oldest_is_ready;
+        end
+      end
+    end
+  endgenerate
+
+endinterface

@@ -3,7 +3,7 @@
 
 package AhbGlobalPackage;
 
-  parameter int NO_OF_MASTERS = 3;
+  parameter int NO_OF_MASTERS = 2;
 
   parameter int NO_OF_SLAVES = 2;
 
@@ -118,6 +118,8 @@ bit [2**LENGTH:0] busyControl;          //indicating When Busy Transfer must be 
      bit [ADDR_WIDTH-1:0]maximumAddress; 
    // int slave_id;
     int noOfWaitStates;
+    bit needWaitStates;
+    bit[3:0]undefinedBurstLength;
   } ahbTransferConfigStruct ;
 
 endpackage : AhbGlobalPackage

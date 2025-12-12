@@ -30,6 +30,7 @@ task AhbVirtualSingleReadSequence::body();
                                                               hsizeSeq dist {BYTE:=1, HALFWORD:=1, WORD:=1};
 							      hwriteSeq ==0;
                                                               htransSeq == NONSEQ;
+                                                              hmastlockSeq == 0; 
                                                               hburstSeq == SINGLE;
 							      foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}
  
@@ -37,15 +38,28 @@ task AhbVirtualSingleReadSequence::body();
        `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualSingleReadSequence")
     end
    end 
-    foreach(ahbSlaveSequence[i])
-      ahbSlaveSequence[i].randomize();
-    fork
-       foreach(ahbSlaveSequence[i])
-         ahbSlaveSequence[i].start(p_sequencer.ahbSlaveSequencer[i]);
-       foreach(ahbMasterSequence[i])
-       ahbMasterSequence[i].start(p_sequencer.ahbMasterSequencer[i]); 
-    join	
-  
+      fork
+       begin
+       foreach(ahbMasterSequence[i]) begin
+         fork
+            automatic int j = i;
+            ahbMasterSequence[j].start(p_sequencer.ahbMasterSequencer[j]);
+         join_none
+       end
+       wait fork;
+       end
+
+       begin
+       foreach(ahbSlaveSequence[i]) begin
+         fork
+          automatic int j =i;
+          //ahbSlaveSequence[j].start(p_sequencer.ahbSlaveSequencer[j]);
+         join_none
+        end
+        wait fork;
+       end
+     join
+    //wait fork; 
 endtask : body
  
 `endif  

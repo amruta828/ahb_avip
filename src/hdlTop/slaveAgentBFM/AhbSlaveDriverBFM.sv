@@ -5,8 +5,8 @@ import AhbGlobalPackage::*;
  
 interface AhbSlaveDriverBFM (input  bit   hclk,
                              input  bit   hresetn,
-	                  		     input  logic [2:0] hburst,
-			                       input  logic hmastlock,
+	                     input  logic [2:0] hburst,
+			     input  logic hmastlock,
                              input  logic [ADDR_WIDTH-1:0] haddr,                             
                              input  logic [HPROT_WIDTH-1:0] hprot,
                              input  logic [2:0] hsize,
@@ -14,12 +14,12 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
                              input  logic hexcl,
                              input  logic [HMASTER_WIDTH-1:0] hmaster,
                              input  logic [1:0] htrans, 
-   			                     input  logic [DATA_WIDTH-1:0] hwdata,
+   			     input  logic [DATA_WIDTH-1:0] hwdata,
                              input  logic [(DATA_WIDTH/8)-1:0]hwstrb,
                              input  logic hwrite,                             
                              output logic [DATA_WIDTH-1:0] hrdata,
-			                       output logic hreadyout,
-			                       output logic hresp,
+			     output bit hreadyout,
+			     output logic hresp,
                              output logic hexokay,
                              input  logic hready,                                                           
                              input  logic hselx
@@ -62,68 +62,61 @@ reg[7:0]normalReg[0:1023];
   endclocking 
 
   task waitForResetn();
-	  @(negedge hresetn);
-   	`uvm_info(name,$sformatf("SYSTEM RESET DETECTED"),UVM_LOW)  
-    hreadyout =1;
+    @(negedge hresetn);
+      `uvm_info(name,$sformatf("SYSTEM RESET DETECTED"),UVM_LOW)  
+       hreadyout =1;
     @(posedge hresetn);
+    @(SlaveDriverCb);
     `uvm_info(name,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_LOW)
   endtask: waitForResetn
 
   task slaveDriveToBFM(inout ahbTransferCharStruct dataPacket, input ahbTransferConfigStruct configPacket);
-	  `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
-	  //wait(hselx)
-  forever begin  
-   slaveDriveSingleTransfer(dataPacket,configPacket);
-  end  
+    forever begin  
+      slaveDriveSingleTransfer(dataPacket,configPacket);
+    end  
  endtask: slaveDriveToBFM
  
- //assign hreadyout =(!hresetn )? 1 : hselx ? 1:0;
 
   task slaveDriveSingleTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);
-    //`uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
     bit[31:0]temp;
-    
 
+    bit[31:0]addressTemp;
+    bit[31:0]dataTemp; 
     @(SlaveDriverCb);
-   
-    wait(hselx)begin 
-     hreadyout = 1;
-    end
-
  
-    while(SlaveDriverCb.hselx==0 || $isunknown(SlaveDriverCb.hselx))@(SlaveDriverCb);
-    $display("I AM IN MANIPAL");
-    //SlaveDriverCb.hreadyout <= 0;
-    //@(SlaveDriverCb);
-    //SlaveDriverCb.hreadyout <= 1;
-
-    dataPacket.haddr     <= haddr;
-    dataPacket.htrans    <= ahbTransferEnum'(htrans);
-    dataPacket.hsize     <= ahbHsizeEnum'(hsize); 
-    dataPacket.hburst    <= ahbBurstEnum'(hburst);
-    dataPacket.hwrite    <= ahbOperationEnum'(hwrite);  
-    dataPacket.hmastlock <= hmastlock; 
-    dataPacket.hselx     <= hselx;    
+    while(SlaveDriverCb.hselx==0 || $isunknown(SlaveDriverCb.hselx))  begin  $display("MONITOR %t",$time);@(SlaveDriverCb);end 
+      if(configPacket.needWaitStates) begin
+        SlaveDriverCb.hreadyout <= 0;
+        repeat(configPacket.noOfWaitStates)@(SlaveDriverCb);
+        SlaveDriverCb.hreadyout <=1;
+      end 
+      addressTemp = dataPacket.haddr;
     
-    //waitCycles(configPacket);
-    if(SlaveDriverCb.hwrite) begin
-      $display("THE DATA TO BE WRITTEN IS %0h",SlaveDriverCb.hwdata);
-     for(int i=0;i<4;i++) begin 
-       normalReg[(haddr[9:0])+i] = SlaveDriverCb.hwdata[((7*i)+i) +: 8];
-     end 
-     $display("*********************************************** \n \n THE DATA WRITTEN IS  %p @%t***************************************************\n\n",normalReg,$time);
-    end
-
-    else if(!hwrite) begin
-       for (int i=0;i<4;i++) begin 
-         temp = { normalReg[(haddr[9:0])+i] , temp[31:8]};
-       end 
-      hrdata = temp;
-      $display("#######################################################\n \n \n THE DATA READ IS %0h \n \n ########################################################",hrdata);
-  // @(SlaveDriverCb);
- 
-   end
-   
+      SlaveDriverCb.hreadyout <= 1;
+      dataTemp = SlaveDriverCb.hwdata;
+      dataPacket.haddr     <= haddr;
+      dataPacket.htrans    <= ahbTransferEnum'(htrans);
+      dataPacket.hsize     <= ahbHsizeEnum'(hsize); 
+      dataPacket.hburst    <= ahbBurstEnum'(hburst);
+      dataPacket.hwrite    <= ahbOperationEnum'(hwrite);  
+      dataPacket.hmastlock <= hmastlock; 
+      dataPacket.hselx     <= hselx;    
+    
+      if(SlaveDriverCb.hwrite) begin
+        $display("THE DATA TO BE WRITTEN IS %0h",SlaveDriverCb.hwdata);
+        for(int i=0;i<4;i++) begin 
+         normalReg[(addressTemp[9:0])+i] = dataTemp[((7*i)+i) +: 8];
+        end 
+        $display("*********************************************** \n \n THE DATA WRITTEN IS  %p @%t***************************************************\n\n",normalReg,$time);
+      end
+      else if(!hwrite) begin
+        for (int i=0;i<4;i++) begin 
+          temp = { normalReg[(haddr[9:0])+i] , temp[31:8]};
+        end 
+        hrdata = temp;
+        $display("#######################################################\n \n \n THE DATA READ IS %0h \n \n %0t ########################################################",hrdata,$time);
+      end
+  
   endtask: slaveDriveSingleTransfer
  
   task slavedriveBurstTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);

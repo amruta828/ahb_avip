@@ -62,6 +62,7 @@ task AhbMasterDriverProxy::run_phase(uvm_phase phase);
     ahbTransferCharStruct dataPacket;
     ahbTransferConfigStruct configPacket;
     $display("\n \n getting next one \n \n");
+    $display("....I AM HERE..... %0t ",$time);
     seq_item_port.get_next_item(req);
 
     `uvm_info(get_type_name(), $sformatf("REQ-MASTERTX \n %s",req.sprint),UVM_LOW);
@@ -75,7 +76,7 @@ task AhbMasterDriverProxy::run_phase(uvm_phase phase);
     ahbMasterDriverBFM.driveToBFM(dataPacket,configPacket);
     $display("EXITED THE DRIVER BFM  AT @%t",$time);
     AhbMasterSequenceItemConverter::toClass(dataPacket, req);
-    $display("\n \n NEXTONE \N \N\N");
+    $display("\n \n NEXTONE %0t \N \N\N",$time);
     seq_item_port.item_done();
   end
 

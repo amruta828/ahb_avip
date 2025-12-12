@@ -34,6 +34,7 @@ endfunction : new
     //--------------------------------------------------------------------------------------------
 function void AhbMasterConfigConverter::fromClass(input AhbMasterAgentConfig inputConv,output ahbTransferConfigStruct outputConv);
   outputConv.haddr = inputConv.haddr;
+  outputConv.undefinedBurstLength = inputConv.undefinedBurstLength;
   outputConv.noOfWaitStates = inputConv.noOfWaitStates;
 endfunction : fromClass
 

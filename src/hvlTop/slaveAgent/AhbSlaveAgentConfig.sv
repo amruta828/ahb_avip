@@ -24,7 +24,10 @@ class AhbSlaveAgentConfig extends uvm_object;
   virtual AhbSlaveMonitorBFM ahbSlaveMonitorBfm;
  
   bit [DATA_WIDTH-1:0]haddr;
+
   rand int noOfWaitStates; 
+
+  rand bit needWaitStates;
 
   extern function new(string name = "AhbSlaveAgentConfig");
   extern function void do_print(uvm_printer printer);

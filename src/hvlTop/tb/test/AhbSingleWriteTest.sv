@@ -19,16 +19,18 @@ endfunction : new
 function void AhbSingleWriteTest::setupAhbEnvironmentConfig();
  super.setupAhbEnvironmentConfig();
  ahbEnvironmentConfig.operationMode = WRITE;
+ $display("in env no of wait is %0d",ahbEnvironmentConfig.ahbSlaveAgentConfig[0].noOfWaitStates);
 endfunction : setupAhbEnvironmentConfig
 
 task AhbSingleWriteTest::run_phase(uvm_phase phase);
-
+  $display("in env no of wait is %0d",ahbEnvironmentConfig.ahbSlaveAgentConfig[0].noOfWaitStates);
+/*
   foreach(ahbEnvironment.ahbSlaveAgentConfig[i]) begin
     if(!ahbEnvironment.ahbSlaveAgentConfig[i].randomize() with {noOfWaitStates==0;}) begin
       `uvm_fatal(get_type_name(),"Unable to randomise noOfWaitStates")
     end
    // ahbEnvironment.ahbMasterAgentConfig[i].noOfWaitStates = ahbEnvironment.ahbSlaveAgentConfig[i].noOfWaitStates ;
-  end
+  end*/
   ahbVirtualSingleWriteSequence = AhbVirtualSingleWriteSequence::type_id::create("ahbVirtualSingleWriteSequence");
  `uvm_info(get_type_name(),$sformatf("AhbSingleWriteTest"),UVM_LOW);
   phase.raise_objection(this);

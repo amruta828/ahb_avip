@@ -30,7 +30,7 @@ class AhbMasterTransaction extends uvm_sequence_item;
   extern function bit  do_compare(uvm_object rhs, uvm_comparer comparer);
   extern function void do_print(uvm_printer printer);
 
-  constraint setAddress{haddr==1000;}
+  constraint setAddress{haddr[31] inside {0};}
 
   constraint strobleValue{foreach(hwstrb[i]) { if(hsize == BYTE) $countones(hwstrb[i]) == 1;
                                               else if(hsize == HALFWORD) $countones(hwstrb[i]) == 2;

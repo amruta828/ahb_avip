@@ -25,6 +25,7 @@ endfunction : new
     
 function void AhbSlaveAgent::build_phase(uvm_phase phase);
   super.build_phase(phase);
+  $display("THE NUMBER OF WAIT IS %0d",ahbSlaveAgentConfig.noOfWaitStates);
   if(ahbSlaveAgentConfig.is_active == UVM_ACTIVE) begin
     ahbSlaveSequencer = AhbSlaveSequencer::type_id::create("ahbSlaveSequencer",this);
     ahbSlaveDriverProxy = AhbSlaveDriverProxy::type_id::create("ahbSlaveDriverProxy",this);

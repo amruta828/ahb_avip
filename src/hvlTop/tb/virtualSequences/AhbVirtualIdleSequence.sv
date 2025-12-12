@@ -1,23 +1,23 @@
-`ifndef AHBVIRTUALSINGLEWRITESEQUENCE_INCLUDED_
-`define AHBVIRTUALSINGLEWRITESEQUENCE_INCLUDED_
+`ifndef AHBVIRTUALIDLESEQUENCE_INCLUDED_
+`define AHBVIRTUALIDLESEQUENCE_INCLUDED_
  
-class AhbVirtualSingleWriteSequence extends AhbVirtualBaseSequence;
-  `uvm_object_utils(AhbVirtualSingleWriteSequence)
+class AhbVirtualIdleSequence extends AhbVirtualBaseSequence;
+  `uvm_object_utils(AhbVirtualIdleSequence)
  
   AhbMasterSequence ahbMasterSequence[NO_OF_MASTERS];
  
   AhbSlaveSequence ahbSlaveSequence[NO_OF_SLAVES];
  
-  extern function new(string name ="AhbVirtualSingleWriteSequence");
+  extern function new(string name ="AhbVirtualIdleSequence");
   extern task body();
  
-endclass : AhbVirtualSingleWriteSequence
+endclass : AhbVirtualIdleSequence
  
-function AhbVirtualSingleWriteSequence::new(string name ="AhbVirtualSingleWriteSequence");
+function AhbVirtualIdleSequence::new(string name ="AhbVirtualIdleSequence");
   super.new(name);
 endfunction : new
  
-task AhbVirtualSingleWriteSequence::body();
+task AhbVirtualIdleSequence::body();
   super.body();
   foreach(ahbMasterSequence[i])
     ahbMasterSequence[i]= AhbMasterSequence::type_id::create("ahbMasterSequence");
@@ -32,12 +32,12 @@ task AhbVirtualSingleWriteSequence::body();
                                                               hsizeSeq == WORD;
 							      hwriteSeq ==1;
     							      hmastlockSeq == 0;
-                                                              htransSeq == NONSEQ;
+                                                              htransSeq == IDLE;
                                                               hburstSeq == SINGLE;
 						              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}
  
                                                         ) begin
-       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualSingleWriteSequence")
+       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualIdleSequence")
     end
    end 
     fork
@@ -50,7 +50,7 @@ task AhbVirtualSingleWriteSequence::body();
        end 
        wait fork;
        end 
-
+     /*
        begin 
        foreach(ahbSlaveSequence[i]) begin
          fork
@@ -59,8 +59,10 @@ task AhbVirtualSingleWriteSequence::body();
          join_none
         end
         wait fork; 
-       end 
+       end*/ 
      join
+    //wait fork;
+   $display("\n\n\n HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE ***************************** \n\n\n");	
 endtask : body
  
 `endif  

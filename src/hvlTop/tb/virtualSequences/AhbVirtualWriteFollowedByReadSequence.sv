@@ -10,6 +10,10 @@ class AhbVirtualWriteFollowedByReadSequence extends AhbVirtualBaseSequence;
   AhbSlaveSequence ahbSlaveWriteSequence[NO_OF_SLAVES];
   AhbSlaveSequence ahbSlaveReadSequence[NO_OF_SLAVES];
  
+
+  AhbVirtualSingleWriteSequence ahbVirtualSingleWriteSequence;
+  AhbVirtualSingleReadSequence ahbVirtualSingleReadSequence;
+  AhbVirtualIdleSequence ahbVirtualIdleSequence;
   extern function new(string name ="AhbVirtualWriteFollowedByReadSequence");
   extern task body();
  
@@ -30,76 +34,101 @@ task AhbVirtualWriteFollowedByReadSequence::body();
     ahbSlaveWriteSequence[i]= AhbSlaveSequence::type_id::create("ahbSlaveWriteSequence");
     ahbSlaveReadSequence[i]  = AhbSlaveSequence::type_id::create("ahbSlaveReadSequence");
   end
-  
-  foreach(ahbMasterWriteSequence[i])begin
-    if(!ahbMasterWriteSequence[i].randomize() with {hsizeSeq == WORD;
-	    					    hwriteSeq == 1;
-                                                    htransSeq == NONSEQ;
-                                                    hburstSeq == SINGLE;
- 						    foreach(busyControlSeq[i]) 
-                                                      busyControlSeq[i] == 0;}
-                                                    ) begin
-      `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualWriteFollowedByReadSequence")
+
+
+ ahbVirtualIdleSequence = AhbVirtualIdleSequence :: type_id :: create("ahbVirtualIdleSequence");
+
+ ahbVirtualSingleWriteSequence = AhbVirtualSingleWriteSequence:: type_id :: create("ahbvirtualSingleWriteSequence");
+
+ ahbVirtualSingleReadSequence = AhbVirtualSingleReadSequence :: type_id :: create("ahbVirtualSingleReadSequence");
+
+foreach(ahbMasterWriteSequence[i])begin 
+    if(!ahbMasterWriteSequence[i].randomize() with {
+                                                              hsizeSeq == WORD;
+							      hwriteSeq ==1;
+                                                              hmastlockSeq==0;
+                                                              htransSeq == NONSEQ;
+                                                              hburstSeq == SINGLE;
+						              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}
+ 
+                                                        ) begin
+       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualSingleWriteSequence")
     end
-  end 
+   end
+
 
   foreach(ahbMasterReadSequence[i]) begin 
   if(!ahbMasterReadSequence[i].randomize() with {hsizeSeq == WORD;
-	    			              hwriteSeq == 0;
-                                              htransSeq == NONSEQ;
-                                              hburstSeq == 0;
- 					      foreach(busyControlSeq[i]) 
-                                                busyControlSeq[i] == 0;}
+                                                              hwriteSeq ==0;
+                                                              hmastlockSeq==0;
+                                                              htransSeq == NONSEQ;
+                                                              hburstSeq == SINGLE;
+                                                              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}
+
                                             ) begin
     `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualReadFollowedByReadSequence")
   end
  end 
-  
+ 
  foreach(ahbSlaveWriteSequence[i]) begin 
   ahbSlaveWriteSequence[i].randomize();
   ahbSlaveReadSequence[i].randomize();
  end
 
 
-  fork
-      
-        foreach( ahbMasterWriteSequence[i]) begin
-          fork  
+
+/*
+fork
+       begin
+       foreach(ahbMasterWriteSequence[i]) begin
+         fork
             automatic int j = i;
-            ahbMasterWriteSequence[j].start(p_sequencer.ahbMasterSequencer[j]); 
-          join_none
-         end 
+            ahbMasterWriteSequence[j].start(p_sequencer.ahbMasterSequencer[j]);
+         join_none
+       end
+       wait fork;
 
-        foreach( ahbSlaveWriteSequence[i]) begin
-          fork
-            automatic int j = i;
-            ahbSlaveWriteSequence[j].start(p_sequencer.ahbSlaveSequencer[j]); 
-          join_none
-         end
-
-  join	
-  wait fork;
-
-
-  fork
-
-        foreach( ahbMasterReadSequence[i]) begin
-          fork
+       begin
+       foreach(ahbMasterReadSequence[i]) begin
+         fork
             automatic int j = i;
             ahbMasterReadSequence[j].start(p_sequencer.ahbMasterSequencer[j]);
-          join_none
-         end
+         join_any
+       end
+     //  wait fork;
+       end
 
-        foreach( ahbSlaveReadSequence[i]) begin
-          fork
+       end
+
+       begin
+       foreach(ahbSlaveWriteSequence[i]) begin
+         fork
+          automatic int j =i;
+          ahbSlaveWriteSequence[j].start(p_sequencer.ahbSlaveSequencer[j]);
+         join_none
+        end
+        wait fork;
+       end
+join
+
+
+
+fork
+       begin
+       foreach(ahbMasterReadSequence[i]) begin
+         fork
             automatic int j = i;
-            ahbSlaveReadSequence[j].start(p_sequencer.ahbSlaveSequencer[j]);  
-          join_none
-         end
+            ahbMasterReadSequence[j].start(p_sequencer.ahbMasterSequencer[j]);
+         join_none
+       end
+       wait fork;
+       end
 
-  join
-  wait fork;
+ join*/
 
+ahbVirtualSingleWriteSequence.start(m_sequencer);
+//ahbVirtualIdleSequence.start(m_sequencer);
+ahbVirtualSingleReadSequence.start(m_sequencer);
 
 endtask : body
  

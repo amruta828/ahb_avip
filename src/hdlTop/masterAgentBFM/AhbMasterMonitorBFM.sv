@@ -32,25 +32,28 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
 
   AhbMasterMonitorProxy ahbMasterMonitorProxy;
 
-  string name = "AHB_MASTER_MONITOR_BFM"; 
+  string name = "AHB_MASTER_MONITOR_BFM";
 
   initial begin
     `uvm_info(name, $sformatf("AHB MASTER MONITOR BFM"), UVM_LOW);
   end
 
   task waitForResetn();
+    `uvm_info("MASTER AGENT MONITOR BFM",$sformatf("[%0t]  waitForResetn CALLED",$time),UVM_LOW)
     @(negedge hresetn);
-    `uvm_info(name, $sformatf("system reset detected"), UVM_HIGH)
+    //`uvm_info(name, $sformatf("system reset detected"), UVM_HIGH)
+    `uvm_info("MASTER AGENT MONITOR BFM",$sformatf("[%0t]  SYETEM RESET DETECTED",$time),UVM_LOW)
     @(posedge hresetn);
-    `uvm_info(name, $sformatf("system reset deactivated"), UVM_HIGH)
+    //`uvm_info(name, $sformatf("system reset deactivated"), UVM_HIGH)
+    `uvm_info("MASTER AGENT MONITOR BFM",$sformatf("[%0t]  waitForResetn DEACTIVATED",$time),UVM_LOW)
   endtask : waitForResetn
 
   task sampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
-    
+    `uvm_info("MASTER AGENT MONITOR BFM",$sformatf("[%0t]  sampleData CALLED",$time),UVM_LOW)
     @(posedge hclk);
 
- /*   while(hready !== 1 && hresp == 1 && htrans == IDLE) begin
-      //`uvm_info(name, $sformatf("Inside while loop: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_LOW)
+    while(hready !== 1 && hresp == 1 && htrans == IDLE) begin
+      `uvm_info(name, $sformatf("Inside while loop of sampleData: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_LOW)
       @(posedge hclk);
       ahbDataPacket.noOfWaitStates++;
     end
@@ -72,9 +75,10 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     end
     else begin
       ahbDataPacket.hrdata = hrdata;
-    end*/
+    end
   endtask : sampleData
 
 endinterface : AhbMasterMonitorBFM
 
 `endif
+

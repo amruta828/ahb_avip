@@ -43,6 +43,7 @@ function void AhbMasterMonitorProxy::end_of_elaboration_phase(uvm_phase phase);
   //ahbMasterMonitorBFM.ahbMasterMonitorProxy = this;
 endfunction : end_of_elaboration_phase
 
+/*
 task AhbMasterMonitorProxy::run_phase(uvm_phase phase);
   AhbMasterTransaction ahbMasterPacket;
  /* ahbMasterIdAsci.itoa(ahbMasterAgentConfig.ahbMasterMonitorId);
@@ -51,7 +52,7 @@ task AhbMasterMonitorProxy::run_phase(uvm_phase phase);
   if(!uvm_config_db #(virtual AhbMasterMonitorBFM)::get(this,"",ahbBfmField, ahbMasterMonitorBFM)) begin
     `uvm_fatal("FATAL_MDP_CANNOT_GET_AHB_MASTER_MONITOR_BFM","cannot get() ahbMasterMonitorBFM");
   end
-*/
+// *
 
   `uvm_info(get_type_name(), $sformatf("Inside the master_monitor_proxy"), UVM_LOW);
   ahbMasterPacket = AhbMasterTransaction::type_id::create("ahbMasterPacket");
@@ -74,7 +75,46 @@ task AhbMasterMonitorProxy::run_phase(uvm_phase phase);
   end
 
 endtask : run_phase
+*/
 
+////////////////
+// new code//////
+////////////////
+
+task AhbMasterMonitorProxy::run_phase(uvm_phase phase);
+  AhbMasterTransaction ahbMasterPacket;
+
+  `uvm_info(get_type_name(), $sformatf("Inside the master_monitor_proxy"), UVM_LOW);
+  ahbMasterPacket = AhbMasterTransaction::type_id::create("ahbMasterPacket");
+
+  ahbMasterMonitorBFM.waitForResetn();
+
+  forever begin
+    ahbTransferCharStruct structDataPacket;
+    ahbTransferConfigStruct  structConfigPacket; 
+    AhbMasterTransaction  ahbMasterClonePacket;
+
+    AhbMasterConfigConverter :: fromClass(ahbMasterAgentConfig,  structConfigPacket);
+
+    ahbMasterMonitorBFM.sampleData (structDataPacket,  structConfigPacket);
+
+    // [DEBUG] Check what the BFM actually captured
+    `uvm_info(get_type_name(), $sformatf("[M_PROXY] Raw Struct from BFM: Addr='h%0h Data='h%0h Write=%0b", structDataPacket.haddr, structDataPacket.hwdata, structDataPacket.hwrite), UVM_LOW)
+
+    AhbMasterSequenceItemConverter :: toClass(structDataPacket, ahbMasterPacket);
+   
+    // Clone for broadcast
+    $cast(ahbMasterClonePacket, ahbMasterPacket.clone());
+
+    // [DEBUG] Check the final UVM transaction packet
+    `uvm_info(get_type_name(), $sformatf("Sending packet to Scoreboard:\n%s", ahbMasterClonePacket.sprint()), UVM_LOW)
+
+		// (UNCOMMENTED!)
+    ahbMasterAnalysisPort.write(ahbMasterClonePacket);
+  end
+endtask : run_phase
+//////////////////////
+    
 function void AhbMasterMonitorProxy :: connect_phase(uvm_phase phase);
   super.connect_phase(phase);
   ahbMasterMonitorBFM = ahbMasterAgentConfig.ahbMasterMonitorBfm;

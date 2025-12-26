@@ -48,7 +48,8 @@ task AhbMasterMonitorProxy::run_phase(uvm_phase phase);
   AhbMasterTransaction ahbMasterPacket;
  /* ahbMasterIdAsci.itoa(ahbMasterAgentConfig.ahbMasterMonitorId);
   ahbBfmField = {"AhbMasterMonitorBFM",ahbMasterIdAsci};
-  
+
+
   if(!uvm_config_db #(virtual AhbMasterMonitorBFM)::get(this,"",ahbBfmField, ahbMasterMonitorBFM)) begin
     `uvm_fatal("FATAL_MDP_CANNOT_GET_AHB_MASTER_MONITOR_BFM","cannot get() ahbMasterMonitorBFM");
   end

@@ -29,6 +29,7 @@ endfunction : new
 
 function void AhbSlaveMonitorProxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
+  `uvm_info(get_type_name(), $sformatf("SLAVE MONITOR PROXY CREATED"), UVM_LOW)
 /*   
   if(!uvm_config_db #(virtual AhbSlaveMonitorBFM)::get(this,"","AhbSlaveMonitorBFM", ahbSlaveMonitorBFM)) begin
     `uvm_fatal("FATAL MDP CANNOT GET AHBSLAVE MONITOR BFM","cannot get() ahbSlaveMonitorBFM");
@@ -71,7 +72,7 @@ task AhbSlaveMonitorProxy::run_phase(uvm_phase phase);
 
 
     $cast(ahbSlaveClonePacket, ahbSlavePacket.clone());
-//    `uvm_info(get_type_name(),$sformatf("Sending packet via analysis_port: , \n %s", ahbSlaveClonePacket.sprint()),UVM_HIGH)
+   `uvm_info(get_type_name(),$sformatf("Sending packet via analysis_port: , \n %s", ahbSlaveClonePacket.sprint()),UVM_LOW)
 //    ahbSlaveAnalysisPort.write(ahbSlaveClonePacket);
   end
 

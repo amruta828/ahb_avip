@@ -207,7 +207,7 @@ endtask: driveToBFM
     MasterDriverCb.hwrite    <= 1;
 
     @(MasterDriverCb);
-    while(MasterDriverCb.hready==0 || $isunknown(MasterDriverCb.hready)) begin $display("DRIVER STUCK");  @(MasterDriverCb);  end
+    while(MasterDriverCb.hready==0 || $isunknown(MasterDriverCb.hready)) begin $display("DRIVER   STUCK");  @(MasterDriverCb);  end
     
     MasterDriverCb.hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.hwstrb[0]) : '0;
 

@@ -50,7 +50,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
  task slaveSampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
 
         @(posedge hclk);
-        /*
+        
         while(hreadyout !=1 && hresp==1 && htrans == IDLE) begin
             `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
       @(posedge hclk);
@@ -72,7 +72,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
       ahbDataPacket.hwstrb  = hwstrb;
     end
     else
-      ahbDataPacket.hrdata = hrdata;*/
+      ahbDataPacket.hrdata = hrdata;
   endtask : slaveSampleData
 
 endinterface : AhbSlaveMonitorBFM

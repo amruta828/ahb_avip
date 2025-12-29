@@ -206,7 +206,12 @@ endgenerate
     end
   endgenerate
 
+<<<<<<< HEAD
   /*generate
+=======
+	/*
+  generate
+>>>>>>> 761b02d86017244f6d29ae927cacbd6d6b7d3cdb
     for (genvar m = 0; m < NO_OF_MASTERS; m++) begin : master_pipeline_mgmt
       logic push_req, pop_req;
 
@@ -258,8 +263,13 @@ endgenerate
         end
       end
     end
+<<<<<<< HEAD
   endgenerate*/
 
+=======
+  endgenerate
+*/
+>>>>>>> 761b02d86017244f6d29ae927cacbd6d6b7d3cdb
 
  generate 
   for(genvar m=0;m<NO_OF_MASTERS;m++) begin  

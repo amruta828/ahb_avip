@@ -351,7 +351,7 @@ endgenerate
     for (genvar m = 0; m < NO_OF_MASTERS; m++) begin : master_interface
       logic oldest_is_valid;
       logic oldest_is_ready;
-      logic pipeline_has_space;
+      //logic pipeline_has_space;
       logic can_accept_new_transfer;
 
       always_comb begin
@@ -367,10 +367,10 @@ endgenerate
            begin 
             oldest_is_ready = slave_hreadyout[s];        
            end 
-        pipeline_has_space = (master_count[m] < 2);
+        //pipeline_has_space = (master_count[m] < 2);
 
         can_accept_new_transfer = 1'b0;
-        if (pipeline_has_space && (master_htrans[m] != 2'b00)) begin
+        if (master_htrans[m] != 2'b00) begin
           for (int s = 0; s < NO_OF_SLAVES; s++) begin
             if (master_grant[s][m]) begin
               can_accept_new_transfer = 1'b1;

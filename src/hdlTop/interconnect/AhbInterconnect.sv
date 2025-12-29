@@ -206,7 +206,7 @@ endgenerate
     end
   endgenerate
 
-  generate
+  /*generate
     for (genvar m = 0; m < NO_OF_MASTERS; m++) begin : master_pipeline_mgmt
       logic push_req, pop_req;
 
@@ -258,7 +258,7 @@ endgenerate
         end
       end
     end
-  endgenerate
+  endgenerate*/
 
 
  generate 

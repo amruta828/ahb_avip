@@ -19,7 +19,7 @@ package AhbGlobalPackage;
 
   parameter int HPROT_WIDTH = 4;
 
-  parameter int SLAVE_MEMORY_SIZE = 12;
+  parameter int SLAVE_MEMORY_SIZE = 10;
 
   parameter int SLAVE_MEMORY_GAP = 5;
 

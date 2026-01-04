@@ -66,10 +66,15 @@ interface AhbInterconnect(
     logic                  valid;
   } addr_phase_t;
 
+/*
   function automatic logic [$clog2(NO_OF_SLAVES)-1:0] decode_address(
     logic [ADDR_WIDTH-1:0] addr
   );
     return addr[ADDR_WIDTH-1:ADDR_WIDTH-$clog2(NO_OF_SLAVES)];
+  endfunction
+*/
+  function automatic int decode_address(logic [ADDR_WIDTH-1:0] addr);
+    return int'(addr >> SLAVE_MEMORY_SIZE); 
   endfunction
 
   addr_phase_t master_pipeline[NO_OF_MASTERS][2];

@@ -107,7 +107,7 @@ generate
       always_ff@(posedge hclk or negedge hresetn) begin
           // $info("FF BLOCK");
         if(!hresetn) begin
-          current_owner[slaveLoop] <= '0;
+          current_owner[slaveLoop] <= 'x;
           previous_owner[slaveLoop] <= '0;
           slave_has_owner[slaveLoop] <= 1'b0;
         end

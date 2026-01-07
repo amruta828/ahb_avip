@@ -66,16 +66,36 @@ interface AhbInterconnect(
     logic                  valid;
   } addr_phase_t;
 
-/*
-  function automatic logic [$clog2(NO_OF_SLAVES)-1:0] decode_address(
+
+  /*function automatic logic [$clog2(NO_OF_SLAVES)-1:0] decode_address(
     logic [ADDR_WIDTH-1:0] addr
   );
     return addr[ADDR_WIDTH-1:ADDR_WIDTH-$clog2(NO_OF_SLAVES)];
+  endfunction*/
+
+    function automatic logic [$clog2(NO_OF_SLAVES)-1:0] decode_address(logic [ADDR_WIDTH-1:0] addr);
+    logic [ADDR_WIDTH-1:0] slave_size;
+    logic [ADDR_WIDTH-1:0] start_addr;
+    logic [ADDR_WIDTH-1:0] end_addr;
+
+    // Calculate the size of one slave (e.g., 1KB = 1024 bytes)
+    slave_size = (1 << SLAVE_MEMORY_SIZE);
+
+    for (int i = 0; i < NO_OF_SLAVES; i++) begin
+      start_addr = i * slave_size;
+      end_addr   = start_addr + slave_size;
+      
+      if (addr >= start_addr && addr < end_addr) begin
+        return i;
+      end
+    end
+
+    return NO_OF_SLAVES; 
   endfunction
-*/
-  function automatic int decode_address(logic [ADDR_WIDTH-1:0] addr);
+
+ /*function automatic logic decode_address(logic [ADDR_WIDTH-1:0] addr);
     return int'(addr >> SLAVE_MEMORY_SIZE); 
-  endfunction
+  endfunction*/
 
   addr_phase_t master_pipeline[NO_OF_MASTERS][2];
   logic [1:0] master_wr_ptr[NO_OF_MASTERS];
@@ -173,12 +193,16 @@ endgenerate
         logic locked_present;
         master_grant[s] = '0;
         //  $info("ALWAST");
-        for(int i=0;i<NO_OF_MASTERS;i++) 
-         if(master_request[s][i]) 
+        for(int i=0;i<NO_OF_MASTERS;i++) begin
+         if(master_request[s][i]) begin
            if(master_hmastlock[i]==1) begin 
               locked_present=1;
               break;
-           end 
+           end
+	   else
+	       locked_present = 0;
+	end
+	end
 
         can_accept = !slave_data_phase[s].valid || slave_hreadyout[s];
 

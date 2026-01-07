@@ -1,0 +1,92 @@
+$date
+	Wed Jan  7 16:09:21 2026
+$end
+$version
+	QuestaSim Version 10.6c
+$end
+$timescale
+	1ns
+$end
+
+$scope module HdlTop $end
+$var reg 1 ! hclk $end
+$var reg 1 " hresetn $end
+
+$scope begin genblk2[1] $end
+$var parameter 32 # j $end
+
+$scope module ahbSlaveAgentBFM $end
+$var parameter 32 $ SLAVE_ID $end
+$upscope $end
+$upscope $end
+
+$scope begin genblk2[0] $end
+$var parameter 32 % j $end
+
+$scope module ahbSlaveAgentBFM $end
+$var parameter 32 & SLAVE_ID $end
+$upscope $end
+$upscope $end
+
+$scope begin genblk1[1] $end
+$var parameter 32 ' i $end
+
+$scope module ahbMasterAgentBFM $end
+$var parameter 32 ( MASTER_ID $end
+$upscope $end
+$upscope $end
+
+$scope begin genblk1[0] $end
+$var parameter 32 ) i $end
+
+$scope module ahbMasterAgentBFM $end
+$var parameter 32 * MASTER_ID $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+0!
+1"
+b0 )
+b0 *
+b1 '
+b1 (
+b0 %
+b0 &
+b1 #
+b1 $
+$end
+#5
+1!
+0"
+#10
+0!
+#15
+1!
+1"
+#20
+0!
+#25
+1!
+#30
+0!
+#35
+1!
+#40
+0!
+#45
+1!
+#50
+0!
+#55
+1!
+#60
+0!
+#65
+1!
+#70
+0!
+#75
+1!

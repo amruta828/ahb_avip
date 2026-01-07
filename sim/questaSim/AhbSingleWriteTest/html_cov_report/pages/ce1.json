@@ -1,0 +1,895 @@
+var g_data = {
+c333:[{dummy:0}
+,{anchor:'cvg337',cr:'m',items:[{s:'3',x:'FC',z:'(((hreadyout != 1) && (hresp == 1)) && (htrans == IDLE))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(hreadyout != 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(hresp == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(htrans == IDLE)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(hreadyout != 1)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(hreadyout != 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hresp == 1))'}
+,{n:'3',z:'(hresp == 1)_0',h1:'0',t:'c',c1:'(hreadyout != 1)'}
+,{n:'4',z:'(hresp == 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hreadyout != 1))'}
+,{n:'5',z:'(htrans == IDLE)_0',h1:'0',t:'c',c1:'((hreadyout != 1) && (hresp == 1))'}
+,{n:'6',z:'(htrans == IDLE)_1',h1:'0',t:'c',c1:'((hreadyout != 1) && (hresp == 1))'}
+]}
+],
+c638:[{dummy:0}
+,{anchor:'cvg642',cr:'m',items:[{s:'3',x:'FC',z:'(((hreadyout != 1) && (hresp == 1)) && (htrans == IDLE))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(hreadyout != 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(hresp == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(htrans == IDLE)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(hreadyout != 1)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(hreadyout != 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hresp == 1))'}
+,{n:'3',z:'(hresp == 1)_0',h1:'0',t:'c',c1:'(hreadyout != 1)'}
+,{n:'4',z:'(hresp == 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hreadyout != 1))'}
+,{n:'5',z:'(htrans == IDLE)_0',h1:'0',t:'c',c1:'((hreadyout != 1) && (hresp == 1))'}
+,{n:'6',z:'(htrans == IDLE)_1',h1:'0',t:'c',c1:'((hreadyout != 1) && (hresp == 1))'}
+]}
+],
+c793:[{dummy:0}
+,{anchor:'cvg803',cr:'m',items:[{s:'3',x:'FC',z:'(((dataPacket.hburst == 2) || (dataPacket.hburst == 4)) || (dataPacket.hburst == 6))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(dataPacket.hburst == 2)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(dataPacket.hburst == 4)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(dataPacket.hburst == 6)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(dataPacket.hburst == 2)_0',h1:'0',t:'c',c1:'(~(dataPacket.hburst == 6) && ~(dataPacket.hburst == 4))'}
+,{n:'2',z:'(dataPacket.hburst == 2)_1',h1:'0',t:'c',c1:'-'}
+,{n:'3',z:'(dataPacket.hburst == 4)_0',h1:'0',t:'c',c1:'(~(dataPacket.hburst == 6) && ~(dataPacket.hburst == 2))'}
+,{n:'4',z:'(dataPacket.hburst == 4)_1',h1:'0',t:'c',c1:'~(dataPacket.hburst == 2)'}
+,{n:'5',z:'(dataPacket.hburst == 6)_0',h1:'0',t:'c',c1:'~((dataPacket.hburst == 2) || (dataPacket.hburst == 4))'}
+,{n:'6',z:'(dataPacket.hburst == 6)_1',h1:'0',t:'c',c1:'~((dataPacket.hburst == 2) || (dataPacket.hburst == 4))'}
+]}
+],
+c956:[{dummy:0}
+,{anchor:'cvg961',cr:'m',items:[{s:'3',x:'FC',z:'(((hready !== 1) && (hresp == 1)) && (htrans == IDLE))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(hready !== 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(hresp == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(htrans == IDLE)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(hready !== 1)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(hready !== 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hresp == 1))'}
+,{n:'3',z:'(hresp == 1)_0',h1:'0',t:'c',c1:'(hready !== 1)'}
+,{n:'4',z:'(hresp == 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hready !== 1))'}
+,{n:'5',z:'(htrans == IDLE)_0',h1:'0',t:'c',c1:'((hready !== 1) && (hresp == 1))'}
+,{n:'6',z:'(htrans == IDLE)_1',h1:'0',t:'c',c1:'((hready !== 1) && (hresp == 1))'}
+]}
+],
+c1112:[{dummy:0}
+,{anchor:'cvg1122',cr:'m',items:[{s:'3',x:'FC',z:'(((dataPacket.hburst == 2) || (dataPacket.hburst == 4)) || (dataPacket.hburst == 6))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(dataPacket.hburst == 2)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(dataPacket.hburst == 4)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(dataPacket.hburst == 6)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(dataPacket.hburst == 2)_0',h1:'0',t:'c',c1:'(~(dataPacket.hburst == 6) && ~(dataPacket.hburst == 4))'}
+,{n:'2',z:'(dataPacket.hburst == 2)_1',h1:'0',t:'c',c1:'-'}
+,{n:'3',z:'(dataPacket.hburst == 4)_0',h1:'0',t:'c',c1:'(~(dataPacket.hburst == 6) && ~(dataPacket.hburst == 2))'}
+,{n:'4',z:'(dataPacket.hburst == 4)_1',h1:'0',t:'c',c1:'~(dataPacket.hburst == 2)'}
+,{n:'5',z:'(dataPacket.hburst == 6)_0',h1:'0',t:'c',c1:'~((dataPacket.hburst == 2) || (dataPacket.hburst == 4))'}
+,{n:'6',z:'(dataPacket.hburst == 6)_1',h1:'0',t:'c',c1:'~((dataPacket.hburst == 2) || (dataPacket.hburst == 4))'}
+]}
+],
+c1275:[{dummy:0}
+,{anchor:'cvg1280',cr:'m',items:[{s:'3',x:'FC',z:'(((hready !== 1) && (hresp == 1)) && (htrans == IDLE))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(hready !== 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(hresp == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(htrans == IDLE)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(hready !== 1)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(hready !== 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hresp == 1))'}
+,{n:'3',z:'(hresp == 1)_0',h1:'0',t:'c',c1:'(hready !== 1)'}
+,{n:'4',z:'(hresp == 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hready !== 1))'}
+,{n:'5',z:'(htrans == IDLE)_0',h1:'0',t:'c',c1:'((hready !== 1) && (hresp == 1))'}
+,{n:'6',z:'(htrans == IDLE)_1',h1:'0',t:'c',c1:'((hready !== 1) && (hresp == 1))'}
+]}
+],
+e1286:[{dummy:0}
+,{anchor:'cvg1292',items:[{s:'3',x:'FE',z:'(can_accept_new_transfer && oldest_is_ready)',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'can_accept_new_transfer',c:'g',r:'',i:''}
+,{z:'oldest_is_ready',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'can_accept_new_transfer_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'can_accept_new_transfer_1',h1:'1',t:'e',c1:'oldest_is_ready'}
+,{n:'3',z:'oldest_is_ready_0',h1:'0',t:'e',c1:'can_accept_new_transfer'}
+,{n:'4',z:'oldest_is_ready_1',h1:'1',t:'e',c1:'can_accept_new_transfer'}
+]}
+],
+e1296:[{dummy:0}
+,{anchor:'cvg1302',items:[{s:'3',x:'FE',z:'(can_accept_new_transfer && oldest_is_ready)',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'can_accept_new_transfer',c:'g',r:'',i:''}
+,{z:'oldest_is_ready',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'can_accept_new_transfer_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'can_accept_new_transfer_1',h1:'1',t:'e',c1:'oldest_is_ready'}
+,{n:'3',z:'oldest_is_ready_0',h1:'0',t:'e',c1:'can_accept_new_transfer'}
+,{n:'4',z:'oldest_is_ready_1',h1:'1',t:'e',c1:'can_accept_new_transfer'}
+]}
+],
+c1308:[{dummy:0}
+,{anchor:'cvg1313',cr:'c',items:[{s:'3',x:'FC',z:'(slave_data_phase[1].valid && slave_hreadyout[1])',c:'G',p:'100.00',d:'0',F:'1'}
+,{}
+,{z:'slave_data_phase[1].valid',c:'g',r:'',i:''}
+,{z:'slave_hreadyout[1]',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'slave_data_phase[1].valid_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'slave_data_phase[1].valid_1',h1:'1',t:'c',c1:'slave_hreadyout[1]'}
+,{n:'3',z:'slave_hreadyout[1]_0',h1:'1',t:'c',c1:'slave_data_phase[1].valid'}
+,{n:'4',z:'slave_hreadyout[1]_1',h1:'1',t:'c',c1:'slave_data_phase[1].valid'}
+]}
+],
+c1315:[{dummy:0}
+,{anchor:'cvg1320',cr:'c',items:[{s:'3',x:'FC',z:'(slave_data_phase[0].valid && slave_hreadyout[0])',c:'G',p:'100.00',d:'0',F:'1'}
+,{}
+,{z:'slave_data_phase[0].valid',c:'g',r:'',i:''}
+,{z:'slave_hreadyout[0]',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'slave_data_phase[0].valid_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'slave_data_phase[0].valid_1',h1:'1',t:'c',c1:'slave_hreadyout[0]'}
+,{n:'3',z:'slave_hreadyout[0]_0',h1:'1',t:'c',c1:'slave_data_phase[0].valid'}
+,{n:'4',z:'slave_hreadyout[0]_1',h1:'1',t:'c',c1:'slave_data_phase[0].valid'}
+]}
+],
+e1326:[{dummy:0}
+,{anchor:'cvg1335',cr:'c',items:[{s:'3',x:'FE',z:'(~slave_data_phase[1].valid || slave_hreadyout[1])',c:'G',p:'100.00',d:'0',F:'1'}
+,{}
+,{z:'slave_data_phase[1].valid',c:'g',r:'',i:''}
+,{z:'slave_hreadyout[1]',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'slave_data_phase[1].valid_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'slave_data_phase[1].valid_1',h1:'1',t:'e',c1:'~slave_hreadyout[1]'}
+,{n:'3',z:'slave_hreadyout[1]_0',h1:'1',t:'e',c1:'slave_data_phase[1].valid'}
+,{n:'4',z:'slave_hreadyout[1]_1',h1:'1',t:'e',c1:'slave_data_phase[1].valid'}
+]}
+],
+c1326:[{dummy:0}
+,{anchor:'cvg1337',items:[{s:'3',x:'FC',z:'((locked_present == 1) && (can_accept == 1))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'(locked_present == 1)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{z:'(can_accept == 1)',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'(locked_present == 1)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(locked_present == 1)_1',h1:'1',t:'c',c1:'(can_accept == 1)'}
+,{n:'3',z:'(can_accept == 1)_0',h1:'1',t:'c',c1:'(locked_present == 1)'}
+,{n:'4',z:'(can_accept == 1)_1',h1:'1',t:'c',c1:'(locked_present == 1)'}
+]}
+,{anchor:'cvg1339',items:[{s:'3',x:'FC',z:'(master_request[1][master_idx] && (master_hmastlock[master_idx] == 1))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[1][master_idx]',c:'g',r:'',i:''}
+,{z:'(master_hmastlock[master_idx] == 1)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'master_request[1][master_idx]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[1][master_idx]_1',h1:'1',t:'c',c1:'(master_hmastlock[master_idx] == 1)'}
+,{n:'3',z:'(master_hmastlock[master_idx] == 1)_0',h1:'0',t:'c',c1:'master_request[1][master_idx]'}
+,{n:'4',z:'(master_hmastlock[master_idx] == 1)_1',h1:'1',t:'c',c1:'master_request[1][master_idx]'}
+]}
+,{anchor:'cvg1341',cr:'m',items:[{s:'3',x:'FC',z:'(((can_accept == 1) && (master_htrans[current_owner[1]] == 3)) && (slave_has_owner[1] == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(can_accept == 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(master_htrans[current_owner[1]] == 3)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(slave_has_owner[1] == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(can_accept == 1)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(can_accept == 1)_1',h1:'0',t:'c',c1:'((slave_has_owner[1] == 1) && (master_htrans[current_owner[1]] == 3))'}
+,{n:'3',z:'(master_htrans[current_owner[1]] == 3)_0',h1:'0',t:'c',c1:'(can_accept == 1)'}
+,{n:'4',z:'(master_htrans[current_owner[1]] == 3)_1',h1:'0',t:'c',c1:'((slave_has_owner[1] == 1) && (can_accept == 1))'}
+,{n:'5',z:'(slave_has_owner[1] == 1)_0',h1:'0',t:'c',c1:'((can_accept == 1) && (master_htrans[current_owner[1]] == 3))'}
+,{n:'6',z:'(slave_has_owner[1] == 1)_1',h1:'0',t:'c',c1:'((can_accept == 1) && (master_htrans[current_owner[1]] == 3))'}
+]}
+,{anchor:'cvg1343',cr:'m',items:[{s:'3',x:'FC',z:'(master_request[1][master_idx] && (master_htrans[master_idx] != 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[1][master_idx]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(master_htrans[master_idx] != 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[1][master_idx]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[1][master_idx]_1',h1:'0',t:'c',c1:'(master_htrans[master_idx] != 0)'}
+,{n:'3',z:'(master_htrans[master_idx] != 0)_0',h1:'0',t:'c',c1:'master_request[1][master_idx]'}
+,{n:'4',z:'(master_htrans[master_idx] != 0)_1',h1:'0',t:'c',c1:'master_request[1][master_idx]'}
+]}
+],
+e1344:[{dummy:0}
+,{anchor:'cvg1353',cr:'c',items:[{s:'3',x:'FE',z:'(~slave_data_phase[0].valid || slave_hreadyout[0])',c:'G',p:'100.00',d:'0',F:'1'}
+,{}
+,{z:'slave_data_phase[0].valid',c:'g',r:'',i:''}
+,{z:'slave_hreadyout[0]',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'slave_data_phase[0].valid_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'slave_data_phase[0].valid_1',h1:'1',t:'e',c1:'~slave_hreadyout[0]'}
+,{n:'3',z:'slave_hreadyout[0]_0',h1:'1',t:'e',c1:'slave_data_phase[0].valid'}
+,{n:'4',z:'slave_hreadyout[0]_1',h1:'1',t:'e',c1:'slave_data_phase[0].valid'}
+]}
+],
+c1344:[{dummy:0}
+,{anchor:'cvg1355',items:[{s:'3',x:'FC',z:'((locked_present == 1) && (can_accept == 1))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'(locked_present == 1)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{z:'(can_accept == 1)',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'(locked_present == 1)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(locked_present == 1)_1',h1:'1',t:'c',c1:'(can_accept == 1)'}
+,{n:'3',z:'(can_accept == 1)_0',h1:'1',t:'c',c1:'(locked_present == 1)'}
+,{n:'4',z:'(can_accept == 1)_1',h1:'1',t:'c',c1:'(locked_present == 1)'}
+]}
+,{anchor:'cvg1357',items:[{s:'3',x:'FC',z:'(master_request[0][master_idx] && (master_hmastlock[master_idx] == 1))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[0][master_idx]',c:'g',r:'',i:''}
+,{z:'(master_hmastlock[master_idx] == 1)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'master_request[0][master_idx]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[0][master_idx]_1',h1:'1',t:'c',c1:'(master_hmastlock[master_idx] == 1)'}
+,{n:'3',z:'(master_hmastlock[master_idx] == 1)_0',h1:'0',t:'c',c1:'master_request[0][master_idx]'}
+,{n:'4',z:'(master_hmastlock[master_idx] == 1)_1',h1:'1',t:'c',c1:'master_request[0][master_idx]'}
+]}
+,{anchor:'cvg1359',cr:'m',items:[{s:'3',x:'FC',z:'(((can_accept == 1) && (master_htrans[current_owner[0]] == 3)) && (slave_has_owner[0] == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(can_accept == 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(master_htrans[current_owner[0]] == 3)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(slave_has_owner[0] == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(can_accept == 1)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(can_accept == 1)_1',h1:'0',t:'c',c1:'((slave_has_owner[0] == 1) && (master_htrans[current_owner[0]] == 3))'}
+,{n:'3',z:'(master_htrans[current_owner[0]] == 3)_0',h1:'0',t:'c',c1:'(can_accept == 1)'}
+,{n:'4',z:'(master_htrans[current_owner[0]] == 3)_1',h1:'0',t:'c',c1:'((slave_has_owner[0] == 1) && (can_accept == 1))'}
+,{n:'5',z:'(slave_has_owner[0] == 1)_0',h1:'0',t:'c',c1:'((can_accept == 1) && (master_htrans[current_owner[0]] == 3))'}
+,{n:'6',z:'(slave_has_owner[0] == 1)_1',h1:'0',t:'c',c1:'((can_accept == 1) && (master_htrans[current_owner[0]] == 3))'}
+]}
+,{anchor:'cvg1361',cr:'m',items:[{s:'3',x:'FC',z:'(master_request[0][master_idx] && (master_htrans[master_idx] != 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[0][master_idx]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(master_htrans[master_idx] != 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[0][master_idx]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[0][master_idx]_1',h1:'0',t:'c',c1:'(master_htrans[master_idx] != 0)'}
+,{n:'3',z:'(master_htrans[master_idx] != 0)_0',h1:'0',t:'c',c1:'master_request[0][master_idx]'}
+,{n:'4',z:'(master_htrans[master_idx] != 0)_1',h1:'0',t:'c',c1:'master_request[0][master_idx]'}
+]}
+],
+c1369:[{dummy:0}
+,{anchor:'cvg1375',cr:'m',items:[{s:'3',x:'FC',z:'(((master_request[1][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock) && (current_owner[1] == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[1][1]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(ahbMasterInterface[1].htrans == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'ahbMasterInterface[1].hmastlock',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(current_owner[1] == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[1][1]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[1][1]_1',h1:'0',t:'c',c1:'((current_owner[1] == 1) && ~ahbMasterInterface[1].hmastlock && (ahbMasterInterface[1].htrans == 0))'}
+,{n:'3',z:'(ahbMasterInterface[1].htrans == 0)_0',h1:'0',t:'c',c1:'master_request[1][1]'}
+,{n:'4',z:'(ahbMasterInterface[1].htrans == 0)_1',h1:'0',t:'c',c1:'((current_owner[1] == 1) && ~ahbMasterInterface[1].hmastlock && master_request[1][1])'}
+,{n:'5',z:'ahbMasterInterface[1].hmastlock_0',h1:'0',t:'c',c1:'((current_owner[1] == 1) && (master_request[1][1] && (ahbMasterInterface[1].htrans == 0)))'}
+,{n:'6',z:'ahbMasterInterface[1].hmastlock_1',h1:'0',t:'c',c1:'(master_request[1][1] && (ahbMasterInterface[1].htrans == 0))'}
+,{n:'7',z:'(current_owner[1] == 1)_0',h1:'0',t:'c',c1:'((master_request[1][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock)'}
+,{n:'8',z:'(current_owner[1] == 1)_1',h1:'0',t:'c',c1:'((master_request[1][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock)'}
+]}
+],
+c1376:[{dummy:0}
+,{anchor:'cvg1382',cr:'m',items:[{s:'3',x:'FC',z:'(((master_request[1][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock) && (current_owner[1] == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[1][0]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(ahbMasterInterface[0].htrans == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'ahbMasterInterface[0].hmastlock',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(current_owner[1] == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[1][0]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[1][0]_1',h1:'0',t:'c',c1:'((current_owner[1] == 0) && ~ahbMasterInterface[0].hmastlock && (ahbMasterInterface[0].htrans == 0))'}
+,{n:'3',z:'(ahbMasterInterface[0].htrans == 0)_0',h1:'0',t:'c',c1:'master_request[1][0]'}
+,{n:'4',z:'(ahbMasterInterface[0].htrans == 0)_1',h1:'0',t:'c',c1:'((current_owner[1] == 0) && ~ahbMasterInterface[0].hmastlock && master_request[1][0])'}
+,{n:'5',z:'ahbMasterInterface[0].hmastlock_0',h1:'0',t:'c',c1:'((current_owner[1] == 0) && (master_request[1][0] && (ahbMasterInterface[0].htrans == 0)))'}
+,{n:'6',z:'ahbMasterInterface[0].hmastlock_1',h1:'0',t:'c',c1:'(master_request[1][0] && (ahbMasterInterface[0].htrans == 0))'}
+,{n:'7',z:'(current_owner[1] == 0)_0',h1:'0',t:'c',c1:'((master_request[1][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock)'}
+,{n:'8',z:'(current_owner[1] == 0)_1',h1:'0',t:'c',c1:'((master_request[1][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock)'}
+]}
+],
+c1384:[{dummy:0}
+,{anchor:'cvg1390',cr:'m',items:[{s:'3',x:'FC',z:'(((master_request[0][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock) && (current_owner[0] == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[0][1]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(ahbMasterInterface[1].htrans == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'ahbMasterInterface[1].hmastlock',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(current_owner[0] == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[0][1]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[0][1]_1',h1:'0',t:'c',c1:'((current_owner[0] == 1) && ~ahbMasterInterface[1].hmastlock && (ahbMasterInterface[1].htrans == 0))'}
+,{n:'3',z:'(ahbMasterInterface[1].htrans == 0)_0',h1:'0',t:'c',c1:'master_request[0][1]'}
+,{n:'4',z:'(ahbMasterInterface[1].htrans == 0)_1',h1:'0',t:'c',c1:'((current_owner[0] == 1) && ~ahbMasterInterface[1].hmastlock && master_request[0][1])'}
+,{n:'5',z:'ahbMasterInterface[1].hmastlock_0',h1:'0',t:'c',c1:'((current_owner[0] == 1) && (master_request[0][1] && (ahbMasterInterface[1].htrans == 0)))'}
+,{n:'6',z:'ahbMasterInterface[1].hmastlock_1',h1:'0',t:'c',c1:'(master_request[0][1] && (ahbMasterInterface[1].htrans == 0))'}
+,{n:'7',z:'(current_owner[0] == 1)_0',h1:'0',t:'c',c1:'((master_request[0][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock)'}
+,{n:'8',z:'(current_owner[0] == 1)_1',h1:'0',t:'c',c1:'((master_request[0][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock)'}
+]}
+],
+c1391:[{dummy:0}
+,{anchor:'cvg1397',cr:'m',items:[{s:'3',x:'FC',z:'(((master_request[0][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock) && (current_owner[0] == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[0][0]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(ahbMasterInterface[0].htrans == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'ahbMasterInterface[0].hmastlock',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(current_owner[0] == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[0][0]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[0][0]_1',h1:'0',t:'c',c1:'((current_owner[0] == 0) && ~ahbMasterInterface[0].hmastlock && (ahbMasterInterface[0].htrans == 0))'}
+,{n:'3',z:'(ahbMasterInterface[0].htrans == 0)_0',h1:'0',t:'c',c1:'master_request[0][0]'}
+,{n:'4',z:'(ahbMasterInterface[0].htrans == 0)_1',h1:'0',t:'c',c1:'((current_owner[0] == 0) && ~ahbMasterInterface[0].hmastlock && master_request[0][0])'}
+,{n:'5',z:'ahbMasterInterface[0].hmastlock_0',h1:'0',t:'c',c1:'((current_owner[0] == 0) && (master_request[0][0] && (ahbMasterInterface[0].htrans == 0)))'}
+,{n:'6',z:'ahbMasterInterface[0].hmastlock_1',h1:'0',t:'c',c1:'(master_request[0][0] && (ahbMasterInterface[0].htrans == 0))'}
+,{n:'7',z:'(current_owner[0] == 0)_0',h1:'0',t:'c',c1:'((master_request[0][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock)'}
+,{n:'8',z:'(current_owner[0] == 0)_1',h1:'0',t:'c',c1:'((master_request[0][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock)'}
+]}
+],
+e1399:[{dummy:0}
+,{anchor:'cvg1401',items:[{s:'3',x:'FE',z:'((master_htrans[1] != 0) && (decode_address(master_haddr[1]) == 1))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'(master_htrans[1] != 0)',c:'g',r:'',i:''}
+,{z:'(decode_address(master_haddr[1]) == 1)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'(master_htrans[1] != 0)_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'(master_htrans[1] != 0)_1',h1:'1',t:'e',c1:'(decode_address(master_haddr[1]) == 1)'}
+,{n:'3',z:'(decode_address(master_haddr[1]) == 1)_0',h1:'0',t:'e',c1:'(master_htrans[1] != 0)'}
+,{n:'4',z:'(decode_address(master_haddr[1]) == 1)_1',h1:'1',t:'e',c1:'(master_htrans[1] != 0)'}
+]}
+],
+e1402:[{dummy:0}
+,{anchor:'cvg1404',cr:'m',items:[{s:'3',x:'FE',z:'((master_htrans[0] != 0) && (decode_address(master_haddr[0]) == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(master_htrans[0] != 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(decode_address(master_haddr[0]) == 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{}
+,{n:'1',z:'(master_htrans[0] != 0)_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'(master_htrans[0] != 0)_1',h1:'0',t:'e',c1:'(decode_address(master_haddr[0]) == 1)'}
+,{n:'3',z:'(decode_address(master_haddr[0]) == 1)_0',h1:'1',t:'e',c1:'(master_htrans[0] != 0)'}
+,{n:'4',z:'(decode_address(master_haddr[0]) == 1)_1',h1:'0',t:'e',c1:'(master_htrans[0] != 0)'}
+]}
+],
+e1406:[{dummy:0}
+,{anchor:'cvg1408',cr:'m',items:[{s:'3',x:'FE',z:'((master_htrans[1] != 0) && (decode_address(master_haddr[1]) == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(master_htrans[1] != 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(decode_address(master_haddr[1]) == 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{}
+,{n:'1',z:'(master_htrans[1] != 0)_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'(master_htrans[1] != 0)_1',h1:'0',t:'e',c1:'(decode_address(master_haddr[1]) == 0)'}
+,{n:'3',z:'(decode_address(master_haddr[1]) == 0)_0',h1:'1',t:'e',c1:'(master_htrans[1] != 0)'}
+,{n:'4',z:'(decode_address(master_haddr[1]) == 0)_1',h1:'0',t:'e',c1:'(master_htrans[1] != 0)'}
+]}
+],
+e1409:[{dummy:0}
+,{anchor:'cvg1411',items:[{s:'3',x:'FE',z:'((master_htrans[0] != 0) && (decode_address(master_haddr[0]) == 0))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'(master_htrans[0] != 0)',c:'g',r:'',i:''}
+,{z:'(decode_address(master_haddr[0]) == 0)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'(master_htrans[0] != 0)_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'(master_htrans[0] != 0)_1',h1:'1',t:'e',c1:'(decode_address(master_haddr[0]) == 0)'}
+,{n:'3',z:'(decode_address(master_haddr[0]) == 0)_0',h1:'0',t:'e',c1:'(master_htrans[0] != 0)'}
+,{n:'4',z:'(decode_address(master_haddr[0]) == 0)_1',h1:'1',t:'e',c1:'(master_htrans[0] != 0)'}
+]}
+],
+c1416:[{dummy:0}
+,{anchor:'cvg1419',items:[{s:'3',x:'FC',z:'((addr >= start_addr) && (addr < end_addr))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'(addr >= start_addr)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{z:'(addr < end_addr)',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'(addr >= start_addr)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(addr >= start_addr)_1',h1:'1',t:'c',c1:'(addr < end_addr)'}
+,{n:'3',z:'(addr < end_addr)_0',h1:'1',t:'c',c1:'(addr >= start_addr)'}
+,{n:'4',z:'(addr < end_addr)_1',h1:'1',t:'c',c1:'(addr >= start_addr)'}
+]}
+],
+c3062:[{dummy:0}
+,{anchor:'cvg3103',cr:'m',items:[{s:'3',x:'FC',z:'((this.ahbMasterTransaction.hwrite == WRITE) && (this.ahbSlaveTransaction.hreadyout == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.ahbMasterTransaction.hwrite == WRITE)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(this.ahbSlaveTransaction.hreadyout == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.ahbMasterTransaction.hwrite == WRITE)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(this.ahbMasterTransaction.hwrite == WRITE)_1',h1:'0',t:'c',c1:'(this.ahbSlaveTransaction.hreadyout == 1)'}
+,{n:'3',z:'(this.ahbSlaveTransaction.hreadyout == 1)_0',h1:'0',t:'c',c1:'(this.ahbMasterTransaction.hwrite == WRITE)'}
+,{n:'4',z:'(this.ahbSlaveTransaction.hreadyout == 1)_1',h1:'0',t:'c',c1:'(this.ahbMasterTransaction.hwrite == WRITE)'}
+]}
+,{anchor:'cvg3105',cr:'m',items:[{s:'3',x:'FC',z:'((this.ahbMasterTransaction.hwrite == READ) && (this.ahbSlaveTransaction.hreadyout == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.ahbMasterTransaction.hwrite == READ)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(this.ahbSlaveTransaction.hreadyout == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.ahbMasterTransaction.hwrite == READ)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(this.ahbMasterTransaction.hwrite == READ)_1',h1:'0',t:'c',c1:'(this.ahbSlaveTransaction.hreadyout == 1)'}
+,{n:'3',z:'(this.ahbSlaveTransaction.hreadyout == 1)_0',h1:'0',t:'c',c1:'(this.ahbMasterTransaction.hwrite == READ)'}
+,{n:'4',z:'(this.ahbSlaveTransaction.hreadyout == 1)_1',h1:'0',t:'c',c1:'(this.ahbMasterTransaction.hwrite == READ)'}
+]}
+],
+c3106:[{dummy:0}
+,{anchor:'cvg3157',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedMasterHwdataCount != 0) && (this.FailedMasterHwdataCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedMasterHwdataCount != 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(this.FailedMasterHwdataCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedMasterHwdataCount != 0)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedMasterHwdataCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedMasterHwdataCount == 0)'}
+,{n:'3',z:'(this.FailedMasterHwdataCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedMasterHwdataCount != 0)'}
+,{n:'4',z:'(this.FailedMasterHwdataCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedMasterHwdataCount != 0)'}
+]}
+,{anchor:'cvg3159',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedSlaveHrdataCount != 0) && (this.FailedSlaveHrdataCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedSlaveHrdataCount != 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(this.FailedSlaveHrdataCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedSlaveHrdataCount != 0)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedSlaveHrdataCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedSlaveHrdataCount == 0)'}
+,{n:'3',z:'(this.FailedSlaveHrdataCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedSlaveHrdataCount != 0)'}
+,{n:'4',z:'(this.FailedSlaveHrdataCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedSlaveHrdataCount != 0)'}
+]}
+,{anchor:'cvg3161',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedMasterHwdataCount != 0) && (this.FailedMasterHwdataCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedMasterHwdataCount != 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(this.FailedMasterHwdataCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedMasterHwdataCount != 0)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedMasterHwdataCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedMasterHwdataCount == 0)'}
+,{n:'3',z:'(this.FailedMasterHwdataCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedMasterHwdataCount != 0)'}
+,{n:'4',z:'(this.FailedMasterHwdataCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedMasterHwdataCount != 0)'}
+]}
+,{anchor:'cvg3163',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedSlaveHrdataCount != 0) && (this.FailedSlaveHrdataCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedSlaveHrdataCount != 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(this.FailedSlaveHrdataCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedSlaveHrdataCount != 0)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedSlaveHrdataCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedSlaveHrdataCount == 0)'}
+,{n:'3',z:'(this.FailedSlaveHrdataCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedSlaveHrdataCount != 0)'}
+,{n:'4',z:'(this.FailedSlaveHrdataCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedSlaveHrdataCount != 0)'}
+]}
+,{anchor:'cvg3165',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedMasterHaddrCount != 0) && (this.FailedMasterHaddrCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedMasterHaddrCount != 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(this.FailedMasterHaddrCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedMasterHaddrCount != 0)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedMasterHaddrCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedMasterHaddrCount == 0)'}
+,{n:'3',z:'(this.FailedMasterHaddrCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedMasterHaddrCount != 0)'}
+,{n:'4',z:'(this.FailedMasterHaddrCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedMasterHaddrCount != 0)'}
+]}
+,{anchor:'cvg3167',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedMasterHwriteCount != 0) && (this.FailedMasterHwriteCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedMasterHwriteCount != 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(this.FailedMasterHwriteCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedMasterHwriteCount != 0)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedMasterHwriteCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedMasterHwriteCount == 0)'}
+,{n:'3',z:'(this.FailedMasterHwriteCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedMasterHwriteCount != 0)'}
+,{n:'4',z:'(this.FailedMasterHwriteCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedMasterHwriteCount != 0)'}
+]}
+],
+c3774:[{dummy:0}
+,{anchor:'cvg3784',cr:'m',items:[{s:'3',x:'FC',z:'(((dataPacket.hburst == 2) || (dataPacket.hburst == 4)) || (dataPacket.hburst == 6))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(dataPacket.hburst == 2)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(dataPacket.hburst == 4)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(dataPacket.hburst == 6)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(dataPacket.hburst == 2)_0',h1:'0',t:'c',c1:'(~(dataPacket.hburst == 6) && ~(dataPacket.hburst == 4))'}
+,{n:'2',z:'(dataPacket.hburst == 2)_1',h1:'0',t:'c',c1:'-'}
+,{n:'3',z:'(dataPacket.hburst == 4)_0',h1:'0',t:'c',c1:'(~(dataPacket.hburst == 6) && ~(dataPacket.hburst == 2))'}
+,{n:'4',z:'(dataPacket.hburst == 4)_1',h1:'0',t:'c',c1:'~(dataPacket.hburst == 2)'}
+,{n:'5',z:'(dataPacket.hburst == 6)_0',h1:'0',t:'c',c1:'~((dataPacket.hburst == 2) || (dataPacket.hburst == 4))'}
+,{n:'6',z:'(dataPacket.hburst == 6)_1',h1:'0',t:'c',c1:'~((dataPacket.hburst == 2) || (dataPacket.hburst == 4))'}
+]}
+],
+c3936:[{dummy:0}
+,{anchor:'cvg3940',cr:'m',items:[{s:'3',x:'FC',z:'(((hreadyout != 1) && (hresp == 1)) && (htrans == IDLE))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(hreadyout != 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(hresp == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(htrans == IDLE)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(hreadyout != 1)_0',h1:'2',t:'c',c1:'-'}
+,{n:'2',z:'(hreadyout != 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hresp == 1))'}
+,{n:'3',z:'(hresp == 1)_0',h1:'0',t:'c',c1:'(hreadyout != 1)'}
+,{n:'4',z:'(hresp == 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hreadyout != 1))'}
+,{n:'5',z:'(htrans == IDLE)_0',h1:'0',t:'c',c1:'((hreadyout != 1) && (hresp == 1))'}
+,{n:'6',z:'(htrans == IDLE)_1',h1:'0',t:'c',c1:'((hreadyout != 1) && (hresp == 1))'}
+]}
+],
+c4257:[{dummy:0}
+,{anchor:'cvg4298',cr:'m',items:[{s:'3',x:'FC',z:'((this.ahbMasterTransaction.hwrite == WRITE) && (this.ahbSlaveTransaction.hreadyout == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.ahbMasterTransaction.hwrite == WRITE)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(this.ahbSlaveTransaction.hreadyout == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.ahbMasterTransaction.hwrite == WRITE)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(this.ahbMasterTransaction.hwrite == WRITE)_1',h1:'0',t:'c',c1:'(this.ahbSlaveTransaction.hreadyout == 1)'}
+,{n:'3',z:'(this.ahbSlaveTransaction.hreadyout == 1)_0',h1:'0',t:'c',c1:'(this.ahbMasterTransaction.hwrite == WRITE)'}
+,{n:'4',z:'(this.ahbSlaveTransaction.hreadyout == 1)_1',h1:'0',t:'c',c1:'(this.ahbMasterTransaction.hwrite == WRITE)'}
+]}
+,{anchor:'cvg4300',cr:'m',items:[{s:'3',x:'FC',z:'((this.ahbMasterTransaction.hwrite == READ) && (this.ahbSlaveTransaction.hreadyout == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.ahbMasterTransaction.hwrite == READ)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(this.ahbSlaveTransaction.hreadyout == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.ahbMasterTransaction.hwrite == READ)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(this.ahbMasterTransaction.hwrite == READ)_1',h1:'0',t:'c',c1:'(this.ahbSlaveTransaction.hreadyout == 1)'}
+,{n:'3',z:'(this.ahbSlaveTransaction.hreadyout == 1)_0',h1:'0',t:'c',c1:'(this.ahbMasterTransaction.hwrite == READ)'}
+,{n:'4',z:'(this.ahbSlaveTransaction.hreadyout == 1)_1',h1:'0',t:'c',c1:'(this.ahbMasterTransaction.hwrite == READ)'}
+]}
+],
+c4301:[{dummy:0}
+,{anchor:'cvg4352',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedMasterHwdataCount != 0) && (this.FailedMasterHwdataCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedMasterHwdataCount != 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(this.FailedMasterHwdataCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedMasterHwdataCount != 0)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedMasterHwdataCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedMasterHwdataCount == 0)'}
+,{n:'3',z:'(this.FailedMasterHwdataCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedMasterHwdataCount != 0)'}
+,{n:'4',z:'(this.FailedMasterHwdataCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedMasterHwdataCount != 0)'}
+]}
+,{anchor:'cvg4354',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedSlaveHrdataCount != 0) && (this.FailedSlaveHrdataCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedSlaveHrdataCount != 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(this.FailedSlaveHrdataCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedSlaveHrdataCount != 0)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedSlaveHrdataCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedSlaveHrdataCount == 0)'}
+,{n:'3',z:'(this.FailedSlaveHrdataCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedSlaveHrdataCount != 0)'}
+,{n:'4',z:'(this.FailedSlaveHrdataCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedSlaveHrdataCount != 0)'}
+]}
+,{anchor:'cvg4356',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedMasterHwdataCount != 0) && (this.FailedMasterHwdataCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedMasterHwdataCount != 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(this.FailedMasterHwdataCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedMasterHwdataCount != 0)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedMasterHwdataCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedMasterHwdataCount == 0)'}
+,{n:'3',z:'(this.FailedMasterHwdataCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedMasterHwdataCount != 0)'}
+,{n:'4',z:'(this.FailedMasterHwdataCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedMasterHwdataCount != 0)'}
+]}
+,{anchor:'cvg4358',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedSlaveHrdataCount != 0) && (this.FailedSlaveHrdataCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedSlaveHrdataCount != 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(this.FailedSlaveHrdataCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedSlaveHrdataCount != 0)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedSlaveHrdataCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedSlaveHrdataCount == 0)'}
+,{n:'3',z:'(this.FailedSlaveHrdataCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedSlaveHrdataCount != 0)'}
+,{n:'4',z:'(this.FailedSlaveHrdataCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedSlaveHrdataCount != 0)'}
+]}
+,{anchor:'cvg4360',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedMasterHaddrCount != 0) && (this.FailedMasterHaddrCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedMasterHaddrCount != 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(this.FailedMasterHaddrCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedMasterHaddrCount != 0)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedMasterHaddrCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedMasterHaddrCount == 0)'}
+,{n:'3',z:'(this.FailedMasterHaddrCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedMasterHaddrCount != 0)'}
+,{n:'4',z:'(this.FailedMasterHaddrCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedMasterHaddrCount != 0)'}
+]}
+,{anchor:'cvg4362',cr:'m',items:[{s:'3',x:'FC',z:'((this.VerifiedMasterHwriteCount != 0) && (this.FailedMasterHwriteCount == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(this.VerifiedMasterHwriteCount != 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(this.FailedMasterHwriteCount == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(this.VerifiedMasterHwriteCount != 0)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(this.VerifiedMasterHwriteCount != 0)_1',h1:'0',t:'c',c1:'(this.FailedMasterHwriteCount == 0)'}
+,{n:'3',z:'(this.FailedMasterHwriteCount == 0)_0',h1:'0',t:'c',c1:'(this.VerifiedMasterHwriteCount != 0)'}
+,{n:'4',z:'(this.FailedMasterHwriteCount == 0)_1',h1:'0',t:'c',c1:'(this.VerifiedMasterHwriteCount != 0)'}
+]}
+],
+c4939:[{dummy:0}
+,{anchor:'cvg4944',cr:'m',items:[{s:'3',x:'FC',z:'(((hready !== 1) && (hresp == 1)) && (htrans == IDLE))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(hready !== 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(hresp == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(htrans == IDLE)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(hready !== 1)_0',h1:'2',t:'c',c1:'-'}
+,{n:'2',z:'(hready !== 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hresp == 1))'}
+,{n:'3',z:'(hresp == 1)_0',h1:'0',t:'c',c1:'(hready !== 1)'}
+,{n:'4',z:'(hresp == 1)_1',h1:'0',t:'c',c1:'((htrans == IDLE) && (hready !== 1))'}
+,{n:'5',z:'(htrans == IDLE)_0',h1:'0',t:'c',c1:'((hready !== 1) && (hresp == 1))'}
+,{n:'6',z:'(htrans == IDLE)_1',h1:'0',t:'c',c1:'((hready !== 1) && (hresp == 1))'}
+]}
+],
+e5115:[{dummy:0}
+,{anchor:'cvg5121',items:[{s:'3',x:'FE',z:'(can_accept_new_transfer && oldest_is_ready)',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'can_accept_new_transfer',c:'g',r:'',i:''}
+,{z:'oldest_is_ready',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'can_accept_new_transfer_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'can_accept_new_transfer_1',h1:'1',t:'e',c1:'oldest_is_ready'}
+,{n:'3',z:'oldest_is_ready_0',h1:'0',t:'e',c1:'can_accept_new_transfer'}
+,{n:'4',z:'oldest_is_ready_1',h1:'1',t:'e',c1:'can_accept_new_transfer'}
+]}
+],
+e5125:[{dummy:0}
+,{anchor:'cvg5131',items:[{s:'3',x:'FE',z:'(can_accept_new_transfer && oldest_is_ready)',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'can_accept_new_transfer',c:'g',r:'',i:''}
+,{z:'oldest_is_ready',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'can_accept_new_transfer_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'can_accept_new_transfer_1',h1:'1',t:'e',c1:'oldest_is_ready'}
+,{n:'3',z:'oldest_is_ready_0',h1:'0',t:'e',c1:'can_accept_new_transfer'}
+,{n:'4',z:'oldest_is_ready_1',h1:'1',t:'e',c1:'can_accept_new_transfer'}
+]}
+],
+c5137:[{dummy:0}
+,{anchor:'cvg5142',cr:'c',items:[{s:'3',x:'FC',z:'(slave_data_phase[1].valid && slave_hreadyout[1])',c:'G',p:'100.00',d:'0',F:'1'}
+,{}
+,{z:'slave_data_phase[1].valid',c:'g',r:'',i:''}
+,{z:'slave_hreadyout[1]',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'slave_data_phase[1].valid_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'slave_data_phase[1].valid_1',h1:'1',t:'c',c1:'slave_hreadyout[1]'}
+,{n:'3',z:'slave_hreadyout[1]_0',h1:'1',t:'c',c1:'slave_data_phase[1].valid'}
+,{n:'4',z:'slave_hreadyout[1]_1',h1:'1',t:'c',c1:'slave_data_phase[1].valid'}
+]}
+],
+c5144:[{dummy:0}
+,{anchor:'cvg5149',cr:'c',items:[{s:'3',x:'FC',z:'(slave_data_phase[0].valid && slave_hreadyout[0])',c:'G',p:'100.00',d:'0',F:'1'}
+,{}
+,{z:'slave_data_phase[0].valid',c:'g',r:'',i:''}
+,{z:'slave_hreadyout[0]',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'slave_data_phase[0].valid_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'slave_data_phase[0].valid_1',h1:'1',t:'c',c1:'slave_hreadyout[0]'}
+,{n:'3',z:'slave_hreadyout[0]_0',h1:'1',t:'c',c1:'slave_data_phase[0].valid'}
+,{n:'4',z:'slave_hreadyout[0]_1',h1:'1',t:'c',c1:'slave_data_phase[0].valid'}
+]}
+],
+e5155:[{dummy:0}
+,{anchor:'cvg5164',cr:'c',items:[{s:'3',x:'FE',z:'(~slave_data_phase[1].valid || slave_hreadyout[1])',c:'G',p:'100.00',d:'0',F:'1'}
+,{}
+,{z:'slave_data_phase[1].valid',c:'g',r:'',i:''}
+,{z:'slave_hreadyout[1]',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'slave_data_phase[1].valid_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'slave_data_phase[1].valid_1',h1:'1',t:'e',c1:'~slave_hreadyout[1]'}
+,{n:'3',z:'slave_hreadyout[1]_0',h1:'1',t:'e',c1:'slave_data_phase[1].valid'}
+,{n:'4',z:'slave_hreadyout[1]_1',h1:'1',t:'e',c1:'slave_data_phase[1].valid'}
+]}
+],
+c5155:[{dummy:0}
+,{anchor:'cvg5166',items:[{s:'3',x:'FC',z:'((locked_present == 1) && (can_accept == 1))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'(locked_present == 1)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{z:'(can_accept == 1)',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'(locked_present == 1)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(locked_present == 1)_1',h1:'1',t:'c',c1:'(can_accept == 1)'}
+,{n:'3',z:'(can_accept == 1)_0',h1:'1',t:'c',c1:'(locked_present == 1)'}
+,{n:'4',z:'(can_accept == 1)_1',h1:'1',t:'c',c1:'(locked_present == 1)'}
+]}
+,{anchor:'cvg5168',items:[{s:'3',x:'FC',z:'(master_request[1][master_idx] && (master_hmastlock[master_idx] == 1))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[1][master_idx]',c:'g',r:'',i:''}
+,{z:'(master_hmastlock[master_idx] == 1)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'master_request[1][master_idx]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[1][master_idx]_1',h1:'1',t:'c',c1:'(master_hmastlock[master_idx] == 1)'}
+,{n:'3',z:'(master_hmastlock[master_idx] == 1)_0',h1:'0',t:'c',c1:'master_request[1][master_idx]'}
+,{n:'4',z:'(master_hmastlock[master_idx] == 1)_1',h1:'1',t:'c',c1:'master_request[1][master_idx]'}
+]}
+,{anchor:'cvg5170',cr:'m',items:[{s:'3',x:'FC',z:'(((can_accept == 1) && (master_htrans[current_owner[1]] == 3)) && (slave_has_owner[1] == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(can_accept == 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(master_htrans[current_owner[1]] == 3)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(slave_has_owner[1] == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(can_accept == 1)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(can_accept == 1)_1',h1:'0',t:'c',c1:'((slave_has_owner[1] == 1) && (master_htrans[current_owner[1]] == 3))'}
+,{n:'3',z:'(master_htrans[current_owner[1]] == 3)_0',h1:'0',t:'c',c1:'(can_accept == 1)'}
+,{n:'4',z:'(master_htrans[current_owner[1]] == 3)_1',h1:'0',t:'c',c1:'((slave_has_owner[1] == 1) && (can_accept == 1))'}
+,{n:'5',z:'(slave_has_owner[1] == 1)_0',h1:'0',t:'c',c1:'((can_accept == 1) && (master_htrans[current_owner[1]] == 3))'}
+,{n:'6',z:'(slave_has_owner[1] == 1)_1',h1:'0',t:'c',c1:'((can_accept == 1) && (master_htrans[current_owner[1]] == 3))'}
+]}
+,{anchor:'cvg5172',cr:'m',items:[{s:'3',x:'FC',z:'(master_request[1][master_idx] && (master_htrans[master_idx] != 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[1][master_idx]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(master_htrans[master_idx] != 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[1][master_idx]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[1][master_idx]_1',h1:'0',t:'c',c1:'(master_htrans[master_idx] != 0)'}
+,{n:'3',z:'(master_htrans[master_idx] != 0)_0',h1:'0',t:'c',c1:'master_request[1][master_idx]'}
+,{n:'4',z:'(master_htrans[master_idx] != 0)_1',h1:'0',t:'c',c1:'master_request[1][master_idx]'}
+]}
+],
+e5173:[{dummy:0}
+,{anchor:'cvg5182',cr:'c',items:[{s:'3',x:'FE',z:'(~slave_data_phase[0].valid || slave_hreadyout[0])',c:'G',p:'100.00',d:'0',F:'1'}
+,{}
+,{z:'slave_data_phase[0].valid',c:'g',r:'',i:''}
+,{z:'slave_hreadyout[0]',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'slave_data_phase[0].valid_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'slave_data_phase[0].valid_1',h1:'1',t:'e',c1:'~slave_hreadyout[0]'}
+,{n:'3',z:'slave_hreadyout[0]_0',h1:'1',t:'e',c1:'slave_data_phase[0].valid'}
+,{n:'4',z:'slave_hreadyout[0]_1',h1:'1',t:'e',c1:'slave_data_phase[0].valid'}
+]}
+],
+c5173:[{dummy:0}
+,{anchor:'cvg5184',items:[{s:'3',x:'FC',z:'((locked_present == 1) && (can_accept == 1))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'(locked_present == 1)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{z:'(can_accept == 1)',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'(locked_present == 1)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(locked_present == 1)_1',h1:'1',t:'c',c1:'(can_accept == 1)'}
+,{n:'3',z:'(can_accept == 1)_0',h1:'1',t:'c',c1:'(locked_present == 1)'}
+,{n:'4',z:'(can_accept == 1)_1',h1:'1',t:'c',c1:'(locked_present == 1)'}
+]}
+,{anchor:'cvg5186',items:[{s:'3',x:'FC',z:'(master_request[0][master_idx] && (master_hmastlock[master_idx] == 1))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[0][master_idx]',c:'g',r:'',i:''}
+,{z:'(master_hmastlock[master_idx] == 1)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'master_request[0][master_idx]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[0][master_idx]_1',h1:'1',t:'c',c1:'(master_hmastlock[master_idx] == 1)'}
+,{n:'3',z:'(master_hmastlock[master_idx] == 1)_0',h1:'0',t:'c',c1:'master_request[0][master_idx]'}
+,{n:'4',z:'(master_hmastlock[master_idx] == 1)_1',h1:'1',t:'c',c1:'master_request[0][master_idx]'}
+]}
+,{anchor:'cvg5188',cr:'m',items:[{s:'3',x:'FC',z:'(((can_accept == 1) && (master_htrans[current_owner[0]] == 3)) && (slave_has_owner[0] == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(can_accept == 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(master_htrans[current_owner[0]] == 3)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(slave_has_owner[0] == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'(can_accept == 1)_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'(can_accept == 1)_1',h1:'0',t:'c',c1:'((slave_has_owner[0] == 1) && (master_htrans[current_owner[0]] == 3))'}
+,{n:'3',z:'(master_htrans[current_owner[0]] == 3)_0',h1:'0',t:'c',c1:'(can_accept == 1)'}
+,{n:'4',z:'(master_htrans[current_owner[0]] == 3)_1',h1:'0',t:'c',c1:'((slave_has_owner[0] == 1) && (can_accept == 1))'}
+,{n:'5',z:'(slave_has_owner[0] == 1)_0',h1:'0',t:'c',c1:'((can_accept == 1) && (master_htrans[current_owner[0]] == 3))'}
+,{n:'6',z:'(slave_has_owner[0] == 1)_1',h1:'0',t:'c',c1:'((can_accept == 1) && (master_htrans[current_owner[0]] == 3))'}
+]}
+,{anchor:'cvg5190',cr:'m',items:[{s:'3',x:'FC',z:'(master_request[0][master_idx] && (master_htrans[master_idx] != 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[0][master_idx]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(master_htrans[master_idx] != 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[0][master_idx]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[0][master_idx]_1',h1:'0',t:'c',c1:'(master_htrans[master_idx] != 0)'}
+,{n:'3',z:'(master_htrans[master_idx] != 0)_0',h1:'0',t:'c',c1:'master_request[0][master_idx]'}
+,{n:'4',z:'(master_htrans[master_idx] != 0)_1',h1:'0',t:'c',c1:'master_request[0][master_idx]'}
+]}
+],
+c5198:[{dummy:0}
+,{anchor:'cvg5204',cr:'m',items:[{s:'3',x:'FC',z:'(((master_request[1][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock) && (current_owner[1] == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[1][1]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(ahbMasterInterface[1].htrans == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'ahbMasterInterface[1].hmastlock',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(current_owner[1] == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[1][1]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[1][1]_1',h1:'0',t:'c',c1:'((current_owner[1] == 1) && ~ahbMasterInterface[1].hmastlock && (ahbMasterInterface[1].htrans == 0))'}
+,{n:'3',z:'(ahbMasterInterface[1].htrans == 0)_0',h1:'0',t:'c',c1:'master_request[1][1]'}
+,{n:'4',z:'(ahbMasterInterface[1].htrans == 0)_1',h1:'0',t:'c',c1:'((current_owner[1] == 1) && ~ahbMasterInterface[1].hmastlock && master_request[1][1])'}
+,{n:'5',z:'ahbMasterInterface[1].hmastlock_0',h1:'0',t:'c',c1:'((current_owner[1] == 1) && (master_request[1][1] && (ahbMasterInterface[1].htrans == 0)))'}
+,{n:'6',z:'ahbMasterInterface[1].hmastlock_1',h1:'0',t:'c',c1:'(master_request[1][1] && (ahbMasterInterface[1].htrans == 0))'}
+,{n:'7',z:'(current_owner[1] == 1)_0',h1:'0',t:'c',c1:'((master_request[1][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock)'}
+,{n:'8',z:'(current_owner[1] == 1)_1',h1:'0',t:'c',c1:'((master_request[1][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock)'}
+]}
+],
+c5205:[{dummy:0}
+,{anchor:'cvg5211',cr:'m',items:[{s:'3',x:'FC',z:'(((master_request[1][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock) && (current_owner[1] == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[1][0]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(ahbMasterInterface[0].htrans == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'ahbMasterInterface[0].hmastlock',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(current_owner[1] == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[1][0]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[1][0]_1',h1:'0',t:'c',c1:'((current_owner[1] == 0) && ~ahbMasterInterface[0].hmastlock && (ahbMasterInterface[0].htrans == 0))'}
+,{n:'3',z:'(ahbMasterInterface[0].htrans == 0)_0',h1:'0',t:'c',c1:'master_request[1][0]'}
+,{n:'4',z:'(ahbMasterInterface[0].htrans == 0)_1',h1:'0',t:'c',c1:'((current_owner[1] == 0) && ~ahbMasterInterface[0].hmastlock && master_request[1][0])'}
+,{n:'5',z:'ahbMasterInterface[0].hmastlock_0',h1:'0',t:'c',c1:'((current_owner[1] == 0) && (master_request[1][0] && (ahbMasterInterface[0].htrans == 0)))'}
+,{n:'6',z:'ahbMasterInterface[0].hmastlock_1',h1:'0',t:'c',c1:'(master_request[1][0] && (ahbMasterInterface[0].htrans == 0))'}
+,{n:'7',z:'(current_owner[1] == 0)_0',h1:'0',t:'c',c1:'((master_request[1][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock)'}
+,{n:'8',z:'(current_owner[1] == 0)_1',h1:'0',t:'c',c1:'((master_request[1][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock)'}
+]}
+],
+c5213:[{dummy:0}
+,{anchor:'cvg5219',cr:'m',items:[{s:'3',x:'FC',z:'(((master_request[0][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock) && (current_owner[0] == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[0][1]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(ahbMasterInterface[1].htrans == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'ahbMasterInterface[1].hmastlock',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(current_owner[0] == 1)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[0][1]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[0][1]_1',h1:'0',t:'c',c1:'((current_owner[0] == 1) && ~ahbMasterInterface[1].hmastlock && (ahbMasterInterface[1].htrans == 0))'}
+,{n:'3',z:'(ahbMasterInterface[1].htrans == 0)_0',h1:'0',t:'c',c1:'master_request[0][1]'}
+,{n:'4',z:'(ahbMasterInterface[1].htrans == 0)_1',h1:'0',t:'c',c1:'((current_owner[0] == 1) && ~ahbMasterInterface[1].hmastlock && master_request[0][1])'}
+,{n:'5',z:'ahbMasterInterface[1].hmastlock_0',h1:'0',t:'c',c1:'((current_owner[0] == 1) && (master_request[0][1] && (ahbMasterInterface[1].htrans == 0)))'}
+,{n:'6',z:'ahbMasterInterface[1].hmastlock_1',h1:'0',t:'c',c1:'(master_request[0][1] && (ahbMasterInterface[1].htrans == 0))'}
+,{n:'7',z:'(current_owner[0] == 1)_0',h1:'0',t:'c',c1:'((master_request[0][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock)'}
+,{n:'8',z:'(current_owner[0] == 1)_1',h1:'0',t:'c',c1:'((master_request[0][1] && (ahbMasterInterface[1].htrans == 0)) && ~ahbMasterInterface[1].hmastlock)'}
+]}
+],
+c5220:[{dummy:0}
+,{anchor:'cvg5226',cr:'m',items:[{s:'3',x:'FC',z:'(((master_request[0][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock) && (current_owner[0] == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'master_request[0][0]',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(ahbMasterInterface[0].htrans == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'ahbMasterInterface[0].hmastlock',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{z:'(current_owner[0] == 0)',c:'r',r:'No hits',i:'Hit \'_0\' and \'_1\''}
+,{}
+,{n:'1',z:'master_request[0][0]_0',h1:'1',t:'c',c1:'-'}
+,{n:'2',z:'master_request[0][0]_1',h1:'0',t:'c',c1:'((current_owner[0] == 0) && ~ahbMasterInterface[0].hmastlock && (ahbMasterInterface[0].htrans == 0))'}
+,{n:'3',z:'(ahbMasterInterface[0].htrans == 0)_0',h1:'0',t:'c',c1:'master_request[0][0]'}
+,{n:'4',z:'(ahbMasterInterface[0].htrans == 0)_1',h1:'0',t:'c',c1:'((current_owner[0] == 0) && ~ahbMasterInterface[0].hmastlock && master_request[0][0])'}
+,{n:'5',z:'ahbMasterInterface[0].hmastlock_0',h1:'0',t:'c',c1:'((current_owner[0] == 0) && (master_request[0][0] && (ahbMasterInterface[0].htrans == 0)))'}
+,{n:'6',z:'ahbMasterInterface[0].hmastlock_1',h1:'0',t:'c',c1:'(master_request[0][0] && (ahbMasterInterface[0].htrans == 0))'}
+,{n:'7',z:'(current_owner[0] == 0)_0',h1:'0',t:'c',c1:'((master_request[0][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock)'}
+,{n:'8',z:'(current_owner[0] == 0)_1',h1:'0',t:'c',c1:'((master_request[0][0] && (ahbMasterInterface[0].htrans == 0)) && ~ahbMasterInterface[0].hmastlock)'}
+]}
+],
+e5228:[{dummy:0}
+,{anchor:'cvg5230',items:[{s:'3',x:'FE',z:'((master_htrans[1] != 0) && (decode_address(master_haddr[1]) == 1))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'(master_htrans[1] != 0)',c:'g',r:'',i:''}
+,{z:'(decode_address(master_haddr[1]) == 1)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'(master_htrans[1] != 0)_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'(master_htrans[1] != 0)_1',h1:'1',t:'e',c1:'(decode_address(master_haddr[1]) == 1)'}
+,{n:'3',z:'(decode_address(master_haddr[1]) == 1)_0',h1:'0',t:'e',c1:'(master_htrans[1] != 0)'}
+,{n:'4',z:'(decode_address(master_haddr[1]) == 1)_1',h1:'1',t:'e',c1:'(master_htrans[1] != 0)'}
+]}
+],
+e5231:[{dummy:0}
+,{anchor:'cvg5233',cr:'m',items:[{s:'3',x:'FE',z:'((master_htrans[0] != 0) && (decode_address(master_haddr[0]) == 1))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(master_htrans[0] != 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(decode_address(master_haddr[0]) == 1)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{}
+,{n:'1',z:'(master_htrans[0] != 0)_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'(master_htrans[0] != 0)_1',h1:'0',t:'e',c1:'(decode_address(master_haddr[0]) == 1)'}
+,{n:'3',z:'(decode_address(master_haddr[0]) == 1)_0',h1:'1',t:'e',c1:'(master_htrans[0] != 0)'}
+,{n:'4',z:'(decode_address(master_haddr[0]) == 1)_1',h1:'0',t:'e',c1:'(master_htrans[0] != 0)'}
+]}
+],
+e5235:[{dummy:0}
+,{anchor:'cvg5237',cr:'m',items:[{s:'3',x:'FE',z:'((master_htrans[1] != 0) && (decode_address(master_haddr[1]) == 0))',c:'R',p:'0.00',d:'0',F:'1'}
+,{}
+,{z:'(master_htrans[1] != 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{z:'(decode_address(master_haddr[1]) == 0)',c:'r',r:'\'_1\' not hit',i:'Hit \'_1\''}
+,{}
+,{n:'1',z:'(master_htrans[1] != 0)_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'(master_htrans[1] != 0)_1',h1:'0',t:'e',c1:'(decode_address(master_haddr[1]) == 0)'}
+,{n:'3',z:'(decode_address(master_haddr[1]) == 0)_0',h1:'1',t:'e',c1:'(master_htrans[1] != 0)'}
+,{n:'4',z:'(decode_address(master_haddr[1]) == 0)_1',h1:'0',t:'e',c1:'(master_htrans[1] != 0)'}
+]}
+],
+e5238:[{dummy:0}
+,{anchor:'cvg5240',items:[{s:'3',x:'FE',z:'((master_htrans[0] != 0) && (decode_address(master_haddr[0]) == 0))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'(master_htrans[0] != 0)',c:'g',r:'',i:''}
+,{z:'(decode_address(master_haddr[0]) == 0)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{}
+,{n:'1',z:'(master_htrans[0] != 0)_0',h1:'1',t:'e',c1:'-'}
+,{n:'2',z:'(master_htrans[0] != 0)_1',h1:'1',t:'e',c1:'(decode_address(master_haddr[0]) == 0)'}
+,{n:'3',z:'(decode_address(master_haddr[0]) == 0)_0',h1:'0',t:'e',c1:'(master_htrans[0] != 0)'}
+,{n:'4',z:'(decode_address(master_haddr[0]) == 0)_1',h1:'1',t:'e',c1:'(master_htrans[0] != 0)'}
+]}
+],
+c5245:[{dummy:0}
+,{anchor:'cvg5248',items:[{s:'3',x:'FC',z:'((addr >= start_addr) && (addr < end_addr))',c:'Y',p:'50.00',d:'0',F:'1'}
+,{}
+,{z:'(addr >= start_addr)',c:'r',r:'\'_0\' not hit',i:'Hit \'_0\''}
+,{z:'(addr < end_addr)',c:'g',r:'',i:''}
+,{}
+,{n:'1',z:'(addr >= start_addr)_0',h1:'0',t:'c',c1:'-'}
+,{n:'2',z:'(addr >= start_addr)_1',h1:'1',t:'c',c1:'(addr < end_addr)'}
+,{n:'3',z:'(addr < end_addr)_0',h1:'1',t:'c',c1:'(addr >= start_addr)'}
+,{n:'4',z:'(addr < end_addr)_1',h1:'1',t:'c',c1:'(addr >= start_addr)'}
+]}
+],
+dummyEnd:0
+};
+processCondExprData(g_data);

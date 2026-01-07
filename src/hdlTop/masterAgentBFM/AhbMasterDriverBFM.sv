@@ -80,13 +80,14 @@ endtask: driveToBFM
     MasterDriverCb.hexcl     <= dataPacket.hexcl;
     MasterDriverCb.hmaster   <= dataPacket.hmaster;
     MasterDriverCb.htrans    <= dataPacket.htrans;
-    MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
+    //MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
     MasterDriverCb.hwrite    <= dataPacket.hwrite;
 
     @(MasterDriverCb);
 
     while(MasterDriverCb.hready==0 || $isunknown(MasterDriverCb.hready)) @(MasterDriverCb);
 
+    MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
 
     MasterDriverCb.hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.hwstrb[0]) : '0;
 
@@ -120,7 +121,7 @@ endtask: driveToBFM
     MasterDriverCb.hexcl     <= dataPacket.hexcl;
     MasterDriverCb.hmaster   <= dataPacket.hmaster;
     MasterDriverCb.htrans    <= dataPacket.htrans;
-    MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
+    //MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
     MasterDriverCb.hwrite    <= dataPacket.hwrite;
 
    @(MasterDriverCb);
@@ -129,6 +130,7 @@ endtask: driveToBFM
         //$display("DRIVER");
         @(MasterDriverCb);
   end
+   MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
 
     hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.hwstrb[0]) : '0;
 
@@ -152,11 +154,13 @@ endtask: driveToBFM
     MasterDriverCb.hexcl     <= dataPacket.hexcl;
     MasterDriverCb.hmaster   <= dataPacket.hmaster;
     MasterDriverCb.htrans    <= 2'b 11;
-    MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
+    //MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
     MasterDriverCb.hwrite    <= dataPacket.hwrite;
 
    @(MasterDriverCb);
   while(MasterDriverCb.hready==0 || $isunknown(MasterDriverCb.hready))@(MasterDriverCb);
+
+   MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
 
 /*      if (hresp == 1) begin
         `uvm_info(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr),UVM_LOW);
@@ -216,7 +220,7 @@ endtask: driveToBFM
     MasterDriverCb.hexcl     <= dataPacket.hexcl;
     MasterDriverCb.hmaster   <= dataPacket.hmaster;
     MasterDriverCb.htrans    <= 2'b 00;
-    MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
+    //MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
     MasterDriverCb.hwrite    <= 1;
 
     @(MasterDriverCb);
@@ -225,6 +229,8 @@ endtask: driveToBFM
         `uvm_info("MASTER AGENT DRIVER BFM",$sformatf("[%0tWAITING FOR HREADY = 1 IN driveIdle",$time),UVM_LOW)
         @(MasterDriverCb);
     end
+
+    MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
 
     MasterDriverCb.hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.hwstrb[0]) : '0;
 

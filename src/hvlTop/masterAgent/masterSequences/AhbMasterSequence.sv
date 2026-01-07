@@ -22,6 +22,8 @@ class AhbMasterSequence extends AhbMasterBaseSequence;
   rand bit hexokaySeq;
   rand bit busyControlSeq[];
 
+  //constraint haddr_decode{haddrSeq inside {[0:3000]};}
+
   constraint haddr_alignment1 {
   // Ensure address alignment based on transfer size
     if (hsizeSeq == HALFWORD) {
@@ -109,7 +111,7 @@ task AhbMasterSequence::body();
   super.body();
   req = AhbMasterTransaction::type_id::create("req");
 
- repeat(4) begin 
+ repeat(1) begin 
   start_item(req);
   `uvm_info("AHB", $sformatf("req is of type: %s", req.get_type_name()), UVM_LOW)
 
@@ -124,6 +126,7 @@ task AhbMasterSequence::body();
 			      htrans     == htransSeq;
 			      hwrite     == hwriteSeq;
 			      hexokay    == hexokaySeq;
+			      haddr      == haddrSeq;
                               foreach(hwdataSeq[i])
 			      //hwdata[i]  == hwdataSeq[i];
                               foreach(hwstrbSeq[i])

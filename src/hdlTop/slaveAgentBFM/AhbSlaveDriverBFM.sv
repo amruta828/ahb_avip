@@ -106,8 +106,10 @@ reg[7:0]normalReg[0:1023];
         `uvm_info("SLAVE DRIVER BFM",$sformatf("the data to be written is :%0h",SlaveDriverCb.hwdata),UVM_LOW);
 
 //        $display("THE DATA TO BE WRITTEN IS %0h",SlaveDriverCb.hwdata);
-        for(int i=0;i<4;i++) begin
-         normalReg[(addressTemp[9:0])+i] = dataTemp[((7*i)+i) +: 8];
+        for(int i=0;i<hsize;i++) begin
+	 if(hwstrb[i] == 1) begin
+             normalReg[(addressTemp[9:0])+i] = dataTemp[((7*i)+i) +: 8];
+         end
         end
         `uvm_info("SLAVE DRIVER BFM",$sformatf("THE DATA WRITTEN IS %p @%0t\n",normalReg, $time), UVM_LOW)
 

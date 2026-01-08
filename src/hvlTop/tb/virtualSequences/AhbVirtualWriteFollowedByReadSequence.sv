@@ -14,6 +14,8 @@ class AhbVirtualWriteFollowedByReadSequence extends AhbVirtualBaseSequence;
   AhbVirtualSingleWriteSequence ahbVirtualSingleWriteSequence;
   AhbVirtualSingleReadSequence ahbVirtualSingleReadSequence;
   AhbVirtualIdleSequence ahbVirtualIdleSequence;
+
+  bit [ADDR_WIDTH-1:0] temp_addr[NO_OF_SLAVES];
   extern function new(string name ="AhbVirtualWriteFollowedByReadSequence");
   extern task body();
  
@@ -44,6 +46,7 @@ task AhbVirtualWriteFollowedByReadSequence::body();
 
 foreach(ahbMasterWriteSequence[i])begin 
     if(!ahbMasterWriteSequence[i].randomize() with {
+							      haddrSeq inside {[0:3000]};
                                                               hsizeSeq == WORD;
 							      hwriteSeq ==1;
                                                               hmastlockSeq==0;
@@ -54,11 +57,14 @@ foreach(ahbMasterWriteSequence[i])begin
                                                         ) begin
        `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualSingleWriteSequence")
     end
+    temp_addr[i] = ahbMasterWriteSequence[i].haddrSeq;
+    `uvm_info(get_type_name(), $sformatf("temp_addr[%0d] = %0h",i,temp_addr[i]), UVM_NONE)
    end
 
 
   foreach(ahbMasterReadSequence[i]) begin 
   if(!ahbMasterReadSequence[i].randomize() with {hsizeSeq == WORD;
+							      haddrSeq == temp_addr[i];
                                                               hwriteSeq ==0;
                                                               hmastlockSeq==0;
                                                               htransSeq == NONSEQ;
@@ -68,6 +74,7 @@ foreach(ahbMasterWriteSequence[i])begin
                                             ) begin
     `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualReadFollowedByReadSequence")
   end
+  `uvm_info(get_type_name(), $sformatf("temp_addr[%0d] = %0h",i,temp_addr[i]), UVM_NONE)
  end 
  
  foreach(ahbSlaveWriteSequence[i]) begin 
@@ -77,7 +84,7 @@ foreach(ahbMasterWriteSequence[i])begin
 
 
 
-/*
+
 fork
        begin
        foreach(ahbMasterWriteSequence[i]) begin
@@ -124,11 +131,11 @@ fork
        wait fork;
        end
 
- join*/
+ join
 
-ahbVirtualSingleWriteSequence.start(m_sequencer);
+//ahbVirtualSingleWriteSequence.start(m_sequencer);
 //ahbVirtualIdleSequence.start(m_sequencer);
-ahbVirtualSingleReadSequence.start(m_sequencer);
+//ahbVirtualSingleReadSequence.start(m_sequencer);
 
 endtask : body
  

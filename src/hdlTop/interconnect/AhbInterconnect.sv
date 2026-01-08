@@ -348,7 +348,7 @@ endgenerate
       always_comb begin
         //$info("ALWAYS");
              ahbSlaveInterface[s].hwdata     = slave_hwdata_stable[s];
-        //if (slave_data_phase[s].valid && slave_hreadyout[s]) begin
+        if (slave_data_phase[s].valid && slave_hreadyout[s]) begin
           ahbSlaveInterface[s].haddr      = slave_data_phase[s].haddr;
           ahbSlaveInterface[s].hsize      = slave_data_phase[s].hsize;
           ahbSlaveInterface[s].htrans     = slave_data_phase[s].htrans;
@@ -359,7 +359,10 @@ endgenerate
           ahbSlaveInterface[s].hselx      = 1'b1;
 
           ahbSlaveInterface[s].hwdata     = slave_hwdata_stable[s];
-        //end
+        end
+	else begin
+		ahbSlaveInterface[s].hselx = 1'b0;	
+	end
   /* else begin
           ahbSlaveInterface[s].haddr      = '0;
           ahbSlaveInterface[s].hsize      = '0;

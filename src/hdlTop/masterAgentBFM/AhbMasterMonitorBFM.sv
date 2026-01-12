@@ -76,6 +76,7 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     else begin
       ahbDataPacket.hrdata = hrdata;
     end
+
   endtask : sampleData
 
 endinterface : AhbMasterMonitorBFM

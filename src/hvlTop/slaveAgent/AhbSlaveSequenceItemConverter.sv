@@ -14,6 +14,7 @@ function AhbSlaveSequenceItemConverter::new(string name = "AhbSlaveSequenceItemC
   super.new(name);
 endfunction: new
 
+
 function void AhbSlaveSequenceItemConverter::fromClass(input AhbSlaveTransaction inputConv, output ahbTransferCharStruct outputConv);
 
    outputConv.haddr = inputConv.haddr;

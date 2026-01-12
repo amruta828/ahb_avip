@@ -22,7 +22,8 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
                               input logic hresp,
                               input logic hexokay,
                               input logic hready,
-                              input logic [NO_OF_SLAVES-1:0]hselx
+                              /* input logic [NO_OF_SLAVES-1:0]hselx */
+															input logic hselx
                              );
 
 
@@ -73,6 +74,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     end
     else
       ahbDataPacket.hrdata = hrdata;
+		
   endtask : slaveSampleData
 
 endinterface : AhbSlaveMonitorBFM

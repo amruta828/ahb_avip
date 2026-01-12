@@ -134,7 +134,7 @@ fork
  join
 
 //ahbVirtualSingleWriteSequence.start(m_sequencer);
-//ahbVirtualIdleSequence.start(m_sequencer);
+ahbVirtualIdleSequence.start(m_sequencer);
 //ahbVirtualSingleReadSequence.start(m_sequencer);
 
 endtask : body

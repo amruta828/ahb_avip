@@ -61,7 +61,7 @@ function void AhbSlaveSequenceItemConverter::fromClass(input AhbSlaveTransaction
 
    outputConv.noOfWaitStates = inputConv.noOfWaitStates;
   //`uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing noofwaitstate = %b", outputConv.noOfWaitStates), UVM_HIGH);
-	  
+  
   foreach(inputConv.hwdata[i])begin
      if(inputConv.hwdata[i] != 0)begin
         outputConv.hwdata[i] = inputConv.hwdata[i];
@@ -71,22 +71,22 @@ end
 
   foreach(inputConv.hwdata[i])begin
       if(inputConv.hwdata[i] != 0)begin
-			   outputConv.hwstrb[i] = inputConv.hwstrb[i];
-//				 `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwstrb = %0p", outputConv.hwstrb), UVM_FULL);
-			end
+     outputConv.hwstrb[i] = inputConv.hwstrb[i];
+//    `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwstrb = %0p", outputConv.hwstrb), UVM_FULL);
+   end
  end
 
-	  foreach(inputConv.hrdata[i])begin
-	      if(inputConv.hrdata[i] != 0)begin
-	        outputConv.hrdata[i] = inputConv.hrdata[i];
-	    //     `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hrdata = %0p", outputConv.hrdata), UVM_FULL);
-	      end
-	  end
+  foreach(inputConv.hrdata[i])begin
+      if(inputConv.hrdata[i] != 0)begin
+        outputConv.hrdata[i] = inputConv.hrdata[i];
+    //     `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hrdata = %0p", outputConv.hrdata), UVM_FULL);
+      end
+  end
 
-	  foreach(inputConv.busyControl[i])begin  
-	        outputConv.busyControl[i] = inputConv.busyControl[i];
-	      //   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing busyControl = %0p", outputConv.busyControl), UVM_FULL); 
-	  end
+  foreach(inputConv.busyControl[i])begin  
+        outputConv.busyControl[i] = inputConv.busyControl[i];
+      //   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing busyControl = %0p", outputConv.busyControl), UVM_FULL); 
+  end
 
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
  
@@ -142,30 +142,31 @@ function void AhbSlaveSequenceItemConverter::toClass(input ahbTransferCharStruct
   //`uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing noofwaitstate = %b", outputConv.noOfWaitStates), UVM_HIGH);
 
    foreach(inputConv.hwdata[i])begin
-	    if(inputConv.hwdata[i] != 0)begin
-		     outputConv.hwdata[i] = inputConv.hwdata[i];
-		//	   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwdata = %0p", outputConv.hwdata), UVM_FULL);
-		 end
+    if(inputConv.hwdata[i] != 0)begin
+      outputConv.hwdata[i] = inputConv.hwdata[i];
+  //   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwdata = %0p", outputConv.hwdata), UVM_FULL);
+  end
    end
-			 
-	  foreach(inputConv.hwdata[i])begin
-		   if(inputConv.hwdata[i] != 0)begin
-			    outputConv.hwstrb[i] = inputConv.hwstrb[i];
-				 //`uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwstrb = %0p", outputConv.hwstrb), UVM_FULL);
-			 end
-	  end
+   
+  foreach(inputConv.hwdata[i])begin
+    if(inputConv.hwdata[i] != 0)begin
+      outputConv.hwstrb[i] = inputConv.hwstrb[i];
+    $display("ITEM CON : srtb %b", outputConv.hwstrb[i]);
+    //`uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwstrb = %0p", outputConv.hwstrb), UVM_FULL);
+   end
+  end
 
-	  foreach(inputConv.hrdata[i])begin
-	      if(inputConv.hrdata[i] != 0)begin
-	        outputConv.hrdata[i] = inputConv.hrdata[i];
-	  		//`uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hrdata = %0p", outputConv.hrdata), UVM_FULL);
-		 end
-	 end
+  foreach(inputConv.hrdata[i])begin
+      if(inputConv.hrdata[i] != 0)begin
+        outputConv.hrdata[i] = inputConv.hrdata[i];
+    //`uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hrdata = %0p", outputConv.hrdata), UVM_FULL);
+  end
+ end
 
-	foreach(inputConv.busyControl[i])begin
-	        outputConv.busyControl[i] = inputConv.busyControl[i];
-	 //       `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing busyControl = %0p", outputConv.busyControl), UVM_FULL);
-	end
+ foreach(inputConv.busyControl[i])begin
+        outputConv.busyControl[i] = inputConv.busyControl[i];
+ //       `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing busyControl = %0p", outputConv.busyControl), UVM_FULL);
+ end
 
       //`uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 
@@ -205,4 +206,4 @@ foreach(ahbStruct.hrdata[i])begin
 
 endfunction : do_print
 
-`endif 
+`endif

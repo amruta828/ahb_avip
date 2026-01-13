@@ -84,7 +84,7 @@ endtask: slaveDriveToBFM
     bit[31:0]dataTemp;
     @(SlaveDriverCb);
  
-    while(SlaveDriverCb.hselx==0 || $isunknown(SlaveDriverCb.hselx))  begin  $display("MONITOR %t",$time);@(SlaveDriverCb);end
+    while(SlaveDriverCb.hselx==0 || $isunknown(SlaveDriverCb.hselx) )  begin  $display("MONITOR %t",$time);@(SlaveDriverCb);end
       if(configPacket.needWaitStates) begin
         SlaveDriverCb.hreadyout <= 0;
         repeat(configPacket.noOfWaitStates)@(SlaveDriverCb);
@@ -105,6 +105,7 @@ endtask: slaveDriveToBFM
       if(SlaveDriverCb.hwrite) begin
         `uvm_info("SLAVE DRIVER BFM",$sformatf("the data to be written is :%0h",SlaveDriverCb.hwdata),UVM_LOW);
  
+   $display("NIHAL strb :%b", hwstrb);
 //        $display("THE DATA TO BE WRITTEN IS %0h",SlaveDriverCb.hwdata);
         for(int i=0;i<4;i++) begin
           //(if(hwstrb[i] == 1) begin
@@ -115,7 +116,7 @@ endtask: slaveDriveToBFM
  
       end
       else if(!hwrite) begin
-	$display("SLAVE GOING INTO READ MODE");
+ $display("SLAVE GOING INTO READ MODE");
         for (int i=0;i<4;i++) begin
           temp[((7*i)+i)+:8] =  normalReg[haddr+i];
         end

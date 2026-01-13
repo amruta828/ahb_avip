@@ -1,5 +1,5 @@
 QuestaSim-64 vlog 2021.2_1 Compiler 2021.05 May 15 2021
-Start time: 20:51:12 on Jan 12,2026
+Start time: 14:14:40 on Jan 13,2026
 vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ../ahb_compile.f 
 -- Compiling package AhbGlobalPackage
 -- Compiling package AhbMasterPackage
@@ -12,7 +12,7 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ../ahb_compile.f
 -- Compiling package AhbSlaveSequencePackage
 -- Importing package AhbSlavePackage
 -- Compiling package AhbEnvironmentPackage
-** Warning: ../../src/hvlTop/environment/AhbScoreboard.sv(148): (vlog-8491) 'new' must be used to assign to a dynamic array; 'new' is not legal with a queue.
+** Warning: ../../src/hvlTop/environment/AhbScoreboard.sv(174): (vlog-8491) 'new' must be used to assign to a dynamic array; 'new' is not legal with a queue.
 -- Compiling package AhbVirtualSequencePackage
 -- Importing package AhbMasterSequencePackage
 -- Importing package AhbSlaveSequencePackage
@@ -119,5 +119,5 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ../ahb_compile.f
 Top level modules:
 	HdlTop
 	HvlTop
-End time: 20:51:13 on Jan 12,2026, Elapsed time: 0:00:01
+End time: 14:14:40 on Jan 13,2026, Elapsed time: 0:00:00
 Errors: 0, Warnings: 72

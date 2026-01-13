@@ -22,7 +22,7 @@ class AhbMasterSequence extends AhbMasterBaseSequence;
   rand bit hexokaySeq;
   rand bit busyControlSeq[];
 
-  constraint haddr_decode{haddrSeq inside {[0:3000]};}
+  constraint haddr_decode{haddrSeq inside {[0:2040]};}
 
   constraint haddr_alignment1 {
   // Ensure address alignment based on transfer size

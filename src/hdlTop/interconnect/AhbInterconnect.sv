@@ -15,6 +15,8 @@ interface AhbInterconnect(
   logic [3:0] master_hprot[NO_OF_MASTERS];
   logic master_hmastlock[NO_OF_MASTERS];
   logic [31:0] master_hwdata[NO_OF_MASTERS];
+  logic [(DATA_WIDTH)/8 -1:0] master_hstrb[NO_OF_MASTERS];
+
 
     logic [$clog2(NO_OF_MASTERS)-1:0] current_owner [NO_OF_SLAVES];
   logic slave_has_owner [NO_OF_SLAVES];
@@ -31,6 +33,8 @@ interface AhbInterconnect(
         master_hprot[m]     = ahbMasterInterface[m].hprot;
         master_hmastlock[m] = ahbMasterInterface[m].hmastlock;
         master_hwdata[m]    = ahbMasterInterface[m].hwdata;
+        master_hstrb[m]    = ahbMasterInterface[m].hwstrb;
+
       end
     end
   endgenerate
@@ -64,6 +68,7 @@ interface AhbInterconnect(
     logic [$clog2(NO_OF_SLAVES)-1:0] target_slave;
     logic [$clog2(NO_OF_MASTERS)-1:0] master_id;
     logic                  valid;
+  logic [(DATA_WIDTH)/8 - 1:0] hstrb;
   } addr_phase_t;
 
 
@@ -199,10 +204,10 @@ endgenerate
               locked_present=1;
               break;
            end
-	   else
-	       locked_present = 0;
-	end
-	end
+   else
+       locked_present = 0;
+ end
+ end
 
         can_accept = !slave_data_phase[s].valid || slave_hreadyout[s];
 
@@ -309,7 +314,7 @@ endgenerate
       logic new_data_phase_starting;
 
       always_comb begin
-	//$info("ALWASY");
+ //$info("ALWASY");
         if (!hresetn) begin
           slave_data_phase[s] <= '0;
           slave_hwdata_stable[s] <= '0;
@@ -331,6 +336,7 @@ endgenerate
                 slave_data_phase[s].target_slave <= s;
                 slave_data_phase[s].master_id    <= m;
                 slave_data_phase[s].valid        <= 1'b1;
+                slave_data_phase[s].hstrb        <= master_hstrb[m];
                 break;
               end
             end
@@ -359,10 +365,12 @@ endgenerate
           ahbSlaveInterface[s].hselx      = 1'b1;
 
           ahbSlaveInterface[s].hwdata     = slave_hwdata_stable[s];
+
+          ahbSlaveInterface[s].hwstrb     = slave_data_phase[s].hstrb;
         end
-	else begin
-		ahbSlaveInterface[s].hselx = 1'b0;	
-	end
+ else begin
+  ahbSlaveInterface[s].hselx = 1'b0; 
+ end
   /* else begin
           ahbSlaveInterface[s].haddr      = '0;
           ahbSlaveInterface[s].hsize      = '0;
@@ -386,7 +394,7 @@ endgenerate
       logic can_accept_new_transfer;
 
       always_comb begin
-	//$info("ALWAYS");
+ //$info("ALWAYS");
         //ahbMasterInterface[m].hrdata = '0;
         ahbMasterInterface[m].hresp  = 2'b00;
 

@@ -160,7 +160,7 @@ endtask: driveToBFM
    @(MasterDriverCb);
   while(MasterDriverCb.hready==0 || $isunknown(MasterDriverCb.hready))@(MasterDriverCb);
 
-   MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
+   MasterDriverCb.hwstrb    <= dataPacket.hwstrb[i];
 
 /*      if (hresp == 1) begin
         `uvm_info(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr),UVM_LOW);
@@ -246,4 +246,3 @@ endtask: driveToBFM
 
 endinterface
 `endif
-

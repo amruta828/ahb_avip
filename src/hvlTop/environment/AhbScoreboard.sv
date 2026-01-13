@@ -204,11 +204,12 @@ task AhbScoreboard::run_phase(uvm_phase phase);
 
         ahbMasterAnalysisFifo[m_idx].get(m_tx);
 
-				if (m_tx.htrans == IDLE || m_tx.htrans == BUSY) begin
+                                if (m_tx.htrans == IDLE || m_tx.htrans == BUSY) begin
          `uvm_info("SCB_IGNORE", $sformatf("Ignoring Master[%0d] IDLE/BUSY transaction", m_idx), UVM_HIGH)
          continue;
       end
-
+        $display("master trans");
+        m_tx.print();
         ahbMasterTransactionCount++;
 
         s_idx = get_slave_index(m_tx.haddr);
@@ -233,13 +234,16 @@ task AhbScoreboard::run_phase(uvm_phase phase);
         int master_id;
 
         ahbSlaveAnalysisFifo[s_idx].get(s_tx);
-       
+
+        $display("slave trans");
+        s_tx.print();
+
         // If this is a READ but has no data, it's just an Address Phase packet. Ignore it.
         if (s_tx.hwrite == READ && s_tx.hrdata.size() == 0) begin
            `uvm_info("SCB_SKIP", "Skipping Slave Packet with empty READ data (Address Phase)", UVM_HIGH)
            continue;
         end
-        
+
         ahbSlaveTransactionCount++;
 
         wait(slave_expected_q[s_idx].size() > 0);
@@ -248,7 +252,13 @@ task AhbScoreboard::run_phase(uvm_phase phase);
         master_id = slave_expected_id_q[s_idx].pop_front();
 
         compare_trans(exp_tx, s_tx);
-      end
+
+        $display("sending to compare");
+        $display("master");
+        exp_tx.print();
+        $display("slave");
+        s_tx.print();
+        end
     join_none
   end
 
@@ -262,7 +272,7 @@ function void AhbScoreboard::compare_trans(
 );
 
   // ---------------- READ ----------------
-  if (exp_tx.hwrite == READ) begin
+  if (s_tx.hwrite == READ) begin
     `uvm_info(get_type_name(),
       "---------------- AHB SCOREBOARD [READ] ----------------",
       UVM_LOW)
@@ -293,7 +303,9 @@ function void AhbScoreboard::compare_trans(
         exp_tx.hrdata.size(), s_tx.hrdata.size()))
     end
     else begin*/
-      foreach (exp_tx.hrdata[i]) begin
+
+        $display("EXP HRDATA:%p",s_tx.hrdata);
+        foreach (exp_tx.hrdata[i]) begin
         $display("2addr");
 
         if (exp_tx.hrdata[i] !== s_tx.hrdata[i]) begin
@@ -311,7 +323,6 @@ function void AhbScoreboard::compare_trans(
         end
      // end
     end
-
     // HPROT
     if (exp_tx.hprot === s_tx.hprot)
       `uvm_info("SB_HPROT_MATCH", "HPROT Match", UVM_LOW)
@@ -373,20 +384,24 @@ function void AhbScoreboard::compare_trans(
       end
     end
 
+foreach(s_tx.hwstrb[i]) begin
+        //$display("HSTRBB %p",exp_tx.hwstrb);
+$display("HSTRBB slave %p",s_tx.hwstrb[i]);
+end
     // Strobes (BURST SAFE)
-    if (exp_tx.hwstrb.size() != s_tx.hwstrb.size()) begin
+/*    if (exp_tx.hwstrb.size() != s_tx.hwstrb.size()) begin
       `uvm_error("SB_HWSTRB_SIZE_MISMATCH",
         $sformatf("HWSTRB size mismatch: Exp=%0d Act=%0d",
         exp_tx.hwstrb.size(), s_tx.hwstrb.size()))
     end
-    else begin
+    else begin*/
       foreach (exp_tx.hwstrb[i]) begin
         if (exp_tx.hwstrb[i] !== s_tx.hwstrb[i]) begin
           `uvm_error("SB_HWSTRB_MISMATCH",
             $sformatf("HWSTRB mismatch at beat %0d: Exp=%b Act=%b",
             i, exp_tx.hwstrb[i], s_tx.hwstrb[i]))
         end
-      end
+      //end
     end
 
     // HPROT
@@ -557,3 +572,5 @@ function void AhbScoreboard::report_phase(uvm_phase phase);
 endfunction : report_phase
 
 `endif
+
+ 

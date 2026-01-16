@@ -111,11 +111,12 @@ task AhbMasterSequence::body();
   super.body();
   req = AhbMasterTransaction::type_id::create("req");
 
- repeat(1) begin 
+ repeat(4) begin 
   start_item(req);
   `uvm_info("AHB", $sformatf("req is of type: %s", req.get_type_name()), UVM_LOW)
 
   if (!req.randomize() with {  
+		              haddr inside {[0:3000]};
     			      hselx      == hselxSeq;
                               hburst     == hburstSeq;
 			      hmastlock  == hmastlockSeq;
@@ -126,7 +127,9 @@ task AhbMasterSequence::body();
 			      htrans     == htransSeq;
 			      hwrite     == hwriteSeq;
 			      hexokay    == hexokaySeq;
-			      haddr      == haddrSeq;
+				
+			      //haddr      == haddrSeq;
+			
                               foreach(hwdataSeq[i])
 			      //hwdata[i]  == hwdataSeq[i];
                               foreach(hwstrbSeq[i])

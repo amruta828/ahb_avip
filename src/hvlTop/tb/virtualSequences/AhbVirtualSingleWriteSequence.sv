@@ -30,7 +30,7 @@ task AhbVirtualSingleWriteSequence::body();
   foreach(ahbMasterSequence[i])begin 
     if(!ahbMasterSequence[i].randomize() with {
                                                               hsizeSeq == WORD;
-							      haddrSeq inside {[0:3000]};
+							      //haddrSeq inside {[0:3000]};
 							      hwriteSeq ==1;
     							      //hmastlockSeq == 0;
                                                               htransSeq == NONSEQ;

@@ -66,7 +66,7 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     ahbDataPacket.hmastlock = hmastlock;
     ahbDataPacket.hready = hready;
     ahbDataPacket.hresp = ahbRespEnum'(hresp);
-    //ahbDataPacket.hselx = hselx;
+    ahbDataPacket.hselx = hselx;
     ahbDataPacket.hprot = ahbProtectionEnum'(hprot);
     ahbDataPacket.hwstrb = hwstrb;
 

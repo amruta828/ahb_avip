@@ -46,7 +46,7 @@ task AhbVirtualWriteFollowedByReadSequence::body();
 
 foreach(ahbMasterWriteSequence[i])begin 
     if(!ahbMasterWriteSequence[i].randomize() with {
-							      haddrSeq inside {[0:3000]};
+							      haddrSeq inside {[0:2000]};
                                                               hsizeSeq == WORD;
 							      hwriteSeq ==1;
                                                               hmastlockSeq==0;

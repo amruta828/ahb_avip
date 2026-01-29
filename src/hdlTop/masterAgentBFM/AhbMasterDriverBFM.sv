@@ -20,8 +20,8 @@ interface AhbMasterDriverBFM (input  bit   hclk,
                               input  logic hready,
                               input  logic hreadyout,
                               input  logic hresp,
-                              input  logic hexokay
-                              //output logic [NO_OF_SLAVES-1:0] hselx
+                              input  logic hexokay,
+                              output logic [NO_OF_SLAVES-1:0] hselx
                              );
 
   import AhbMasterPackage::*;

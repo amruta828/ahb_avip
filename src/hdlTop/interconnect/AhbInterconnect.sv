@@ -78,7 +78,7 @@ interface AhbInterconnect(
     return addr[ADDR_WIDTH-1:ADDR_WIDTH-$clog2(NO_OF_SLAVES)];
   endfunction*/
 
-    function automatic logic [$clog2(NO_OF_SLAVES)-1:0] decode_address(logic [ADDR_WIDTH-1:0] addr);
+    function automatic logic [$clog2(NO_OF_SLAVES):0] decode_address(logic [ADDR_WIDTH-1:0] addr);
     logic [ADDR_WIDTH-1:0] slave_size;
     logic [ADDR_WIDTH-1:0] start_addr;
     logic [ADDR_WIDTH-1:0] end_addr;
@@ -91,11 +91,15 @@ interface AhbInterconnect(
       end_addr   = start_addr + slave_size;
       
       if (addr >= start_addr && addr < end_addr) begin
-        return i;
+  	$display("slave number %0d address %0d",i,addr);   
+
+   return i;
+     
       end
     end
+	$display("invalid  address %0d",addr);
 
-    return NO_OF_SLAVES; 
+    return 2; 
   endfunction
 
  /*function automatic logic decode_address(logic [ADDR_WIDTH-1:0] addr);

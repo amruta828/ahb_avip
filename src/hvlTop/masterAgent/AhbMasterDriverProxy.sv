@@ -44,9 +44,8 @@ function void AhbMasterDriverProxy::end_of_elaboration_phase(uvm_phase phase);
 
 endfunction : end_of_elaboration_phase
 
-/*
 task AhbMasterDriverProxy::run_phase(uvm_phase phase);
-// *
+/*
   ahbMasterIdAsci.itoa( ahbMasterAgentConfig.ahbMasterDriverId);
 
   ahbBfmField = {"AhbMasterDriverBFM" , ahbMasterIdAsci};
@@ -54,7 +53,7 @@ task AhbMasterDriverProxy::run_phase(uvm_phase phase);
   if(!uvm_config_db #(virtual AhbMasterDriverBFM)::get(this,"" ,ahbBfmField  ,  ahbMasterDriverBFM)) begin
     `uvm_fatal("FATAL_MDP_CANNOT_GET_APB_MASTER_DRIVER_BFM","cannot get() ahbMasterDriverBFM");
   end
- // *
+ */ 
  
    ahbMasterDriverBFM.waitForResetn();
 
@@ -82,36 +81,7 @@ task AhbMasterDriverProxy::run_phase(uvm_phase phase);
   end
 
 endtask : run_phase
-*/
 
-//////////////
-/// new code//
-//////////////
-
-task AhbMasterDriverProxy::run_phase(uvm_phase phase);
-   ahbMasterDriverBFM.waitForResetn();
-
-  forever begin
-    ahbTransferCharStruct dataPacket;
-    ahbTransferConfigStruct configPacket;
-
-    seq_item_port.get_next_item(req);
-
-    `uvm_info(get_type_name(), $sformatf("Received Transaction: \n%s", req.sprint()), UVM_LOW)
-
-    AhbMasterSequenceItemConverter::fromClass(req, dataPacket);
-    AhbMasterConfigConverter::fromClass(ahbMasterAgentConfig, configPacket);
-    ahbMasterDriverBFM.driveToBFM(dataPacket, configPacket);
-    
-    `uvm_info(get_type_name(), $sformatf("Completed Driving Transaction at Time: %0t", $time), UVM_LOW)
-
-    AhbMasterSequenceItemConverter::toClass(dataPacket, req);
-    seq_item_port.item_done();
-  end
-
-endtask : run_phase
-///////////////////////////
-   
 function void AhbMasterDriverProxy :: connect_phase(uvm_phase phase);
   super.connect_phase(phase);
   ahbMasterDriverBFM = ahbMasterAgentConfig.ahbMasterDriverBfm;

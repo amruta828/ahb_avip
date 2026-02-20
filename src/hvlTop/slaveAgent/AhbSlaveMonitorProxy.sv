@@ -29,7 +29,6 @@ endfunction : new
 
 function void AhbSlaveMonitorProxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  `uvm_info(get_type_name(), $sformatf("SLAVE MONITOR PROXY CREATED"), UVM_LOW)
 /*   
   if(!uvm_config_db #(virtual AhbSlaveMonitorBFM)::get(this,"","AhbSlaveMonitorBFM", ahbSlaveMonitorBFM)) begin
     `uvm_fatal("FATAL MDP CANNOT GET AHBSLAVE MONITOR BFM","cannot get() ahbSlaveMonitorBFM");
@@ -55,7 +54,7 @@ task AhbSlaveMonitorProxy::run_phase(uvm_phase phase);
     `uvm_fatal("FATAL MDP CANNOT GET AHBSLAVE MONITOR BFM","cannot get() ahbSlaveMonitorBFM");
   end
 */
-  /* ahbSlavePacket = AhbSlaveTransaction::type_id::create("slave Packet"); */
+  ahbSlavePacket = AhbSlaveTransaction::type_id::create("slave Packet");
 
 //  ahbSlaveMonitorBFM.waitForResetn();
 
@@ -63,8 +62,6 @@ task AhbSlaveMonitorProxy::run_phase(uvm_phase phase);
     ahbTransferCharStruct structDataPacket;
     ahbTransferConfigStruct  structConfigPacket; 
     AhbSlaveTransaction  ahbSlaveClonePacket;
-		
-		ahbSlavePacket = AhbSlaveTransaction::type_id::create("slave Packet");
 
     AhbSlaveConfigConverter :: fromClass (ahbSlaveAgentConfig, structConfigPacket);
     ahbSlaveMonitorBFM.slaveSampleData (structDataPacket, structConfigPacket);
@@ -74,7 +71,7 @@ task AhbSlaveMonitorProxy::run_phase(uvm_phase phase);
 
 
     $cast(ahbSlaveClonePacket, ahbSlavePacket.clone());
-   `uvm_info(get_type_name(),$sformatf("Sending packet via analysis_port: , \n %s", ahbSlaveClonePacket.sprint()),UVM_LOW)
+    `uvm_info(get_type_name(),$sformatf("Sending packet via analysis_port: , \n %s", ahbSlaveClonePacket.sprint()),UVM_HIGH)
     ahbSlaveAnalysisPort.write(ahbSlaveClonePacket);
   end
 

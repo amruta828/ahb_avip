@@ -9,13 +9,12 @@ class AhbVirtualWriteFollowedByReadSequence extends AhbVirtualBaseSequence;
  
   AhbSlaveSequence ahbSlaveWriteSequence[NO_OF_SLAVES];
   AhbSlaveSequence ahbSlaveReadSequence[NO_OF_SLAVES];
- 
+
 
   AhbVirtualSingleWriteSequence ahbVirtualSingleWriteSequence;
   AhbVirtualSingleReadSequence ahbVirtualSingleReadSequence;
   AhbVirtualIdleSequence ahbVirtualIdleSequence;
 
-  bit [ADDR_WIDTH-1:0] temp_addr[NO_OF_SLAVES];
   extern function new(string name ="AhbVirtualWriteFollowedByReadSequence");
   extern task body();
  
@@ -27,116 +26,104 @@ endfunction : new
  
 task AhbVirtualWriteFollowedByReadSequence::body();
   super.body();
+
+
   foreach(ahbMasterWriteSequence[i]) begin
-    ahbMasterWriteSequence[i]= AhbMasterSequence::type_id::create("ahbMasterWriteSequence");
-    ahbMasterReadSequence[i]= AhbMasterSequence::type_id::create("ahbMasterReadSequence");
-  end 
+    ahbMasterWriteSequence[i] = AhbMasterSequence::type_id::create($sformatf("ahbMasterWriteSequence[%0d]", i));
+    ahbMasterReadSequence[i]  = AhbMasterSequence::type_id::create($sformatf("ahbMasterReadSequence[%0d]", i));
+  end
 
   foreach(ahbSlaveWriteSequence[i]) begin
-    ahbSlaveWriteSequence[i]= AhbSlaveSequence::type_id::create("ahbSlaveWriteSequence");
-    ahbSlaveReadSequence[i]  = AhbSlaveSequence::type_id::create("ahbSlaveReadSequence");
+    ahbSlaveWriteSequence[i] = AhbSlaveSequence::type_id::create($sformatf("ahbSlaveWriteSequence[%0d]", i));
+    ahbSlaveReadSequence[i]  = AhbSlaveSequence::type_id::create($sformatf("ahbSlaveReadSequence[%0d]", i));
   end
 
 
- ahbVirtualIdleSequence = AhbVirtualIdleSequence :: type_id :: create("ahbVirtualIdleSequence");
-
- ahbVirtualSingleWriteSequence = AhbVirtualSingleWriteSequence:: type_id :: create("ahbvirtualSingleWriteSequence");
-
- ahbVirtualSingleReadSequence = AhbVirtualSingleReadSequence :: type_id :: create("ahbVirtualSingleReadSequence");
-
-foreach(ahbMasterWriteSequence[i])begin 
+  foreach(ahbMasterWriteSequence[i]) begin 
     if(!ahbMasterWriteSequence[i].randomize() with {
-							      haddrSeq inside {[0:2000]};
-                                                              hsizeSeq == WORD;
-							      hwriteSeq ==1;
-                                                              hmastlockSeq==0;
-                                                              htransSeq == NONSEQ;
-                                                              hburstSeq == SINGLE;
-						              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}
- 
-                                                        ) begin
-       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualSingleWriteSequence")
+         hsizeSeq == WORD;
+         hwriteSeq == 1; // WRITE
+         hmastlockSeq == 0;
+         htransSeq == NONSEQ;
+         hburstSeq == SINGLE;
+         foreach(busyControlSeq[k]) busyControlSeq[k] dist {0:=100, 1:=0};
+    }) begin
+       `uvm_error(get_type_name(), "Randomization failed : Inside Write Sequence")
     end
-    temp_addr[i] = ahbMasterWriteSequence[i].haddrSeq;
-    `uvm_info(get_type_name(), $sformatf("temp_addr[%0d] = %0h",i,temp_addr[i]), UVM_NONE)
-   end
+  end
+
+  foreach(ahbSlaveWriteSequence[i]) ahbSlaveWriteSequence[i].randomize();
+  foreach(ahbSlaveReadSequence[i])  ahbSlaveReadSequence[i].randomize();
+
+
+  fork
+    // Start Slave Sequences (Reactive)
+    begin
+       foreach(ahbSlaveWriteSequence[i]) begin
+         fork
+           automatic int k = i;
+           ahbSlaveWriteSequence[k].start(p_sequencer.ahbSlaveSequencer[k]);
+         join_none
+       end
+    end
+
+    // Start Master Write Sequences
+    begin
+       foreach(ahbMasterWriteSequence[i]) begin
+         fork
+            automatic int k = i;
+            ahbMasterWriteSequence[k].start(p_sequencer.ahbMasterSequencer[k]);
+         join_none
+       end
+       wait fork; // Wait for ALL writes to finish
+    end
+  join
 
 
   foreach(ahbMasterReadSequence[i]) begin 
-  if(!ahbMasterReadSequence[i].randomize() with {hsizeSeq == WORD;
-							      haddrSeq == temp_addr[i];
-                                                              hwriteSeq ==0;
-                                                              hmastlockSeq==0;
-                                                              htransSeq == NONSEQ;
-                                                              hburstSeq == SINGLE;
-                                                              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}
 
-                                            ) begin
-    `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualReadFollowedByReadSequence")
+    if(!ahbMasterReadSequence[i].randomize() with {
+         hsizeSeq == WORD;
+         hwriteSeq == 0; // READ
+         hmastlockSeq == 0;
+         htransSeq == NONSEQ;
+         hburstSeq == SINGLE;
+         foreach(busyControlSeq[k]) busyControlSeq[k] dist {0:=100, 1:=0};
+    }) begin
+      `uvm_error(get_type_name(), "Randomization failed : Inside Read Sequence")
+    end
+    
+
+
+
+    ahbMasterReadSequence[i].haddr_list = ahbMasterWriteSequence[i].haddr_list;
   end
-  `uvm_info(get_type_name(), $sformatf("temp_addr[%0d] = %0h",i,temp_addr[i]), UVM_NONE)
- end 
- 
- foreach(ahbSlaveWriteSequence[i]) begin 
-  ahbSlaveWriteSequence[i].randomize();
-  ahbSlaveReadSequence[i].randomize();
- end
 
 
-
-
-fork
-       begin
-       foreach(ahbMasterWriteSequence[i]) begin
+  fork
+    // Start Slave Sequences (Reactive)
+    begin
+       foreach(ahbSlaveReadSequence[i]) begin
          fork
-            automatic int j = i;
-            ahbMasterWriteSequence[j].start(p_sequencer.ahbMasterSequencer[j]);
+           automatic int k = i;
+           ahbSlaveReadSequence[k].start(p_sequencer.ahbSlaveSequencer[k]);
          join_none
        end
-       wait fork;
+    end
 
-       begin
-       foreach(ahbMasterReadSequence[i]) begin
+    // Start Master Read Sequences
+    begin
+     
+  foreach(ahbMasterReadSequence[i]) begin
          fork
-            automatic int j = i;
-            ahbMasterReadSequence[j].start(p_sequencer.ahbMasterSequencer[j]);
-         join_any
-       end
-     //  wait fork;
-       end
-
-       end
-
-       begin
-       foreach(ahbSlaveWriteSequence[i]) begin
-         fork
-          automatic int j =i;
-          ahbSlaveWriteSequence[j].start(p_sequencer.ahbSlaveSequencer[j]);
-         join_none
-        end
-        wait fork;
-       end
-join
-
-
-
-fork
-       begin
-       foreach(ahbMasterReadSequence[i]) begin
-         fork
-            automatic int j = i;
-            ahbMasterReadSequence[j].start(p_sequencer.ahbMasterSequencer[j]);
+            automatic int k = i;
+            ahbMasterReadSequence[k].start(p_sequencer.ahbMasterSequencer[k]);
          join_none
        end
-       wait fork;
-       end
-
- join
-
-//ahbVirtualSingleWriteSequence.start(m_sequencer);
-ahbVirtualIdleSequence.start(m_sequencer);
-//ahbVirtualSingleReadSequence.start(m_sequencer);
+       wait fork; // Wait for ALL reads to finish
+    end
+  join
 
 endtask : body
  
-`endif  
+`endif 

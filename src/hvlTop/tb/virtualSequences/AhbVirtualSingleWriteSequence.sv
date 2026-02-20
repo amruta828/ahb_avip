@@ -28,11 +28,10 @@ task AhbVirtualSingleWriteSequence::body();
   end 
   
   foreach(ahbMasterSequence[i])begin 
-    if(!ahbMasterSequence[i].randomize() with {
+    if(!ahbMasterSequence[i].randomize() with {               haddrSeq inside {[0:2000]};
                                                               hsizeSeq == WORD;
-							      //haddrSeq inside {[0:3000]};
 							      hwriteSeq ==1;
-    							      //hmastlockSeq == 0;
+    							      hmastlockSeq == 0;
                                                               htransSeq == NONSEQ;
                                                               hburstSeq == SINGLE;
 						              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}

@@ -6,7 +6,7 @@ import AhbGlobalPackage::*;
 interface AhbMasterMonitorBFM(input  bit   hclk,
                               input  bit  hresetn,
                               input logic [ADDR_WIDTH-1:0] haddr,
-                              input logic [NO_OF_SLAVES-1:0] hselx,
+                              //input logic [NO_OF_SLAVES-1:0] hselx,
                               input logic [2:0] hburst,
                               input logic hmastlock,
                               input logic [HPROT_WIDTH-1:0] hprot,
@@ -32,28 +32,25 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
 
   AhbMasterMonitorProxy ahbMasterMonitorProxy;
 
-  string name = "AHB_MASTER_MONITOR_BFM";
+  string name = "AHB_MASTER_MONITOR_BFM"; 
 
   initial begin
     `uvm_info(name, $sformatf("AHB MASTER MONITOR BFM"), UVM_LOW);
   end
 
   task waitForResetn();
-    `uvm_info("MASTER AGENT MONITOR BFM",$sformatf("[%0t]  waitForResetn CALLED",$time),UVM_LOW)
     @(negedge hresetn);
-    //`uvm_info(name, $sformatf("system reset detected"), UVM_HIGH)
-    `uvm_info("MASTER AGENT MONITOR BFM",$sformatf("[%0t]  SYETEM RESET DETECTED",$time),UVM_LOW)
+    `uvm_info(name, $sformatf("system reset detected"), UVM_HIGH)
     @(posedge hresetn);
-    //`uvm_info(name, $sformatf("system reset deactivated"), UVM_HIGH)
-    `uvm_info("MASTER AGENT MONITOR BFM",$sformatf("[%0t]  waitForResetn DEACTIVATED",$time),UVM_LOW)
+    `uvm_info(name, $sformatf("system reset deactivated"), UVM_HIGH)
   endtask : waitForResetn
 
   task sampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
-    `uvm_info("MASTER AGENT MONITOR BFM",$sformatf("[%0t]  sampleData CALLED",$time),UVM_LOW)
+    
     @(posedge hclk);
 
-    while(hready !== 1 && hresp == 1 && htrans == IDLE) begin
-      `uvm_info(name, $sformatf("Inside while loop of sampleData: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_LOW)
+  while(hready !== 1 && hresp == 1 && htrans == IDLE) begin
+      //`uvm_info(name, $sformatf("Inside while loop: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_LOW)
       @(posedge hclk);
       ahbDataPacket.noOfWaitStates++;
     end
@@ -66,7 +63,7 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     ahbDataPacket.hmastlock = hmastlock;
     ahbDataPacket.hready = hready;
     ahbDataPacket.hresp = ahbRespEnum'(hresp);
-    ahbDataPacket.hselx = hselx;
+    //ahbDataPacket.hselx = hselx;
     ahbDataPacket.hprot = ahbProtectionEnum'(hprot);
     ahbDataPacket.hwstrb = hwstrb;
 
@@ -76,10 +73,8 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     else begin
       ahbDataPacket.hrdata = hrdata;
     end
-
   endtask : sampleData
 
 endinterface : AhbMasterMonitorBFM
 
 `endif
-

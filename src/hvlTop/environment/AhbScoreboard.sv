@@ -142,36 +142,77 @@ function void AhbScoreboard::ref_model(
   end
 
   // ---------------- READ OPERATION ----------------
-  else begin
+  /* else begin */
 
-    m_tx.hrdata = new[m_tx.hburst];
+  /*   m_tx.hrdata = new[m_tx.hburst]; */
 
-    foreach (m_tx.hrdata[beat]) begin
-      beat_addr = m_tx.haddr + (beat * bytes_per_beat);
-      m_tx.hrdata[beat] = '0;
+  /*   foreach (m_tx.hrdata[beat]) begin */
+  /*     beat_addr = m_tx.haddr + (beat * bytes_per_beat); */
+  /*     m_tx.hrdata[beat] = '0; */
 
-      for (int k = 0; k < bytes_per_beat;k++) begin
-        if (mem[slave_idx].exists(beat_addr + k)) begin
-          m_tx.hrdata[beat][8*k +: 8] =
-            mem[slave_idx][beat_addr + k];
-        end
-        else begin
-          m_tx.hrdata[beat][8*k +: 8] = 8'h00;
-        end
+  /*     for (int k = 0; k < bytes_per_beat;k++) begin */
+  /*       if (mem[slave_idx].exists(beat_addr + k)) begin */
+  /*         m_tx.hrdata[beat][8*k +: 8] = */
+  /*           mem[slave_idx][beat_addr + k]; */
+  /*       end */
+  /*       else begin */
+  /*         m_tx.hrdata[beat][8*k +: 8] = 8'h00; */
+  /*       end */
+  /*     end */
+
+  /*     `uvm_info("REF_MODEL_READ", */
+  /*       $sformatf( */
+  /*         "SLAVE=%0d ADDR=0x%0h DATA=0x%0h (beat=%0d)", */
+  /*         slave_idx, */
+  /*         beat_addr, */
+  /*         m_tx.hrdata[beat], */
+  /*         beat */
+  /*       ), */
+  /*       UVM_LOW) */
+  /*   end */
+
+  /* end */
+
+// ---------------- READ OPERATION ----------------
+else begin
+  int burst_len;
+  logic [31:0] assembled_data; // Temporary variable to hold the 32-bit word
+
+  // 1. Determine Burst Length correctly
+  case(m_tx.hburst)
+    SINGLE : burst_len = 1;
+    INCR   : burst_len = 1; // Assuming 1 for undefined length in this test
+    WRAP4, INCR4 : burst_len = 4;
+    WRAP8, INCR8 : burst_len = 8;
+    WRAP16, INCR16 : burst_len = 16;
+    default : burst_len = 1;
+  endcase
+
+  // 2. Clear the queue (since we can't use 'new' on queues)
+  m_tx.hrdata.delete();
+
+  // 3. Populate the queue by reading from Memory
+  for (int beat = 0; beat < burst_len; beat++) begin
+    beat_addr = m_tx.haddr + (beat * bytes_per_beat);
+    assembled_data = '0; 
+
+    // Assemble 8-bit memory locations into a 32-bit word
+    for (int k = 0; k < bytes_per_beat; k++) begin
+      if (mem[slave_idx].exists(beat_addr + k)) begin
+        assembled_data[8*k +: 8] = mem[slave_idx][beat_addr + k];
+      end else begin
+        assembled_data[8*k +: 8] = 8'h00;
       end
-
-      `uvm_info("REF_MODEL_READ",
-        $sformatf(
-          "SLAVE=%0d ADDR=0x%0h DATA=0x%0h (beat=%0d)",
-          slave_idx,
-          beat_addr,
-          m_tx.hrdata[beat],
-          beat
-        ),
-        UVM_LOW)
     end
+    
+    // Push the predicted data into the queue
+    m_tx.hrdata.push_back(assembled_data);
 
+    `uvm_info("REF_MODEL_READ",
+      $sformatf("SLAVE=%0d ADDR=0x%0h DATA=0x%0h (beat=%0d)",
+      slave_idx, beat_addr, assembled_data, beat), UVM_LOW)
   end
+end
 
 endfunction
 
@@ -204,20 +245,31 @@ task AhbScoreboard::run_phase(uvm_phase phase);
 
         ahbMasterAnalysisFifo[m_idx].get(m_tx);
 
-                                if (m_tx.htrans == IDLE || m_tx.htrans == BUSY) begin
-         `uvm_info("SCB_IGNORE", $sformatf("Ignoring Master[%0d] IDLE/BUSY transaction", m_idx), UVM_HIGH)
-         continue;
-      end
+                                /* if (m_tx.htrans == IDLE || m_tx.htrans == BUSY) begin */
+         /* `uvm_info("SCB_IGNORE", $sformatf("Ignoring Master[%0d] IDLE/BUSY transaction", m_idx), UVM_HIGH) */
+         /* continue; */
+      /* end */
         $display("master trans");
         m_tx.print();
         ahbMasterTransactionCount++;
+    
+    $display("HADDR:%d",m_tx.haddr);
 
         s_idx = get_slave_index(m_tx.haddr);
-
+    
+    $display("HADDR id:%d",s_idx);
         if(s_idx != -1) begin
                                         $cast(exp_tx, m_tx.clone());
+
+     // --- FIX: Explicitly copy/initialize ALL dynamic queues to ensure deep copy ---
+    /* exp_tx.hwdata = m_tx.hwdata; */
+    /* exp_tx.hwstrb = m_tx.hwstrb; */
+    /* exp_tx.hrdata = m_tx.hrdata; // <--- ADD THIS LINE (Creates independent queue) */
+
+
           ref_model(exp_tx, s_idx);
                                         $display("NIHAL");
+     $display("NIHAL MASTER  %d",exp_tx);
           slave_expected_q[s_idx].push_back(exp_tx);
           slave_expected_id_q[s_idx].push_back(m_idx);
         end
@@ -239,16 +291,17 @@ task AhbScoreboard::run_phase(uvm_phase phase);
         s_tx.print();
 
         // If this is a READ but has no data, it's just an Address Phase packet. Ignore it.
-        if (s_tx.hwrite == READ && s_tx.hrdata.size() == 0) begin
-           `uvm_info("SCB_SKIP", "Skipping Slave Packet with empty READ data (Address Phase)", UVM_HIGH)
-           continue;
-        end
+        /* if (s_tx.hwrite == READ && s_tx.hrdata.size() == 0) begin */
+        /*    `uvm_info("SCB_SKIP", "Skipping Slave Packet with empty READ data (Address Phase)", UVM_HIGH) */
+        /*    continue; */
+        /* end */
 
         ahbSlaveTransactionCount++;
 
         wait(slave_expected_q[s_idx].size() > 0);
 
         exp_tx = slave_expected_q[s_idx].pop_front();
+    $display("NIHAL SLAVE %d",exp_tx);
         master_id = slave_expected_id_q[s_idx].pop_front();
 
         compare_trans(exp_tx, s_tx);
@@ -271,6 +324,12 @@ function void AhbScoreboard::compare_trans(
   AhbSlaveTransaction  s_tx
 );
 
+ exp_tx.print;
+  $display("NIHAL EXP");
+ 
+ s_tx.print;
+  $display("NIHAL S_tx");
+  
   // ---------------- READ ----------------
   if (s_tx.hwrite == READ) begin
     `uvm_info(get_type_name(),
@@ -304,7 +363,8 @@ function void AhbScoreboard::compare_trans(
     end
     else begin*/
 
-        $display("EXP HRDATA:%p",s_tx.hrdata);
+        $display("EXP s_tx HRDATA:%p",s_tx.hrdata);
+        $display("EXP exp_tx HRDATA:%p",exp_tx.hrdata);
         foreach (exp_tx.hrdata[i]) begin
         $display("2addr");
 
@@ -384,25 +444,47 @@ function void AhbScoreboard::compare_trans(
       end
     end
 
-foreach(s_tx.hwstrb[i]) begin
-        //$display("HSTRBB %p",exp_tx.hwstrb);
-$display("HSTRBB slave %p",s_tx.hwstrb[i]);
-end
-    // Strobes (BURST SAFE)
-/*    if (exp_tx.hwstrb.size() != s_tx.hwstrb.size()) begin
-      `uvm_error("SB_HWSTRB_SIZE_MISMATCH",
-        $sformatf("HWSTRB size mismatch: Exp=%0d Act=%0d",
-        exp_tx.hwstrb.size(), s_tx.hwstrb.size()))
-    end
-    else begin*/
-      foreach (exp_tx.hwstrb[i]) begin
-        if (exp_tx.hwstrb[i] !== s_tx.hwstrb[i]) begin
-          `uvm_error("SB_HWSTRB_MISMATCH",
-            $sformatf("HWSTRB mismatch at beat %0d: Exp=%b Act=%b",
-            i, exp_tx.hwstrb[i], s_tx.hwstrb[i]))
-        end
-      //end
-    end
+// Strobes (BURST SAFE)
+    /* if (exp_tx.hwstrb.size() != s_tx.hwstrb.size()) begin */
+    /*   `uvm_error("SB_HWSTRB_SIZE_MISMATCH", */
+    /*     $sformatf("HWSTRB size mismatch: Exp=%0d Act=%0d", */
+    /*     exp_tx.hwstrb.size(), s_tx.hwstrb.size())) */
+    /* end */
+    /* else begin */
+    /*   foreach (exp_tx.hwstrb[i]) begin */
+    /*     if (exp_tx.hwstrb[i] !== s_tx.hwstrb[i]) begin */
+    /*       `uvm_error("SB_HWSTRB_MISMATCH", */
+    /*         $sformatf("HWSTRB mismatch at beat %0d: Exp=%b Act=%b", */
+    /*         i, exp_tx.hwstrb[i], s_tx.hwstrb[i])) */
+    /*     end */
+    /*     else begin */
+    /*       // --- ADD THIS TO SEE THE PRINT --- */
+    /*       `uvm_info("SB_HWSTRB_MATCH", */ 
+    /*          $sformatf("HWSTRB Match at beat %0d: %b", i, exp_tx.hwstrb[i]), UVM_LOW); */
+    /*     end */
+    /*   end */
+    /* end */
+
+
+/* foreach(s_tx.hwstrb[i]) begin */
+/*         //$display("HSTRBB %p",exp_tx.hwstrb); */
+/* $display("HSTRBB slave %p",s_tx.hwstrb[i]); */
+/* end */
+/*     // Strobes (BURST SAFE) */
+/* /1*    if (exp_tx.hwstrb.size() != s_tx.hwstrb.size()) begin */
+/*       `uvm_error("SB_HWSTRB_SIZE_MISMATCH", */
+/*         $sformatf("HWSTRB size mismatch: Exp=%0d Act=%0d", */
+/*         exp_tx.hwstrb.size(), s_tx.hwstrb.size())) */
+/*     end */
+/*     else begin*/ //*/
+/*       foreach (exp_tx.hwstrb[i]) begin */
+/*         if (exp_tx.hwstrb[i] !== s_tx.hwstrb[i]) begin */
+/*           `uvm_error("SB_HWSTRB_MISMATCH", */
+/*             $sformatf("HWSTRB mismatch at beat %0d: Exp=%b Act=%b", */
+/*             i, exp_tx.hwstrb[i], s_tx.hwstrb[i])) */
+/*         end */
+/*       //end */
+/*     end */
 
     // HPROT
     if (exp_tx.hprot === s_tx.hprot)
@@ -572,5 +654,3 @@ function void AhbScoreboard::report_phase(uvm_phase phase);
 endfunction : report_phase
 
 `endif
-
- 

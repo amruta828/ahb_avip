@@ -5,8 +5,8 @@ import AhbGlobalPackage::*;
 
 interface AhbSlaveMonitorBFM (input  bit   hclk,
                               input  bit  hresetn,
-			      input logic [2:0] hburst,
- 			      input logic hmastlock,
+        input logic [2:0] hburst,
+         input logic hmastlock,
                               input logic [ADDR_WIDTH-1:0] haddr,                          
                               input logic [HPROT_WIDTH-1:0] hprot,
                               input logic [2:0] hsize,
@@ -14,11 +14,11 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
                               input logic hexcl,
                               input logic [HMASTER_WIDTH-1:0] hmaster,
                               input logic [1:0] htrans, 
-			      input logic [DATA_WIDTH-1:0] hwdata,
+        input logic [DATA_WIDTH-1:0] hwdata,
                               input logic [(DATA_WIDTH/8)-1:0]hwstrb,    
                               input logic hwrite,                              
                               input logic [DATA_WIDTH-1:0] hrdata,
-			      input logic hreadyout,
+        input logic hreadyout,
                               input logic hresp,
                               input logic hexokay,
                               input logic hready,                             
@@ -46,13 +46,13 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     @(posedge hresetn);
     `uvm_info(name, $sformatf("SYSTEM_RESET_DEACTIVATED"), UVM_HIGH)
   endtask : waitForResetn
-
+/*
  task slaveSampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
 
-	@(posedge hclk);
-	
-	while(hreadyout !=1 && hresp==1 && htrans == IDLE) begin
-	    `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
+ @(posedge hclk);
+ 
+ while(hreadyout !=1 && hresp==1 && htrans == IDLE) begin
+    `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
       @(posedge hclk);
     end   
 
@@ -63,19 +63,75 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     ahbDataPacket.hsize  = ahbHsizeEnum'(hsize);
     ahbDataPacket.htrans = ahbTransferEnum'(htrans);
     ahbDataPacket.hnonsec = hnonsec;
-    ahbDataPacket.hprot  = ahbProtectionEnum'(hprot);	
+    ahbDataPacket.hprot  = ahbProtectionEnum'(hprot); 
     ahbDataPacket.hresp  = ahbRespEnum'(hresp);
     ahbDataPacket.hreadyout = hreadyout;  
     
-	if(hwrite) begin
+ if(hwrite) begin
       ahbDataPacket.hwdata = hwdata;
       ahbDataPacket.hwstrb  = hwstrb;
     end
     else
       ahbDataPacket.hrdata = hrdata;
   endtask : slaveSampleData
+*/
+  task slaveSampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
+
+    // static variables remember the previous cycle's address phase signals
+    static logic [NO_OF_SLAVES-1:0] prev_hselx = 0;
+    static logic [ADDR_WIDTH-1:0]   prev_haddr = 0;
+    static logic [2:0]              prev_hburst = 0;
+    static logic                    prev_hwrite = 0;
+    static logic [2:0]              prev_hsize = 0;
+    static logic [1:0]              prev_htrans = 0;
+    static logic                    prev_hnonsec = 0;
+    static logic [HPROT_WIDTH-1:0]  prev_hprot = 0;
+
+    @(posedge hclk);
+
+    while(hreadyout !== 1'b1) begin
+      @(posedge hclk);
+    end
+
+    ahbDataPacket.hselx   = prev_hselx;
+    ahbDataPacket.haddr   = prev_haddr;
+	$display("ishika %0t haddr = %0h",$time,ahbDataPacket.haddr);
+    ahbDataPacket.hburst  = ahbBurstEnum'(prev_hburst);
+    ahbDataPacket.hwrite  = ahbOperationEnum'(prev_hwrite);
+    ahbDataPacket.hsize   = ahbHsizeEnum'(prev_hsize);
+    ahbDataPacket.hnonsec = prev_hnonsec;
+    ahbDataPacket.hprot   = ahbProtectionEnum'(prev_hprot);
+
+    //if (prev_hselx === 1'b0) begin
+    if (prev_hselx === 1'b0 || $isunknown(prev_haddr)) begin
+      ahbDataPacket.htrans = ahbTransferEnum'(0);
+    end else begin
+      ahbDataPacket.htrans = ahbTransferEnum'(prev_htrans);
+    end
+
+    ahbDataPacket.hresp     = ahbRespEnum'(hresp);
+    ahbDataPacket.hreadyout = hreadyout;
+
+    if(prev_hwrite) begin
+      ahbDataPacket.hwdata = hwdata;
+      ahbDataPacket.hwstrb = hwstrb;
+    end
+    else begin
+      ahbDataPacket.hrdata = hrdata;
+    end
+
+    // Save the current address phase signals for the next cycle's data phase
+    prev_hselx   = hselx;
+    prev_haddr   = haddr;
+    prev_hburst  = hburst;
+    prev_hwrite  = hwrite;
+    prev_hsize   = hsize;
+    prev_htrans  = htrans;
+    prev_hnonsec = hnonsec;
+    prev_hprot   = hprot;
+
+  endtask : slaveSampleData
 
 endinterface : AhbSlaveMonitorBFM
 
 `endif
-

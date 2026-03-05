@@ -44,7 +44,7 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     @(posedge hresetn);
     `uvm_info(name, $sformatf("system reset deactivated"), UVM_HIGH)
   endtask : waitForResetn
-
+/*
   task sampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
     
     @(posedge hclk);
@@ -73,6 +73,53 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     else begin
       ahbDataPacket.hrdata = hrdata;
     end
+  endtask : sampleData
+*/
+  task sampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
+
+    // static variables remember the previous cycle's address phase signals
+    static logic [ADDR_WIDTH-1:0]   prev_haddr = 0;
+    static logic [2:0]              prev_hburst = 0;
+    static logic                    prev_hwrite = 0;
+    static logic [2:0]              prev_hsize = 0;
+    static logic [1:0]              prev_htrans = 0;
+    static logic                    prev_hnonsec = 0;
+    static logic [HPROT_WIDTH-1:0]  prev_hprot = 0;
+
+    @(posedge hclk);
+  // yet add other and check
+    while(hready !== 1'b1) begin
+      @(posedge hclk);
+    end
+
+    ahbDataPacket.haddr   = prev_haddr;
+    ahbDataPacket.hburst  = ahbBurstEnum'(prev_hburst);
+    ahbDataPacket.hwrite  = ahbOperationEnum'(prev_hwrite);
+    ahbDataPacket.hsize   = ahbHsizeEnum'(prev_hsize);
+    ahbDataPacket.htrans  = ahbTransferEnum'(prev_htrans);
+    ahbDataPacket.hnonsec = prev_hnonsec;
+    ahbDataPacket.hprot   = ahbProtectionEnum'(prev_hprot);
+
+    ahbDataPacket.hresp     = ahbRespEnum'(hresp);
+    ahbDataPacket.hreadyout = hready;
+
+    if(prev_hwrite) begin
+      ahbDataPacket.hwdata = hwdata;
+      ahbDataPacket.hwstrb = hwstrb;
+    end
+    else begin
+      ahbDataPacket.hrdata = hrdata;
+    end
+
+    // Save the current address phase signals for the next cycle's data phase
+    prev_haddr   = haddr;
+    prev_hburst  = hburst;
+    prev_hwrite  = hwrite;
+    prev_hsize   = hsize;
+    prev_htrans  = htrans;
+    prev_hnonsec = hnonsec;
+    prev_hprot   = hprot;
+
   endtask : sampleData
 
 endinterface : AhbMasterMonitorBFM

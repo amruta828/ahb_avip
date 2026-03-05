@@ -135,6 +135,7 @@ function void AhbScoreboard::ref_model(
 
           `uvm_info("REF_MODEL_WRITE",
             $sformatf("SLAVE=%0d ADDR=0x%0h DATA=0x%02h (beat=%0d byte=%0d)",slave_idx,(beat_addr + j), m_tx.hwdata[i][8*j +: 8], i,j),UVM_LOW);
+  $display("data written in ref model=%p for addr=%h",m_tx.hwdata,m_tx.haddr);
         end
       end
     end
@@ -176,9 +177,8 @@ function void AhbScoreboard::ref_model(
 // ---------------- READ OPERATION ----------------
 else begin
   int burst_len;
-  logic [31:0] assembled_data; // Temporary variable to hold the 32-bit word
+  logic [31:0] assembled_data; 
 
-  // 1. Determine Burst Length correctly
   case(m_tx.hburst)
     SINGLE : burst_len = 1;
     INCR   : burst_len = 1; // Assuming 1 for undefined length in this test
@@ -204,8 +204,7 @@ else begin
         assembled_data[8*k +: 8] = 8'h00;
       end
     end
-    
-    // Push the predicted data into the queue
+
     m_tx.hrdata.push_back(assembled_data);
 
     `uvm_info("REF_MODEL_READ",
@@ -217,119 +216,109 @@ end
 endfunction
 
 task AhbScoreboard::run_phase(uvm_phase phase);
-  super.run_phase(phase);
+    super.run_phase(phase);
 
-  /* forever begin */
-  /*   for(int j = 0; j < NO_OF_MASTERS; j++) begin */
-  /*     ahbMasterAnalysisFifo[j].get(ahbMasterTransaction); */
-  /*     ahbMasterTransactionCount++; */
-                        /* ahbMasterTransaction.print; */
-  /*     `uvm_info("ALEX", $sformatf("after calling master's analysis fifo get method"), UVM_HIGH); */
-  /*   end */
+    foreach(ahbMasterAnalysisFifo[i]) begin
+      automatic int m_idx = i;
+      fork
+        forever begin
+          AhbMasterTransaction m_tx, exp_tx;
+          int s_idx;
+          ahbMasterAnalysisFifo[m_idx].get(m_tx);
+ $display("run phase got m_tx");
+ m_tx.print();
+          // Ignore IDLE and BUSY transactions from the Masters
+          if (m_tx.htrans == IDLE || m_tx.htrans == BUSY) continue;
 
-  /*   for(int i = 0; i < NO_OF_SLAVES; i++) begin */
-  /*     ahbSlaveAnalysisFifo[i].get(ahbSlaveTransaction); */
-  /*     ahbSlaveTransactionCount++; */
-                        /* ahbSlaveTransaction.print; */
-  /*     `uvm_info("NIHAL", $sformatf("after calling slave's analysis fifo get method"), UVM_HIGH); */
-  /*   end */
+          ahbMasterTransactionCount++;
+          s_idx = get_slave_index(m_tx.haddr);
 
-        /* end */
-
-  foreach(ahbMasterAnalysisFifo[i]) begin
-    automatic int m_idx = i;
-    fork
-      forever begin
-        AhbMasterTransaction m_tx, exp_tx;
-        int s_idx;
-
-        ahbMasterAnalysisFifo[m_idx].get(m_tx);
-
-                                /* if (m_tx.htrans == IDLE || m_tx.htrans == BUSY) begin */
-         /* `uvm_info("SCB_IGNORE", $sformatf("Ignoring Master[%0d] IDLE/BUSY transaction", m_idx), UVM_HIGH) */
-         /* continue; */
-      /* end */
-        $display("master trans");
-        m_tx.print();
-        ahbMasterTransactionCount++;
-    
-    $display("HADDR:%d",m_tx.haddr);
-
-        s_idx = get_slave_index(m_tx.haddr);
-    
-    $display("HADDR id:%d",s_idx);
-        if(s_idx != -1) begin
-                                        $cast(exp_tx, m_tx.clone());
-
-     // --- FIX: Explicitly copy/initialize ALL dynamic queues to ensure deep copy ---
-    /* exp_tx.hwdata = m_tx.hwdata; */
-    /* exp_tx.hwstrb = m_tx.hwstrb; */
-    /* exp_tx.hrdata = m_tx.hrdata; // <--- ADD THIS LINE (Creates independent queue) */
-
-
-          ref_model(exp_tx, s_idx);
-                                        $display("NIHAL");
-     $display("NIHAL MASTER  %d",exp_tx);
-          slave_expected_q[s_idx].push_back(exp_tx);
-          slave_expected_id_q[s_idx].push_back(m_idx);
+          if(s_idx != -1) begin
+            $cast(exp_tx, m_tx.clone());
+            ref_model(exp_tx, s_idx);
+            slave_expected_q[s_idx].push_back(exp_tx);
+            slave_expected_id_q[s_idx].push_back(m_idx);
+          end
         end
-      end
-    join_none
-  end
+      join_none
+    end
 
-        foreach(ahbSlaveAnalysisFifo[i]) begin
-    automatic int s_idx = i;
-    fork
-      forever begin
-        AhbSlaveTransaction s_tx;
-        AhbMasterTransaction exp_tx;
-        int master_id;
+    foreach(ahbSlaveAnalysisFifo[i]) begin
+      automatic int s_idx = i;
+      fork
+        forever begin
+          AhbSlaveTransaction s_tx;
+          AhbMasterTransaction exp_tx;
+          int master_id;
+          int found_idx;
 
-        ahbSlaveAnalysisFifo[s_idx].get(s_tx);
+          ahbSlaveAnalysisFifo[s_idx].get(s_tx);
+ $display("run phase got s_tx");
+ s_tx.print();
+          // Ignore IDLE and BUSY transactions broadcasted by the Slave monitor
+          if (s_tx.htrans == IDLE || s_tx.htrans == BUSY) continue;
 
-        $display("slave trans");
-        s_tx.print();
+          // Ignore empty Address-Phase packets (must wait for the data phase packet)
+          if (s_tx.hwrite == READ && s_tx.hrdata.size() == 0) continue;
+          if (s_tx.hwrite == WRITE && s_tx.hwdata.size() == 0) continue;
 
-        // If this is a READ but has no data, it's just an Address Phase packet. Ignore it.
-        /* if (s_tx.hwrite == READ && s_tx.hrdata.size() == 0) begin */
-        /*    `uvm_info("SCB_SKIP", "Skipping Slave Packet with empty READ data (Address Phase)", UVM_HIGH) */
-        /*    continue; */
-        /* end */
+          ahbSlaveTransactionCount++;
+          wait(slave_expected_q[s_idx].size() > 0);
 
-        ahbSlaveTransactionCount++;
+          // Search for the matching expected transaction
+          found_idx = -1;
+          for (int j = 0; j < slave_expected_q[s_idx].size(); j++) begin
+              if (slave_expected_q[s_idx][j].haddr == s_tx.haddr &&
+                  slave_expected_q[s_idx][j].hwrite == s_tx.hwrite) begin
+                  found_idx = j;
+                  break;
+              end
+          end
 
-        wait(slave_expected_q[s_idx].size() > 0);
+          // Extract the matching transaction
+          if (found_idx != -1) begin
+              exp_tx = slave_expected_q[s_idx][found_idx];
+              slave_expected_q[s_idx].delete(found_idx);
+              master_id = slave_expected_id_q[s_idx][found_idx];
+              slave_expected_id_q[s_idx].delete(found_idx);
+          end else begin
+              // Fallback to prevent stall
+              exp_tx = slave_expected_q[s_idx].pop_front();
+              master_id = slave_expected_id_q[s_idx].pop_front();
+          end
 
-        exp_tx = slave_expected_q[s_idx].pop_front();
-    $display("NIHAL SLAVE %d",exp_tx);
-        master_id = slave_expected_id_q[s_idx].pop_front();
+          // Compare the aligned transactions
+          compare_trans(exp_tx, s_tx);
+  $display("sending to compare");
+       $display("exp_tx");
+exp_tx.print();
+$display("s_tx");
+s_tx.print(); 
 
-        compare_trans(exp_tx, s_tx);
-
-        $display("sending to compare");
-        $display("master");
-        exp_tx.print();
-        $display("slave");
-        s_tx.print();
         end
-    join_none
-  end
+      join_none
+    end
 
-  wait fork;
-
-endtask : run_phase
+    wait fork;
+  endtask : run_phase
 
 function void AhbScoreboard::compare_trans(
   AhbMasterTransaction exp_tx,
   AhbSlaveTransaction  s_tx
 );
 
- exp_tx.print;
+exp_tx.print;
   $display("NIHAL EXP");
- 
- s_tx.print;
+
+s_tx.print;
   $display("NIHAL S_tx");
-  
+
+  if (exp_tx.hwrite === s_tx.hwrite) begin
+    VerifiedMasterHwriteCount++;
+  end else begin
+    FailedMasterHwriteCount++;
+  end
+
   // ---------------- READ ----------------
   if (s_tx.hwrite == READ) begin
     `uvm_info(get_type_name(),
@@ -405,7 +394,6 @@ function void AhbScoreboard::compare_trans(
     `uvm_info(get_type_name(),
       "---------------- AHB SCOREBOARD [WRITE] ----------------",
       UVM_LOW)
-
     // Address
     if (exp_tx.haddr === s_tx.haddr) begin
       `uvm_info("SB_HADDR_MATCH",
@@ -432,14 +420,14 @@ function void AhbScoreboard::compare_trans(
           `uvm_error("SB_HWDATA_MISMATCH",
             $sformatf("HWDATA mismatch at beat %0d: Exp=%h Act=%h",
             i, exp_tx.hwdata[i], s_tx.hwdata[i]))
-          FailedSlaveHrdataCount++;
+          FailedMasterHwdataCount++;
         end
         else begin
           `uvm_info("SB_HWDATA_MATCH",
             $sformatf("HWDATA match at beat %0d: %h",
             i, exp_tx.hwdata[i]),
             UVM_LOW)
-          VerifiedSlaveHrdataCount++;
+          VerifiedMasterHwdataCount++;
         end
       end
     end
@@ -654,3 +642,4 @@ function void AhbScoreboard::report_phase(uvm_phase phase);
 endfunction : report_phase
 
 `endif
+ 

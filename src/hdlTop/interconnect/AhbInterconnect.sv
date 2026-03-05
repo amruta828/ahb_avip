@@ -130,6 +130,7 @@ generate
         else begin
           // Update previous owner when current owner changes
           if(master_grant[slaveLoop][masterLoop] == 1'b1) begin
+            $display($time," first master_grant[slaveloop=%0d][masterloop=%0d]=%0d",slaveLoop,masterLoop,master_grant[slaveLoop][masterLoop]);
             previous_owner[slaveLoop] <= current_owner[slaveLoop];  // Store current as previous
             current_owner[slaveLoop] <= masterLoop;                // Update current
             slave_has_owner[slaveLoop] <= 1'b1;
@@ -161,8 +162,8 @@ generate
     for(genvar gm=0;gm<NO_OF_MASTERS;gm++) begin
      always_comb begin
        $info("THE REQ IS %0b for the slave %0d",master_request[gs],gs);
-       $info("THE GRANT IS %0d for the slave %0d",master_grant[gs][gm],gs);
-       $display("THE ADDRESS IS %0d for the master =%0d",ahbMasterInterface[gm].haddr,gm);
+       $info("THE GRANT IS %0d for the slave %0d addr is %0d for master %0d",master_grant[gs][gm],gs,ahbMasterInterface[gm].haddr,gm);
+       //$display("THE ADDRESS IS %0d for the master =%0d",ahbMasterInterface[gm].haddr,gm);
 
 
       end
@@ -210,22 +211,34 @@ endgenerate
             int master_idx;
             master_idx = (rr_pointer[s] + i) % NO_OF_MASTERS;
             if (master_request[s][master_idx] && master_hmastlock[master_idx]==1) begin
-              master_grant[s][master_idx] = 1'b1;
-              break;
+              $display($time," 1st if block master_request[%0d][%0d] masterlock=%0d",s,master_idx,master_idx);
+                master_grant[s][master_idx] = 1'b1;
+                $display($time," 1st block grant %0d",master_grant[s][master_idx]);
+                break;
             end
           end
-        else if(can_accept == 1 && master_htrans[current_owner[s]] == 2'b 11 && slave_has_owner[s]==1)
-          master_grant[s][current_owner[s]] =1;
-        else if (can_accept) begin
-          for (int i = 0; i < NO_OF_MASTERS; i++) begin
-            int m;
-            m = (rr_pointer[s] + i) % NO_OF_MASTERS;
-            if (master_request[s][m] && master_htrans[m] != 2'b 00 ) begin
-               $info("dead case s:%d | m:%d",s,m);
 
-              master_grant[s][m] = 1'b1;
-       last_request[s] = m; 
-              slave_data_phase[s].haddr        <= master_haddr[m];
+            else if(can_accept == 1 && master_htrans[current_owner[s]] == 2'b 11 && slave_has_owner[s]==1)begin
+              $display($time ," 2nd else if block can_accept=%0d htrans=%0d slave_has_owner=%d",can_accept,master_htrans[current_owner[s]],slave_has_owner[s]);
+
+              master_grant[s][current_owner[s]] =1;
+              $display($time ," 2nd blk grant %0d",master_grant[s][current_owner[s]]);
+            end
+
+             else if (can_accept) begin
+                $display($time ," 3rd block can accept=%0d",can_accept);
+                for (int i = 0; i < NO_OF_MASTERS; i++) begin
+                int m;
+                m = (rr_pointer[s] + i) % NO_OF_MASTERS;
+
+                if (master_request[s][m] ) begin
+                  $display("dead case s:%d | m:%d",s,m);
+                  $display($time," inside 3rd block master_request[s=%0d][m= %0d] htrans=%0d",s,m,master_htrans[m]);
+                  master_grant[s][m] = 1'b1;
+                  $display($time," 3rd block grant %0d",master_grant[s][m]);
+                  last_request[s] = m;
+
+                slave_data_phase[s].haddr        <= master_haddr[m];
                 slave_data_phase[s].hsize        <= master_hsize[m];
                 slave_data_phase[s].htrans       <= master_htrans[m];
                 slave_data_phase[s].hwrite       <= master_hwrite[m];
@@ -240,7 +253,7 @@ endgenerate
               break;
 
             end
-      else 
+      else
        slave_data_phase[s].haddr <= 'bx;
           end
         end
@@ -413,10 +426,11 @@ endgenerate
         pipeline_has_space = (master_count[m] < 2);
 
         can_accept_new_transfer = 1'b0;
-        if (pipeline_has_space && (master_htrans[m] != 2'b00)) begin
+        if (master_htrans[m] != 2'b00) begin
           for (int s = 0; s < NO_OF_SLAVES; s++) begin
             if (master_grant[s][m]) begin
-              can_accept_new_transfer = 1'b1;
+            $display("last grant s=%0d m=%0d g==%0d",s,m,master_grant[s][m]);
+                  can_accept_new_transfer = 1'b1;
               break;
             end
           end
@@ -424,11 +438,15 @@ endgenerate
 
         if (master_htrans[m] == 2'b00) begin
           ahbMasterInterface[m].hready = 1'b1;
+          $display($time, "hreadyy %0d master [%0d]",ahbMasterInterface[m].hready,m);
+
         end else begin
           ahbMasterInterface[m].hready = can_accept_new_transfer && oldest_is_ready;
+$display($time, "else hready %0d master [%0d] can_accept=%0d oldest_is_ready=%0d",ahbMasterInterface[m].hready,m,can_accept_new_transfer,oldest_is_ready);
         end
       end
     end
   endgenerate
 
 endinterface
+ 

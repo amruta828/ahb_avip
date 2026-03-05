@@ -34,7 +34,7 @@ task AhbVirtualSingleWriteSequence::body();
     							      hmastlockSeq == 0;
                                                               htransSeq == NONSEQ;
                                                               hburstSeq == SINGLE;
-						              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}
+						              foreach(busyControlSeq[j]) busyControlSeq[j] dist {0:=100, 1:=0};}
  
                                                         ) begin
        `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualSingleWriteSequence")

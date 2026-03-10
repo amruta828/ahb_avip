@@ -175,6 +175,7 @@ function void AhbScoreboard::ref_model(
   /* end */
 
 // ---------------- READ OPERATION ----------------
+/* 
 else begin
   int burst_len;
   logic [31:0] assembled_data; 
@@ -212,7 +213,34 @@ else begin
       slave_idx, beat_addr, assembled_data, beat), UVM_LOW)
   end
 end
+*/
+// ---------------- READ OPERATION ----------------
+else begin
+  logic [31:0] assembled_data; 
 
+  // Clear the queue 
+  m_tx.hrdata.delete();
+
+  //Populate the queue by reading from Memory for the CURRENT BEAT ONLY
+  beat_addr = m_tx.haddr;
+  assembled_data = '0; 
+
+  // Assemble 8-bit memory locations into a 32-bit word
+  for (int k = 0; k < bytes_per_beat; k++) begin
+    if (mem[slave_idx].exists(beat_addr + k)) begin
+      assembled_data[8*k +: 8] = mem[slave_idx][beat_addr + k];
+    end else begin
+      assembled_data[8*k +: 8] = 8'h00;
+    end
+  end
+  
+  // Push only the single beat data to match the monitor's behavior
+  m_tx.hrdata.push_back(assembled_data);
+
+  `uvm_info("REF_MODEL_READ",
+    $sformatf("SLAVE=%0d ADDR=0x%0h DATA=0x%0h",
+    slave_idx, beat_addr, assembled_data), UVM_LOW)
+end
 endfunction
 
 task AhbScoreboard::run_phase(uvm_phase phase);

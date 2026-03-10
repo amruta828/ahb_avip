@@ -136,7 +136,7 @@ generate
             slave_has_owner[slaveLoop] <= 1'b1;
           end
          else begin
-                slave_has_owner[slaveLoop]='0;
+              //  slave_has_owner[slaveLoop]='0;
                 current_owner[slaveLoop]='x;
                 end
           if(slave_has_owner[slaveLoop]) begin
@@ -220,13 +220,25 @@ endgenerate
 
             else if(can_accept == 1 && master_htrans[current_owner[s]] == 2'b 11 && slave_has_owner[s]==1)begin
               $display($time ," 2nd else if block can_accept=%0d htrans=%0d slave_has_owner=%d",can_accept,master_htrans[current_owner[s]],slave_has_owner[s]);
-
+               master_grant[s]='0;
               master_grant[s][current_owner[s]] =1;
-              $display($time ," 2nd blk grant %0d",master_grant[s][current_owner[s]]);
+                 slave_data_phase[s].haddr        <= master_haddr[current_owner[s]];
+                slave_data_phase[s].hsize        <= master_hsize[current_owner[s]];
+                slave_data_phase[s].htrans       <= master_htrans[current_owner[s]];
+                slave_data_phase[s].hwrite       <= master_hwrite[current_owner[s]];
+                slave_data_phase[s].hburst       <= master_hburst[current_owner[s]];
+                slave_data_phase[s].hprot        <= master_hprot[current_owner[s]];
+                slave_data_phase[s].hmastlock    <= master_hmastlock[current_owner[s]];
+                slave_data_phase[s].target_slave <= s;
+                slave_data_phase[s].master_id    <= current_owner[s];
+                slave_data_phase[s].valid        <= 1'b1;
+
+              $display($time ," 2nd blk grant %0d alsve=%0d",master_grant[s][current_owner[s]],s);
             end
 
              else if (can_accept) begin
-                $display($time ," 3rd block can accept=%0d",can_accept);
+                $display($time ," 3rd block can accept=%0d slave=%0d",can_accept,s);
+		$display("slave_has_owner = %0d slave = %0d ",slave_has_owner[s],s);
                 for (int i = 0; i < NO_OF_MASTERS; i++) begin
                 int m;
                 m = (rr_pointer[s] + i) % NO_OF_MASTERS;

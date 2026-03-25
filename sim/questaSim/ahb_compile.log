@@ -1,5 +1,5 @@
 QuestaSim vlog 10.6c Compiler 2017.07 Jul 25 2017
-Start time: 15:32:07 on Mar 09,2026
+Start time: 11:54:25 on Mar 25,2026
 vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ../ahb_compile.f 
 -- Compiling package AhbGlobalPackage
 -- Compiling package AhbMasterPackage
@@ -12,6 +12,8 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ../ahb_compile.f
 -- Compiling package AhbSlaveSequencePackage
 -- Importing package AhbSlavePackage
 -- Compiling package AhbEnvironmentPackage
+** Warning: ** while parsing file included at ../../src/hvlTop/environment/AhbEnvironmentPackage.sv(28)
+** at ../../src/hvlTop/environment/AhbScoreboard.sv(379): (vlog-2897) Using non-standard foreach loop variable list syntax.
 -- Compiling package AhbVirtualSequencePackage
 -- Importing package AhbMasterSequencePackage
 -- Importing package AhbSlaveSequencePackage
@@ -183,5 +185,5 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ../ahb_compile.f
 Top level modules:
 	HdlTop
 	HvlTop
-End time: 15:32:10 on Mar 09,2026, Elapsed time: 0:00:03
-Errors: 0, Warnings: 109
+End time: 11:54:29 on Mar 25,2026, Elapsed time: 0:00:04
+Errors: 0, Warnings: 110

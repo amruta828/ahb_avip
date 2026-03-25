@@ -40,6 +40,21 @@ class AhbScoreboard extends uvm_scoreboard;
 
   int indexMaster;
 
+
+  
+  typedef struct {
+   int haddr;
+   int master;
+  }grant_info_t;
+
+  grant_info_t g;
+  grant_info_t g_m;
+  grant_info_t expected_grant_q[int][$];
+
+
+  int master_request_q[int][$];   
+  int rr_pointer[NO_OF_SLAVES];   // round robin pointer
+
   int indexSlave;
         // extra
         int master_tx_count[];
@@ -61,6 +76,42 @@ class AhbScoreboard extends uvm_scoreboard;
         extern function int get_slave_index(logic [ADDR_WIDTH-1:0] addr);
   extern function void ref_model(AhbMasterTransaction m_tx, int slave_idx);
         extern function void compare_trans(AhbMasterTransaction exp_tx, AhbSlaveTransaction s_tx);
+
+
+  function int predict_grant(int slave_idx);
+
+    int m;
+    int idx_q[$];
+ 
+    if (!master_request_q.exists(slave_idx) || master_request_q[slave_idx].size() == 0) begin
+        $display("[%0t] No requests for slave %0d", $time, slave_idx);
+      return -1;
+    end
+   
+    $display("[%0t] QUEUE[%0d]=%p , rr_pointer=%0d", $time, slave_idx, master_request_q[slave_idx], rr_pointer[slave_idx]);
+   
+    for (int i = 0; i < NO_OF_MASTERS; i++) begin
+
+      m = (rr_pointer[slave_idx] + i) % NO_OF_MASTERS;
+
+      $display("[%0t] Checking master %0d", $time, m);  
+      idx_q = master_request_q[slave_idx].find_index(x) with (x == m);
+
+      if (idx_q.size() > 0) begin
+	rr_pointer[slave_idx] = (m + 1) % NO_OF_MASTERS;
+         master_request_q[slave_idx].delete(idx_q[0]);
+         $display("[%0t] GRANT=%0d , NEW rr_pointer=%0d , UPDATED QUEUE=%p",
+                  $time, m, rr_pointer[slave_idx],
+                  master_request_q[slave_idx]);
+         return m;
+       end
+     end
+
+     // No valid master found
+     $display("[%0t] No matching master found", $time);
+     return -1;
+
+  endfunction
 
 endclass : AhbScoreboard
 
@@ -252,18 +303,43 @@ task AhbScoreboard::run_phase(uvm_phase phase);
         forever begin
           AhbMasterTransaction m_tx, exp_tx;
           int s_idx;
+	  int temp;
           ahbMasterAnalysisFifo[m_idx].get(m_tx);
- $display("run phase got m_tx");
- m_tx.print();
-          // Ignore IDLE and BUSY transactions from the Masters
+ 	  $display("[%0t] run phase got m_tx haddr=%0d, mtx=%0d",$time,m_tx.haddr,i);
+ 	  m_tx.print();
+          
+	  // Ignore IDLE and BUSY transactions from the Masters
           if (m_tx.htrans == IDLE || m_tx.htrans == BUSY) continue;
 
           ahbMasterTransactionCount++;
           s_idx = get_slave_index(m_tx.haddr);
 
-          if(s_idx != -1) begin
+	  if(m_tx.htrans != IDLE && m_tx.htrans != BUSY) begin
+
+   		if(!master_request_q.exists(s_idx))
+      			master_request_q[s_idx] = {};
+
+   		master_request_q[s_idx].push_back(m_idx);
+  		$display("[%0t] Master %0d requested Slave %0d addr=%0d, master_requested_q = %p",$time,m_idx, s_idx, m_tx.haddr,master_request_q);
+	  end
+
+	  temp = predict_grant(s_idx);
+
+	  g_m.haddr  = m_tx.haddr;
+	  g_m.master = temp;
+	  
+          expected_grant_q[s_idx].push_back(g_m);
+
+	  $display("[%0t] MASTER: predicted grant=%0d for slave %0d haddr = %0d", $time, temp, s_idx,m_tx.haddr);
+	  if(s_idx != -1) begin
             $cast(exp_tx, m_tx.clone());
             ref_model(exp_tx, s_idx);
+	    if(m_tx.hwrite==0)begin
+			if(m_tx.hrdata === exp_tx.hrdata)
+				`uvm_info("SCB",$sformatf("hrdata match found"),UVM_LOW)
+			else
+				`uvm_error("SCB","hrdata mismatch found")
+	    end
             slave_expected_q[s_idx].push_back(exp_tx);
             slave_expected_id_q[s_idx].push_back(m_idx);
           end
@@ -279,10 +355,13 @@ task AhbScoreboard::run_phase(uvm_phase phase);
           AhbMasterTransaction exp_tx;
           int master_id;
           int found_idx;
-
+	  //more added	
+	  int exp_master;
+	  int found = 0;	
           ahbSlaveAnalysisFifo[s_idx].get(s_tx);
- $display("run phase got s_tx");
- s_tx.print();
+ 	  $display("run phase got s_tx");
+	  s_tx.print();
+
           // Ignore IDLE and BUSY transactions broadcasted by the Slave monitor
           if (s_tx.htrans == IDLE || s_tx.htrans == BUSY) continue;
 
@@ -290,8 +369,29 @@ task AhbScoreboard::run_phase(uvm_phase phase);
           if (s_tx.hwrite == READ && s_tx.hrdata.size() == 0) continue;
           if (s_tx.hwrite == WRITE && s_tx.hwdata.size() == 0) continue;
 
+
           ahbSlaveTransactionCount++;
           wait(slave_expected_q[s_idx].size() > 0);
+
+
+   	  wait(expected_grant_q.exists(s_idx) && expected_grant_q[s_idx].size() > 0);
+
+	  foreach(expected_grant_q[s_idx][i]) begin
+   		if(expected_grant_q[s_idx][i].haddr == s_tx.haddr) begin
+      			g = expected_grant_q[s_idx][i];
+     	 		expected_grant_q[s_idx].delete(i);
+			$display("expected_grant_q = %p",expected_grant_q);
+      			found = 1;
+      			break;
+   		end
+	  end
+
+	  if(!found) begin
+   		`uvm_error("SYNC", "No matching expected grant found")
+	  end
+
+	  $display("[%0t] SLAVE: addr=%0d exp_master=%0d ",$time, s_tx.haddr, g.master);
+
 
           // Search for the matching expected transaction
           found_idx = -1;
@@ -317,11 +417,11 @@ task AhbScoreboard::run_phase(uvm_phase phase);
 
           // Compare the aligned transactions
           compare_trans(exp_tx, s_tx);
-  $display("sending to compare");
-       $display("exp_tx");
-exp_tx.print();
-$display("s_tx");
-s_tx.print(); 
+  	  $display("sending to compare");
+          $display("exp_tx");
+	  exp_tx.print();
+  	  $display("s_tx");
+	  s_tx.print(); 
 
         end
       join_none

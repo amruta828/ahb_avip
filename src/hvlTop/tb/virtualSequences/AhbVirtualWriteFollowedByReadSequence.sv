@@ -44,8 +44,8 @@ task AhbVirtualWriteFollowedByReadSequence::body();
          hsizeSeq == WORD;
          hwriteSeq == 1; // WRITE
          hmastlockSeq == 0;
-         htransSeq == NONSEQ;
-         hburstSeq == SINGLE;
+         htransSeq == SEQ;
+         hburstSeq == INCR4;
          foreach(busyControlSeq[k]) busyControlSeq[k] dist {0:=100, 1:=0};
     }) begin
        `uvm_error(get_type_name(), "Randomization failed : Inside Write Sequence")
@@ -86,8 +86,8 @@ task AhbVirtualWriteFollowedByReadSequence::body();
          hsizeSeq == WORD;
          hwriteSeq == 0; // READ
          hmastlockSeq == 0;
-         htransSeq == NONSEQ;
-         hburstSeq == SINGLE;
+         htransSeq == SEQ;
+         hburstSeq == INCR4;
          foreach(busyControlSeq[k]) busyControlSeq[k] dist {0:=100, 1:=0};
     }) begin
       `uvm_error(get_type_name(), "Randomization failed : Inside Read Sequence")

@@ -115,6 +115,7 @@ reg[7:0]normalReg[longint];
 
       end 
       if(SlaveDriverCb.hwrite ==0)begin
+         pipWrite <=0;
          readAddress = SlaveDriverCb.haddr;
          readhtransTemp  = SlaveDriverCb.htrans;
 	$display("[%0t] readAddress = %0d, SlaveDriverCb.haddr = %0d",$time,readAddress,SlaveDriverCb.haddr);
@@ -154,7 +155,7 @@ reg[7:0]normalReg[longint];
         	SlaveDriverCb.hrdata <= temp;
         else
 		SlaveDriverCb.hrdata <= '0;
-        $display(" NEW DATA READ IS %0h from haddr= %0d slave id=%0d \n \n %0t",hrdata,haddr,slave_id,$time);
+        $display(" NEW DATA READ IS %0h from haddr= %0d slave id=%0d \n \n %0t",temp,haddr,slave_id,$time);
       end
   $display($time ,"old one done %0d ",slave_id);
   endtask: slaveDriveSingleTransfer

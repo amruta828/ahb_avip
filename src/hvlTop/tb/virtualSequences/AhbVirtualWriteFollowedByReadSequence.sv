@@ -139,14 +139,6 @@ if(!ahbSlaveReadSequence[1].randomize() with {
 
   fork
     // Start Slave Sequences (Reactive)
-    begin
-       foreach(ahbSlaveReadSequence[i]) begin
-         fork
-           automatic int k = i;
-           ahbSlaveReadSequence[k].start(p_sequencer.ahbSlaveSequencer[k]);
-         join_none
-       end
-    end
 
     // Start Master Read Sequences
     begin

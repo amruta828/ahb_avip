@@ -351,6 +351,12 @@ endgenerate
            //ahbSlaveInterface[s].hready =1'b1;
            break;
          end
+        else if (current_owner[s]==i)begin 
+                ahbSlaveInterface[s].hready = master_hready[i]; //added
+           //ahbSlaveInterface[s].hready =1'b1;
+           break;
+
+        end 
          else begin
             ahbSlaveInterface[s].hready =0;
          end
@@ -526,4 +532,4 @@ $display($time, "else hready %0d master [%0d] can_accept=%0d oldest_is_ready=%0d
     end
   endgenerate
 
-endinterface                                                                                                                  
+endinterface                         

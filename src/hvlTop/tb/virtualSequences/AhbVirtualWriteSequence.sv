@@ -34,7 +34,8 @@ task AhbVirtualWriteSequence::body();
                                              ) begin : if_block
       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualWriteSequence")
     end : if_block
-   end 
+   end
+ 
    fork
        begin
        foreach(ahbMasterSequence[i]) begin

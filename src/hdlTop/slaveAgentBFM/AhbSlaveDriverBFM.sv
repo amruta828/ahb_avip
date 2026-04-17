@@ -58,6 +58,7 @@ reg[7:0]normalReg[longint];
   clocking SlaveDriverCb @(posedge hclk);
     default input #1step output #1step;
     input  haddr,hburst,hmastlock,hprot,hsize,hnonsec,hexcl,hmaster,htrans,hwrite,hwdata,hwstrb,hselx;
+    input hready;//added
     output hreadyout;
   endclocking 
 
@@ -81,32 +82,43 @@ reg[7:0]normalReg[longint];
     bit[31:0]temp;
     logic pipWrite;
     bit[31:0]addressTemp;
+    bit[1:0] htransTemp;
+    bit[1:0] readhtransTemp;
     bit [31:0]readAddress;
     bit[31:0]dataTemp; 
     @(SlaveDriverCb);
  
-    while(SlaveDriverCb.hselx==0 || $isunknown(SlaveDriverCb.hselx))  begin  $display("MONITOR %t",$time);@(SlaveDriverCb);end 
+    while((SlaveDriverCb.hselx==0 || $isunknown(SlaveDriverCb.hselx)) || (SlaveDriverCb.hready==0 || $isunknown(SlaveDriverCb.hready)))  begin  $display("MONITOR %t",$time);@(SlaveDriverCb);end //added
+    //while(SlaveDriverCb.hselx==0 || $isunknown(SlaveDriverCb.hselx))  begin  $display("MONITOR %t",$time);@(SlaveDriverCb);end
       if(configPacket.needWaitStates) begin
         SlaveDriverCb.hreadyout <= 0;
         repeat(configPacket.noOfWaitStates)@(SlaveDriverCb);
         SlaveDriverCb.hreadyout <=1;
       end
-      if(SlaveDriverCb.hwrite==1)
+
+      if(SlaveDriverCb.hwrite==1 )begin
         addressTemp <= SlaveDriverCb.haddr;
-       if(SlaveDriverCb.hwrite ==0)
+        htransTemp <= SlaveDriverCb.htrans;
+        $display("[%0t] addressTemp = %0d, SlaveDriverCb.haddr = %0d",$time,addressTemp,SlaveDriverCb.haddr);
+      end
+      if(SlaveDriverCb.hwrite ==0)begin
          readAddress = SlaveDriverCb.haddr;
+         readhtransTemp  = SlaveDriverCb.htrans;
+	$display("[%0t] readAddress = %0d, SlaveDriverCb.haddr = %0d",$time,readAddress,SlaveDriverCb.haddr);
+      end
       SlaveDriverCb.hreadyout <= 1;
-      dataTemp = SlaveDriverCb.hwdata;
+      dataTemp              = SlaveDriverCb.hwdata;
       dataPacket.haddr     <= haddr;
       dataPacket.htrans    <= ahbTransferEnum'(htrans);
       dataPacket.hsize     <= ahbHsizeEnum'(hsize); 
       dataPacket.hburst    <= ahbBurstEnum'(hburst);
       dataPacket.hwrite    <= ahbOperationEnum'(hwrite);  
       dataPacket.hmastlock <= hmastlock; 
-      dataPacket.hselx     <= hselx;    
-      pipWrite <= SlaveDriverCb.hwrite;
-      if(pipWrite) begin
-        $display("THE DATA TO BE WRITTEN IS %0h",dataTemp);
+      dataPacket.hselx     <= hselx;   
+      //dataPacket.hready  <= hready; //added 
+      pipWrite             <= SlaveDriverCb.hwrite;
+      if(pipWrite && htransTemp!=2'b00 ) begin
+        $display("%0t THE DATA TO BE WRITTEN IS %0h at address = %0d ",$time,dataTemp,SlaveDriverCb.haddr);
         for(int i=0;i<4;i++) begin 
          normalReg[(addressTemp)+i] = dataTemp[(8*i) +: 8];
         $display("%0t ||normal reg[%0d]:%0h %0d",$time, i,normalReg[(addressTemp)+i],addressTemp);
@@ -118,8 +130,11 @@ reg[7:0]normalReg[longint];
           temp = { normalReg[(readAddress)+i] , temp[31:8]};
 	$display("%0t ||temp data:%0h %0d",$time,temp,readAddress);
         end 
-        hrdata = temp;
-        $display(" THE DATA READ IS %0h \n \n %0t",hrdata,$time);
+        if(readhtransTemp != 2'b00)
+        	hrdata = temp;
+        else
+		hrdata = '0;
+        $display(" THE DATA READ IS %0h from haddr= %0d \n \n %0t",hrdata,haddr,$time);
       end
   
   endtask: slaveDriveSingleTransfer
@@ -147,7 +162,7 @@ reg[7:0]normalReg[longint];
 	    `uvm_info(name, $sformatf("Busy = %0b",dataPacket.busyControl), UVM_LOW);      
       if(i==0)  
         waitCycles(configPacket);
-      if(hwrite) begin
+      if(hwrite ) begin
         //if(i!=0) begin
 	        @(posedge hclk);
         //end

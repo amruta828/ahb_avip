@@ -13,3 +13,6 @@
 # //  18 U.S.C. Section 1905.
 # //
 # AhbWriteFollowedByReadTest/waveform.wlf opened as dataset "waveform"
+add wave -position insertpoint {waveform:/HdlTop/ahbMasterInterface[0]/*}
+add wave -position insertpoint {waveform:/HdlTop/ahbSlaveInterface[0]/*}
+add wave -position insertpoint {waveform:/HdlTop/ahbSlaveInterface[1]/*}

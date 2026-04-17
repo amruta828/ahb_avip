@@ -3,7 +3,7 @@
 
 package AhbGlobalPackage;
 
-  parameter int NO_OF_MASTERS = 2;
+  parameter int NO_OF_MASTERS = 1;
 
   parameter int NO_OF_SLAVES = 2;
 

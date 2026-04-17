@@ -36,8 +36,6 @@ task AhbVirtualReadSequence::body();
        `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualReadSequence")
     end
    end 
-   
-
    fork
        begin
        foreach(ahbMasterSequence[i]) begin

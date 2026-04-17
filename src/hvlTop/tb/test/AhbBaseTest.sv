@@ -58,15 +58,20 @@ function void AhbBaseTest::setupAhbEnvironmentConfig();
   end
 
   ahbEnvironmentConfig.ahbSlaveAgentConfig = new[ahbEnvironmentConfig.noOfSlaves];
-  foreach(ahbEnvironmentConfig.ahbSlaveAgentConfig[i]) begin
+  /*foreach(ahbEnvironmentConfig.ahbSlaveAgentConfig[i]) begin
     ahbEnvironmentConfig.ahbSlaveAgentConfig[i] = AhbSlaveAgentConfig::type_id::create($sformatf("AhbSlaveAgentConfig[%0d]",i));
     ahbEnvironmentConfig.ahbSlaveAgentConfig[i].randomize()with{needWaitStates==1;noOfWaitStates==3;};
-  end
+  end*/
+
+    ahbEnvironmentConfig.ahbSlaveAgentConfig[0] = AhbSlaveAgentConfig::type_id::create($sformatf("AhbSlaveAgentConfig[%0d]",0));
+    ahbEnvironmentConfig.ahbSlaveAgentConfig[1] = AhbSlaveAgentConfig::type_id::create($sformatf("AhbSlaveAgentConfig[%0d]",1));
+    ahbEnvironmentConfig.ahbSlaveAgentConfig[0].randomize()with{needWaitStates==0;noOfWaitStates==0;};
+    ahbEnvironmentConfig.ahbSlaveAgentConfig[1].randomize()with{needWaitStates==0;noOfWaitStates==0;};
 
   setupAhbSlaveAgentConfig();
  
   foreach(ahbEnvironmentConfig.ahbSlaveAgentConfig[i]) begin
-    uvm_config_db #(AhbSlaveAgentConfig)::set(this,"*",$sformatf("AhbSlaveAgentConfig[%0d]",i),ahbEnvironmentConfig.ahbSlaveAgentConfig[i]);
+   uvm_config_db #(AhbSlaveAgentConfig)::set(this,"*",$sformatf("AhbSlaveAgentConfig[%0d]",i),ahbEnvironmentConfig.ahbSlaveAgentConfig[i]);
     `uvm_info(get_type_name(),$sformatf("\nAHB_SLAVE_CONFIG[%0d]\n%s",i,ahbEnvironmentConfig.ahbSlaveAgentConfig[i].sprint()),UVM_LOW);
   end
 

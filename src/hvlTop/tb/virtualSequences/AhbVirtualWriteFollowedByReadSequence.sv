@@ -52,8 +52,46 @@ task AhbVirtualWriteFollowedByReadSequence::body();
     end
   end
 
-  foreach(ahbSlaveWriteSequence[i]) ahbSlaveWriteSequence[i].randomize();
-  foreach(ahbSlaveReadSequence[i])  ahbSlaveReadSequence[i].randomize();
+
+/*
+if(!ahbSlaveWriteSequence[0].randomize() with {
+                                                noOfWaitStateSeq == 3;
+}
+
+                                                        ) begin
+       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualWriteFollowedByReadSequence")
+    end
+
+
+if(!ahbSlaveWriteSequence[1].randomize() with {
+                                                
+						noOfWaitStateSeq == 3;
+}
+
+                                                        ) begin
+       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualWriteFollowedByReadSequence")
+    end
+
+
+if(!ahbSlaveReadSequence[0].randomize() with {
+                                                noOfWaitStateSeq == 3;
+}
+
+                                                        ) begin
+       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualWriteFollowedByReadSequence")
+    end
+if(!ahbSlaveReadSequence[1].randomize() with {
+                                                noOfWaitStateSeq == 0;
+					//	hreadySeq == 1;
+}
+
+                                                        ) begin
+       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualWriteFollowedByReadSequence")
+    end
+*/
+
+//  foreach(ahbSlaveWriteSequence[i]) ahbSlaveWriteSequence[i].randomize();
+//   foreach(ahbSlaveReadSequence[i])  ahbSlaveReadSequence[i].randomize();
 
 
   fork
@@ -98,7 +136,6 @@ task AhbVirtualWriteFollowedByReadSequence::body();
 
     ahbMasterReadSequence[i].haddr_list = ahbMasterWriteSequence[i].haddr_list;
   end
-
 
   fork
     // Start Slave Sequences (Reactive)

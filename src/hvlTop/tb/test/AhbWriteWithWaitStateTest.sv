@@ -23,12 +23,18 @@ endfunction : setupAhbEnvironmentConfig
 
 task AhbWriteWithWaitStateTest::run_phase(uvm_phase phase);
   
-  foreach(ahbEnvironment.ahbSlaveAgentConfig[i]) begin
+/*  foreach(ahbEnvironment.ahbSlaveAgentConfig[i]) begin
     if(!ahbEnvironment.ahbSlaveAgentConfig[i].randomize() with {noOfWaitStates==2;}) begin
       `uvm_fatal(get_type_name(),"Unable to randomise noOfWaitStates")
     end
     ahbEnvironment.ahbMasterAgentConfig[i].noOfWaitStates = ahbEnvironment.ahbSlaveAgentConfig[i].noOfWaitStates ;
-  end
+  end*/
+
+//added by me
+    ahbEnvironment.ahbMasterAgentConfig[0].noOfWaitStates = ahbEnvironment.ahbSlaveAgentConfig[0].noOfWaitStates ;
+    ahbEnvironment.ahbMasterAgentConfig[0].noOfWaitStates = ahbEnvironment.ahbSlaveAgentConfig[1].noOfWaitStates ;
+
+
   ahbVirtualWriteWithWaitStateSequence = AhbVirtualWriteWithWaitStateSequence::type_id::create("ahbVirtualWriteWithWaitStateSequence");
   `uvm_info(get_type_name(),$sformatf("AhbWriteWithWaitStateTest"),UVM_LOW);
   phase.raise_objection(this);

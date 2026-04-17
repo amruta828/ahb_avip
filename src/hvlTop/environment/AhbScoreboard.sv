@@ -314,7 +314,8 @@ task AhbScoreboard::run_phase(uvm_phase phase);
           ahbMasterTransactionCount++;
           s_idx = get_slave_index(m_tx.haddr);
 
-	  if(m_tx.htrans != IDLE && m_tx.htrans != BUSY) begin
+	 // if(m_tx.htrans != IDLE && m_tx.htrans != BUSY) begin
+	if(m_tx.htrans != IDLE || m_tx.htrans != BUSY) begin
 
    		if(!master_request_q.exists(s_idx))
       			master_request_q[s_idx] = {};
@@ -338,7 +339,7 @@ task AhbScoreboard::run_phase(uvm_phase phase);
 			if(m_tx.hrdata === exp_tx.hrdata)
 				`uvm_info("SCB",$sformatf("hrdata match found"),UVM_LOW)
 			else
-				`uvm_error("SCB","hrdata mismatch found")
+				`uvm_error("SCB",$sformatd("hrdata mismatch found - m_tx = %0d, exp_tx = %0d",m_tx.hrdata,exp_tx.hrdata))
 	    end
             slave_expected_q[s_idx].push_back(exp_tx);
             slave_expected_id_q[s_idx].push_back(m_idx);

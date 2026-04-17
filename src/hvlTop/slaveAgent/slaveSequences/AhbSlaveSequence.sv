@@ -10,7 +10,7 @@ class AhbSlaveSequence extends AhbSlaveBaseSequence;
    rand int noOfWaitStatesSeq;
   
    constraint readDataSeqSize{hrdataSeq.size() == 16;}
-   constraint waitSeqState{soft noOfWaitStatesSeq == 0;}
+ //  constraint waitSeqState{soft noOfWaitStatesSeq == 0;}
    constraint chooseDataPacketSeq {soft choosePacketDataSeq==0;}
 
    extern function new(string name="AhbSlaveSequence");

@@ -31,13 +31,27 @@ task AhbVirtualWriteWithWaitStateSequence::body();
 							//      hsizeSeq == WORD;
 								hwriteSeq ==1;
                                                                 htransSeq == NONSEQ;
- 							//	hburstSeq == INCR4;
+ 						    	       //hburstSeq == INCR4;
                                                                 hburstSeq dist { 2:=1, 3:=1, 4:=1, 5:=2, 6:=2, 7:=2};
  							      foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}
                                                         ) begin
        `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualWriteWithWaitStateSequence")
     end
    end 
+
+if(!ahbSlaveSequence[1].randomize() with {
+                                               // noOfWaitStatesSeq == 0;
+                                                hreadyoutSeq == 1;
+}
+
+                                                        ) begin
+       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualeWriteWithWaitStateSequence")
+    end
+    foreach(ahbMasterSequence[i])begin
+      ahbMasterSequence[i].randomize();
+    end
+
+
     foreach(ahbSlaveSequence[i])
       ahbSlaveSequence[i].randomize();
 

@@ -22,8 +22,8 @@ class AhbSlaveTransaction extends uvm_sequence_item;
   ahbRespEnum hresp;
   rand bit hexokay;
   bit hready;
-  rand bit choosePacketData;
-	rand int noOfWaitStates;
+   bit choosePacketData;
+  rand int noOfWaitStates;
   bit busyControl[];
 
   extern function new(string name = "AhbSlaveTransaction");

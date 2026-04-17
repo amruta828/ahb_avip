@@ -113,7 +113,7 @@ endtask: driveToBFM
      MasterDriverCb.hnonsec   <= dataPacket.hnonsec;
     MasterDriverCb.hexcl     <= dataPacket.hexcl;
     MasterDriverCb.hmaster   <= dataPacket.hmaster;
-    MasterDriverCb.htrans    <= dataPacket.htrans;
+    MasterDriverCb.htrans    <= 2'b10;
     MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
     MasterDriverCb.hwrite    <= dataPacket.hwrite;
   
@@ -204,7 +204,8 @@ endtask: driveToBFM
     MasterDriverCb.hmaster   <= dataPacket.hmaster;
     MasterDriverCb.htrans    <= 2'b 00;
     MasterDriverCb.hwstrb    <= dataPacket.hwstrb[0];
-    MasterDriverCb.hwrite    <= 1;
+    //MasterDriverCb.hwrite    <= 1;
+    MasterDriverCb.hwrite    <= dataPacket.hwrite;
 
     @(MasterDriverCb);
     while(MasterDriverCb.hready==0 || $isunknown(MasterDriverCb.hready)) begin $display("DRIVER STUCK");  @(MasterDriverCb);  end

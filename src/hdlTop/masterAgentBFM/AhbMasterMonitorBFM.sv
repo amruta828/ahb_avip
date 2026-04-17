@@ -119,6 +119,7 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     prev_htrans  = htrans;
     prev_hnonsec = hnonsec;
     prev_hprot   = hprot;
+$display("[%0t] from master monitor = haddr=%0d",$time,prev_haddr);
 
   endtask : sampleData
 

@@ -51,7 +51,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
 
  @(posedge hclk);
  
- while(hreadyout !=1 && hresp==1 && htrans == IDLE) begin
+ while(hready !=1 && hresp==1 && htrans == IDLE) begin
     `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
       @(posedge hclk);
     end   
@@ -88,8 +88,8 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     static logic [HPROT_WIDTH-1:0]  prev_hprot = 0;
 
     @(posedge hclk);
-
-    while(hreadyout !== 1'b1) begin
+    //while(hreadyout !== 1'b1)begin
+    while(hready !== 1'b1) begin//added
       @(posedge hclk);
     end
 
@@ -118,6 +118,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     end
     else begin
       ahbDataPacket.hrdata = hrdata;
+      
     end
 
     // Save the current address phase signals for the next cycle's data phase

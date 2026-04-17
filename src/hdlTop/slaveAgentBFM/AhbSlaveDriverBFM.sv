@@ -3,7 +3,7 @@
  
 import AhbGlobalPackage::*;
  
-interface AhbSlaveDriverBFM (input  bit   hclk,
+interface AhbSlaveDriverBFM(input  bit   hclk,
                              input  bit   hresetn,
 	                     input  logic [2:0] hburst,
 			     input  logic hmastlock,
@@ -29,7 +29,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
  
   `include "uvm_macros.svh"
   import uvm_pkg::*;
-
+int slave_id;
 reg[7:0]normalReg[longint];
 
 
@@ -59,7 +59,7 @@ reg[7:0]normalReg[longint];
     default input #1step output #1step;
     input  haddr,hburst,hmastlock,hprot,hsize,hnonsec,hexcl,hmaster,htrans,hwrite,hwdata,hwstrb,hselx;
     input hready;//added
-    output hreadyout;
+    output hreadyout,hrdata;
   endclocking 
 
   task waitForResetn();
@@ -85,26 +85,45 @@ reg[7:0]normalReg[longint];
     bit[1:0] htransTemp;
     bit[1:0] readhtransTemp;
     bit [31:0]readAddress;
-    bit[31:0]dataTemp; 
-    @(SlaveDriverCb);
- 
-    while((SlaveDriverCb.hselx==0 || $isunknown(SlaveDriverCb.hselx)) || (SlaveDriverCb.hready==0 || $isunknown(SlaveDriverCb.hready)))  begin  $display("MONITOR %t",$time);@(SlaveDriverCb);end //added
-    //while(SlaveDriverCb.hselx==0 || $isunknown(SlaveDriverCb.hselx))  begin  $display("MONITOR %t",$time);@(SlaveDriverCb);end
-      if(configPacket.needWaitStates) begin
-        SlaveDriverCb.hreadyout <= 0;
-        repeat(configPacket.noOfWaitStates)@(SlaveDriverCb);
-        SlaveDriverCb.hreadyout <=1;
-      end
+    bit[31:0]dataTemp;
+    
+   
 
-      if(SlaveDriverCb.hwrite==1 )begin
+    do begin 
+     @(SlaveDriverCb);
+    end  while((SlaveDriverCb.hselx==0 || $isunknown(SlaveDriverCb.hselx)) || (SlaveDriverCb.hready==0 || $isunknown(SlaveDriverCb.hready))); 
+      $display($time, "new call %0d",slave_id);
+
+      if(SlaveDriverCb.hwrite==1&&!configPacket.needWaitStates )begin
         addressTemp <= SlaveDriverCb.haddr;
         htransTemp <= SlaveDriverCb.htrans;
+        pipWrite             <= SlaveDriverCb.hwrite;
+
         $display("[%0t] addressTemp = %0d, SlaveDriverCb.haddr = %0d",$time,addressTemp,SlaveDriverCb.haddr);
       end
+      else if(SlaveDriverCb.hwrite==1&&configPacket.needWaitStates&&(configPacket.noOfWaitStates>0)) begin 
+        addressTemp = SlaveDriverCb.haddr;
+
+        htransTemp = SlaveDriverCb.htrans;
+        pipWrite             = SlaveDriverCb.hwrite;
+
+      end 
+      else if(SlaveDriverCb.hwrite==1&&configPacket.needWaitStates&&(configPacket.noOfWaitStates==0)) begin
+        addressTemp <= SlaveDriverCb.haddr;
+        htransTemp <= SlaveDriverCb.htrans;
+        pipWrite           <= SlaveDriverCb.hwrite;
+
+      end 
       if(SlaveDriverCb.hwrite ==0)begin
          readAddress = SlaveDriverCb.haddr;
          readhtransTemp  = SlaveDriverCb.htrans;
 	$display("[%0t] readAddress = %0d, SlaveDriverCb.haddr = %0d",$time,readAddress,SlaveDriverCb.haddr);
+      end
+ 
+       if(configPacket.needWaitStates) begin
+        SlaveDriverCb.hreadyout <= 0;
+        repeat(configPacket.noOfWaitStates)@(SlaveDriverCb);
+        SlaveDriverCb.hreadyout <=1;
       end
       SlaveDriverCb.hreadyout <= 1;
       dataTemp              = SlaveDriverCb.hwdata;
@@ -116,9 +135,10 @@ reg[7:0]normalReg[longint];
       dataPacket.hmastlock <= hmastlock; 
       dataPacket.hselx     <= hselx;   
       //dataPacket.hready  <= hready; //added 
-      pipWrite             <= SlaveDriverCb.hwrite;
-      if(pipWrite && htransTemp!=2'b00 ) begin
-        $display("%0t THE DATA TO BE WRITTEN IS %0h at address = %0d ",$time,dataTemp,SlaveDriverCb.haddr);
+      //pipWrite             <= SlaveDriverCb.hwrite;
+      
+	if(pipWrite && htransTemp!=2'b00 ) begin
+        $display("%0t NEW DATA TO BE WRITTEN IS %0h at address  = %0d slave id=%0d",$time,dataTemp,addressTemp,slave_id);
         for(int i=0;i<4;i++) begin 
          normalReg[(addressTemp)+i] = dataTemp[(8*i) +: 8];
         $display("%0t ||normal reg[%0d]:%0h %0d",$time, i,normalReg[(addressTemp)+i],addressTemp);
@@ -131,12 +151,12 @@ reg[7:0]normalReg[longint];
 	$display("%0t ||temp data:%0h %0d",$time,temp,readAddress);
         end 
         if(readhtransTemp != 2'b00)
-        	hrdata = temp;
+        	SlaveDriverCb.hrdata <= temp;
         else
-		hrdata = '0;
-        $display(" THE DATA READ IS %0h from haddr= %0d \n \n %0t",hrdata,haddr,$time);
+		SlaveDriverCb.hrdata <= '0;
+        $display(" NEW DATA READ IS %0h from haddr= %0d slave id=%0d \n \n %0t",hrdata,haddr,slave_id,$time);
       end
-  
+  $display($time ,"old one done %0d ",slave_id);
   endtask: slaveDriveSingleTransfer
  
   task slavedriveBurstTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);

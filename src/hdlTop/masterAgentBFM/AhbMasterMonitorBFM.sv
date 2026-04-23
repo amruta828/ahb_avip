@@ -6,7 +6,7 @@ import AhbGlobalPackage::*;
 interface AhbMasterMonitorBFM(input  bit   hclk,
                               input  bit  hresetn,
                               input logic [ADDR_WIDTH-1:0] haddr,
-                              //input logic [NO_OF_SLAVES-1:0] hselx,
+                              input logic [NO_OF_SLAVES-1:0] hselx,
                               input logic [2:0] hburst,
                               input logic hmastlock,
                               input logic [HPROT_WIDTH-1:0] hprot,
@@ -34,6 +34,11 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
 
   string name = "AHB_MASTER_MONITOR_BFM"; 
 
+  clocking SlaveMonitorCb @(posedge hclk);
+   default input #1step output #1step;
+   input hselx,haddr,hburst,hmastlock,hprot,hsize,hnonsec,hexcl,hmaster,htrans,hwdata,hwstrb,hwrite,hrdata,hreadyout,hresp,hexokay,hready;
+  endclocking
+ 
   initial begin
     `uvm_info(name, $sformatf("AHB MASTER MONITOR BFM"), UVM_LOW);
   end
@@ -78,6 +83,7 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
   task sampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
 
     // static variables remember the previous cycle's address phase signals
+   static logic [NO_OF_SLAVES-1:0] prev_hselx = 0;
     static logic [ADDR_WIDTH-1:0]   prev_haddr = 0;
     static logic [2:0]              prev_hburst = 0;
     static logic                    prev_hwrite = 0;
@@ -86,39 +92,50 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     static logic                    prev_hnonsec = 0;
     static logic [HPROT_WIDTH-1:0]  prev_hprot = 0;
 
-    @(posedge hclk);
-  // yet add other and check
-    while(hready !== 1'b1) begin
-      @(posedge hclk);
+    @(SlaveMonitorCb);
+    //while(hreadyout !== 1'b1)begin
+    while(SlaveMonitorCb.hready !== 1'b1 && SlaveMonitorCb.htrans !== 2'b00) begin//added
+      @(SlaveMonitorCb);
     end
 
+    ahbDataPacket.hselx   = prev_hselx;
     ahbDataPacket.haddr   = prev_haddr;
+        $display("ishika %0t haddr = %0h",$time,ahbDataPacket.haddr);
     ahbDataPacket.hburst  = ahbBurstEnum'(prev_hburst);
     ahbDataPacket.hwrite  = ahbOperationEnum'(prev_hwrite);
     ahbDataPacket.hsize   = ahbHsizeEnum'(prev_hsize);
-    ahbDataPacket.htrans  = ahbTransferEnum'(prev_htrans);
     ahbDataPacket.hnonsec = prev_hnonsec;
     ahbDataPacket.hprot   = ahbProtectionEnum'(prev_hprot);
 
-    ahbDataPacket.hresp     = ahbRespEnum'(hresp);
-    ahbDataPacket.hreadyout = hready;
+    //if (prev_hselx === 1'b0) begin
+    if (prev_hselx === 1'b0 || $isunknown(prev_haddr)) begin
+      ahbDataPacket.htrans = ahbTransferEnum'(0);
+    end else begin
+      ahbDataPacket.htrans = ahbTransferEnum'(prev_htrans);
+    end
+
+    ahbDataPacket.hresp     = ahbRespEnum'(SlaveMonitorCb.hresp);
+    ahbDataPacket.hreadyout = SlaveMonitorCb.hreadyout;
 
     if(prev_hwrite) begin
-      ahbDataPacket.hwdata = hwdata;
-      ahbDataPacket.hwstrb = hwstrb;
+      ahbDataPacket.hwdata = SlaveMonitorCb.hwdata;
+      ahbDataPacket.hwstrb = SlaveMonitorCb.hwstrb;
     end
     else begin
-      ahbDataPacket.hrdata = hrdata;
+      ahbDataPacket.hrdata = SlaveMonitorCb.hrdata;
+
     end
 
     // Save the current address phase signals for the next cycle's data phase
-    prev_haddr   = haddr;
-    prev_hburst  = hburst;
-    prev_hwrite  = hwrite;
-    prev_hsize   = hsize;
-    prev_htrans  = htrans;
-    prev_hnonsec = hnonsec;
-    prev_hprot   = hprot;
+    prev_hselx   = SlaveMonitorCb.hselx;
+    prev_haddr   = SlaveMonitorCb.haddr;
+    prev_hburst  = SlaveMonitorCb.hburst;
+    prev_hwrite  = SlaveMonitorCb.hwrite;
+    prev_hsize   = SlaveMonitorCb.hsize;
+    prev_htrans  = SlaveMonitorCb.htrans;
+    prev_hnonsec = SlaveMonitorCb.hnonsec;
+    prev_hprot   = SlaveMonitorCb.hprot;
+
 $display("[%0t] from master monitor = haddr=%0d",$time,prev_haddr);
 
   endtask : sampleData

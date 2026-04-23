@@ -75,7 +75,7 @@ class AhbScoreboard extends uvm_scoreboard;
 
         extern function int get_slave_index(logic [ADDR_WIDTH-1:0] addr);
   extern function void ref_model(AhbMasterTransaction m_tx, int slave_idx);
-        extern function void compare_trans(AhbMasterTransaction exp_tx, AhbSlaveTransaction s_tx);
+        extern function void compare_trans(AhbMasterTransaction exp_tx, AhbSlaveTransaction s_tx, int s_idx);
 
 
   function int predict_grant(int slave_idx);
@@ -305,11 +305,13 @@ task AhbScoreboard::run_phase(uvm_phase phase);
           int s_idx;
 	  int temp;
           ahbMasterAnalysisFifo[m_idx].get(m_tx);
- 	  $display("[%0t] run phase got m_tx haddr=%0d, mtx=%0d",$time,m_tx.haddr,i);
+ 	  $display("[%0t] run phase got m_tx haddr=%0d, mtx=%0d, htrans= %0d ",$time,m_tx.haddr,i,m_tx.htrans);
  	  m_tx.print();
           
 	  // Ignore IDLE and BUSY transactions from the Masters
           if (m_tx.htrans == IDLE || m_tx.htrans == BUSY) continue;
+
+          
 
           ahbMasterTransactionCount++;
           s_idx = get_slave_index(m_tx.haddr);
@@ -324,7 +326,8 @@ task AhbScoreboard::run_phase(uvm_phase phase);
   		$display("[%0t] Master %0d requested Slave %0d addr=%0d, master_requested_q = %p",$time,m_idx, s_idx, m_tx.haddr,master_request_q);
 	  end
 
-	  temp = predict_grant(s_idx);
+	  if(m_tx.htrans == 2'b10)
+	  	temp = predict_grant(s_idx);
 
 	  g_m.haddr  = m_tx.haddr;
 	  g_m.master = temp;
@@ -416,8 +419,9 @@ task AhbScoreboard::run_phase(uvm_phase phase);
               master_id = slave_expected_id_q[s_idx].pop_front();
           end
 
+
           // Compare the aligned transactions
-          compare_trans(exp_tx, s_tx);
+          compare_trans(exp_tx, s_tx,s_idx);
   	  $display("sending to compare");
           $display("exp_tx");
 	  exp_tx.print();
@@ -433,7 +437,8 @@ task AhbScoreboard::run_phase(uvm_phase phase);
 
 function void AhbScoreboard::compare_trans(
   AhbMasterTransaction exp_tx,
-  AhbSlaveTransaction  s_tx
+  AhbSlaveTransaction  s_tx,
+  int s_idx
 );
 
 exp_tx.print;
@@ -457,14 +462,14 @@ s_tx.print;
     // Address
     if (exp_tx.haddr === s_tx.haddr) begin
       `uvm_info("SB_HADDR_MATCH",
-        $sformatf("HADDR Match: %h actual=%h", exp_tx.haddr,s_tx.haddr),
+        $sformatf("HADDR Match: %h actual=%h  s_idx = %0d", exp_tx.haddr,s_tx.haddr,s_idx),
         UVM_HIGH)
       VerifiedMasterHaddrCount++;
     end
     else begin
       `uvm_error("SB_HADDR_MISMATCH",
-        $sformatf("HADDR Mismatch: Exp=%h Act=%h",
-        exp_tx.haddr, s_tx.haddr))
+        $sformatf("HADDR Mismatch: Exp=%h Act=%h, s_idx = %0d",
+        exp_tx.haddr, s_tx.haddr,s_idx))
       FailedMasterHaddrCount++;
     end
 
@@ -526,14 +531,14 @@ s_tx.print;
     // Address
     if (exp_tx.haddr === s_tx.haddr) begin
       `uvm_info("SB_HADDR_MATCH",
-        $sformatf("HADDR Match: %h", exp_tx.haddr),
+        $sformatf("HADDR Match: %h, s_idx = %0d", exp_tx.haddr,s_idx),
         UVM_HIGH)
       VerifiedMasterHaddrCount++;
     end
     else begin
       `uvm_error("SB_HADDR_MISMATCH",
-        $sformatf("HADDR Mismatch: Exp=%h Act=%h",
-        exp_tx.haddr, s_tx.haddr))
+        $sformatf("HADDR Mismatch: Exp=%h Act=%h , s_idx = %0d",
+        exp_tx.haddr, s_tx.haddr,s_idx))
       FailedMasterHaddrCount++;
     end
 
@@ -547,14 +552,14 @@ s_tx.print;
       foreach (exp_tx.hwdata[i]) begin
         if (exp_tx.hwdata[i] !== s_tx.hwdata[i]) begin
           `uvm_error("SB_HWDATA_MISMATCH",
-            $sformatf("HWDATA mismatch at beat %0d: Exp=%h Act=%h",
-            i, exp_tx.hwdata[i], s_tx.hwdata[i]))
+            $sformatf("HWDATA mismatch at beat %0d: Exp=%h Act=%h , s_idx= %0d",
+            i, exp_tx.hwdata[i], s_tx.hwdata[i],s_idx))
           FailedMasterHwdataCount++;
         end
         else begin
           `uvm_info("SB_HWDATA_MATCH",
-            $sformatf("HWDATA match at beat %0d: %h",
-            i, exp_tx.hwdata[i]),
+            $sformatf("HWDATA match at beat %0d: %h, s_idx = %0d",
+            i, exp_tx.hwdata[i],s_idx),
             UVM_LOW)
           VerifiedMasterHwdataCount++;
         end

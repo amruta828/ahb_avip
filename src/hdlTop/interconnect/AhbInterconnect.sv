@@ -42,6 +42,7 @@ logic [2:0] master_hsize[NO_OF_MASTERS];
   logic [1:0] slave_hresp[NO_OF_SLAVES];
 
     logic[$clog2(NO_OF_MASTERS)-1:0]owner[NO_OF_SLAVES];
+    logic[$clog2(NO_OF_MASTERS)-1:0]read_owner[NO_OF_SLAVES];
 
 
   generate
@@ -132,19 +133,36 @@ generate
         else begin
         for(int masterLoop=0;masterLoop < NO_OF_MASTERS; masterLoop++) begin
           // Update previous owner when current owner changes
-          if(master_grant[slaveLoop][masterLoop] == 1'b1) begin
+          
+          if(slave_hreadyout[slaveLoop] == 1)begin
+              //new_c_owner[slaveLoop] = 'x;
+          end
+
+	  if(master_grant[slaveLoop][masterLoop] == 1'b1) begin
             $display($time," first master_grant[slaveloop=%0d][masterloop=%0d]=%0d",slaveLoop,masterLoop,master_grant[slaveLoop][masterLoop]);
             previous_owner[slaveLoop] <= current_owner[slaveLoop];  // Store current as previous
-            current_owner[slaveLoop] <= masterLoop;                // Update current
-            new_c_owner[slaveLoop]   <= masterLoop;
+            current_owner[slaveLoop] = masterLoop;                // Update current
+            new_c_owner[slaveLoop]   = masterLoop;
 	    $display("[%0t] current_owner[%0d] = %0d",$time,slaveLoop,current_owner[slaveLoop]);
 	    $display("[%0t] new_c_owner[%0d] = %0d",$time,slaveLoop,new_c_owner[slaveLoop]);
-            slave_has_owner[slaveLoop] <= 1'b1;
+            slave_has_owner[slaveLoop] = 1'b1;
           end
+    
           else begin
                 slave_has_owner[slaveLoop]='0;//uncommented
                 current_owner[slaveLoop]='x;
           end
+
+
+          if(slave_hreadyout[slaveLoop] == 1)begin
+		if(master_grant[slaveLoop][masterLoop] == 1)begin
+			read_owner[slaveLoop]  = masterLoop;
+		end
+		else begin
+			read_owner[slaveLoop] = 'x;
+		end		
+	  end	
+	 $display("[%0t] my_slave = %0d, my_read_owner = %0d",$time,slaveLoop,read_owner[slaveLoop]); 
           if(slave_has_owner[slaveLoop]) begin
             owner[slaveLoop] = current_owner[slaveLoop];
             if(master_request[slaveLoop][masterLoop] &&
@@ -344,22 +362,26 @@ endgenerate
 //added block
  generate
    for(genvar s =0;s <NO_OF_SLAVES ;s++) begin
+    
      always_comb begin
+       ahbSlaveInterface[s].hready = 0;
        for(int i=0;i<NO_OF_MASTERS;i++) begin
+         if (current_owner[s]==i)begin        
+           //    ahbSlaveInterface[s].hready = master_hready[i]; //added
+           ahbSlaveInterface[s].hready = slave_hreadyout[s];
+           //break;
+
+         end
+
+
          if(master_grant[s][i]==1) begin
            ahbSlaveInterface[s].hready = master_hready[i]; //added
            //ahbSlaveInterface[s].hready =1'b1;
            break;
          end
-        else if (current_owner[s]==i)begin 
-                ahbSlaveInterface[s].hready = master_hready[i]; //added
-           //ahbSlaveInterface[s].hready =1'b1;
-           break;
-
-        end 
-         else begin
-            ahbSlaveInterface[s].hready =0;
-         end
+       //  else begin
+         //   ahbSlaveInterface[s].hready =0;
+         //end
        end
      end
    end
@@ -370,12 +392,15 @@ endgenerate
    always_comb begin
 
     for(int s = 0;s < NO_OF_SLAVES;s++)
-        if( m == current_owner[s])begin
+
+
+        if( m == read_owner[s])begin
             ahbMasterInterface[m].hrdata = slave_hrdata[s];
-            //add
-                                                                                                                                                                            
-            //break;
+	    $display(" time = %0t, master = %0d, slave = %0d,  read_owner = %0d",$time,m,s,read_owner[s]);
+            //add                                                                                                                                                                
+            break;
         end
+	
         //else begin
         //      ahbSlaveInterface[m].hready =0;
         //end
@@ -495,7 +520,7 @@ endgenerate
       oldest_is_ready = 1'b1; // Default to ready if no active transaction
 
         for(int s=0;s <NO_OF_SLAVES;s++)
-        if(m == current_owner[s])
+        if(m == new_c_owner[s])
            begin
             oldest_is_ready = slave_hreadyout[s];
             $display("%0t check slave_hreadyout[%0d] = %0d",$time, s,slave_hreadyout[s]);

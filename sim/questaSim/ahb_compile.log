@@ -1,0 +1,195 @@
+QuestaSim vlog 10.6c Compiler 2017.07 Jul 25 2017
+Start time: 12:14:57 on Apr 23,2026
+vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ../ahb_compile.f 
+-- Compiling package AhbGlobalPackage
+-- Compiling package AhbMasterPackage
+** Note: (vlog-2286) ../../src/hvlTop/masterAgent/AhbMasterPackage.sv(6): Using implicit +incdir+/tools/mentor/questasim_10.6c/questasim/uvm-1.1d/../verilog_src/uvm-1.1d/src from import uvm_pkg
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Importing package AhbGlobalPackage
+-- Compiling package AhbSlavePackage
+-- Compiling package AhbMasterSequencePackage
+-- Importing package AhbMasterPackage
+-- Compiling package AhbSlaveSequencePackage
+-- Importing package AhbSlavePackage
+-- Compiling package AhbEnvironmentPackage
+** Warning: ** while parsing file included at ../../src/hvlTop/environment/AhbEnvironmentPackage.sv(28)
+** at ../../src/hvlTop/environment/AhbScoreboard.sv(383): (vlog-2897) Using non-standard foreach loop variable list syntax.
+-- Compiling package AhbVirtualSequencePackage
+-- Importing package AhbMasterSequencePackage
+-- Importing package AhbSlaveSequencePackage
+-- Importing package AhbEnvironmentPackage
+-- Compiling package AhbTestPackage
+-- Importing package AhbVirtualSequencePackage
+** Warning: ../../src/hvlTop/tb/test/AhbBaseTest.sv(68): (vlog-2240) Treating stand-alone use of function 'randomize' as an implicit VOID cast.
+** Warning: ../../src/hvlTop/tb/test/AhbBaseTest.sv(69): (vlog-2240) Treating stand-alone use of function 'randomize' as an implicit VOID cast.
+-- Compiling package AhbInterface_sv_unit
+-- Importing package AhbGlobalPackage
+-- Compiling interface AhbInterface
+-- Compiling package AhbInterconnect_sv_unit
+-- Importing package AhbGlobalPackage
+-- Compiling interface AhbInterconnect
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(27): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(28): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(29): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(30): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(31): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(32): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(33): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(34): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(35): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(51): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(52): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(53): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(115): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(223): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(225): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(225): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(228): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(231): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(237): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(237): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(239): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(242): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(251): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(252): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(253): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(255): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(256): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(257): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(258): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(259): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(260): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(261): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(262): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(263): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(271): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(271): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(273): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(278): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(280): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(282): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(284): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(285): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(286): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(287): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(288): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(289): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(290): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(291): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(292): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(299): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(313): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(313): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(313): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(314): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(315): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(316): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(319): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(320): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(320): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(321): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(324): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(327): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(328): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(332): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(334): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(335): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(336): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(337): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(338): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(339): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(340): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(341): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(342): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(343): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(347): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(348): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(352): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(353): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(354): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(367): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(368): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(368): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(371): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(378): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(394): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(394): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(398): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(438): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(440): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(443): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(443): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(446): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(476): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(479): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(481): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(482): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(483): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(484): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(485): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(486): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(487): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(489): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(517): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(520): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(522): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(522): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(525): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(529): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(531): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(533): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(533): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(536): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+** Warning: ../../src/hdlTop/interconnect/AhbInterconnect.sv(554): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+-- Compiling package AhbMasterDriverBFM_sv_unit
+-- Importing package AhbGlobalPackage
+-- Compiling interface AhbMasterDriverBFM
+-- Importing package AhbMasterPackage
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Compiling package AhbMasterMonitorBFM_sv_unit
+-- Importing package AhbGlobalPackage
+-- Compiling interface AhbMasterMonitorBFM
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Importing package AhbMasterPackage
+-- Compiling module AhbMasterAgentBFM
+-- Compiling package AhbMasterAssertion_sv_unit
+-- Importing package AhbGlobalPackage
+-- Compiling interface AhbMasterAssertion
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Compiling package AhbSlaveDriverBFM_sv_unit
+-- Importing package AhbGlobalPackage
+-- Compiling interface AhbSlaveDriverBFM
+-- Importing package AhbSlavePackage
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Compiling package AhbSlaveMonitorBFM_sv_unit
+-- Importing package AhbGlobalPackage
+-- Compiling interface AhbSlaveMonitorBFM
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Importing package AhbSlavePackage
+-- Compiling module AhbSlaveAgentBFM
+-- Compiling package AhbSlaveAssertion_sv_unit
+-- Importing package AhbGlobalPackage
+-- Compiling interface AhbSlaveAssertion
+-- Compiling package AhbMasterCoverProperty_sv_unit
+-- Importing package AhbGlobalPackage
+-- Compiling interface AhbMasterCoverProperty
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Compiling package AhbSlaveCoverProperty_sv_unit
+-- Importing package AhbGlobalPackage
+-- Compiling interface AhbSlaveCoverProperty
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Compiling module HdlTop
+-- Compiling module HvlTop
+-- Importing package AhbTestPackage
+-- Importing package AhbMasterPackage
+-- Importing package AhbSlavePackage
+-- Importing package AhbEnvironmentPackage
+-- Importing package AhbMasterSequencePackage
+-- Importing package AhbSlaveSequencePackage
+-- Importing package AhbVirtualSequencePackage
+
+Top level modules:
+	HdlTop
+	HvlTop
+End time: 12:15:00 on Apr 23,2026, Elapsed time: 0:00:03
+Errors: 0, Warnings: 116

@@ -35,6 +35,13 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
   
   AhbSlaveMonitorProxy ahbSlaveMonitorProxy;
 
+
+  clocking SlaveMonitorCb @(posedge hclk);
+   default input #1step output #1step;
+   input hburst,hmastlock,haddr,hprot,hsize,hnonsec,hexcl,htrans,hwdata,hwstrb,hwrite,hrdata,hreadyout,hresp,hexokay,hready,hselx;
+  endclocking
+ 
+
   initial begin
     `uvm_info(name,$sformatf(name),UVM_LOW);
   end
@@ -51,7 +58,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
 
  @(posedge hclk);
  
- while(hready !=1 && hresp==1 && htrans == IDLE) begin
+   while(hready !=1 && hresp==1 && htrans == IDLE) begin
     `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
       @(posedge hclk);
     end   
@@ -87,10 +94,10 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     static logic                    prev_hnonsec = 0;
     static logic [HPROT_WIDTH-1:0]  prev_hprot = 0;
 
-    @(posedge hclk);
+    @(SlaveMonitorCb);
     //while(hreadyout !== 1'b1)begin
-    while(hready !== 1'b1) begin//added
-      @(posedge hclk);
+    while(SlaveMonitorCb.hready !== 1'b1 && SlaveMonitorCb.htrans !== 2'b00) begin//added
+      @(SlaveMonitorCb);
     end
 
     ahbDataPacket.hselx   = prev_hselx;
@@ -109,27 +116,27 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
       ahbDataPacket.htrans = ahbTransferEnum'(prev_htrans);
     end
 
-    ahbDataPacket.hresp     = ahbRespEnum'(hresp);
-    ahbDataPacket.hreadyout = hreadyout;
+    ahbDataPacket.hresp     = ahbRespEnum'(SlaveMonitorCb.hresp);
+    ahbDataPacket.hreadyout = SlaveMonitorCb.hreadyout;
 
     if(prev_hwrite) begin
-      ahbDataPacket.hwdata = hwdata;
-      ahbDataPacket.hwstrb = hwstrb;
+      ahbDataPacket.hwdata = SlaveMonitorCb.hwdata;
+      ahbDataPacket.hwstrb = SlaveMonitorCb.hwstrb;
     end
     else begin
-      ahbDataPacket.hrdata = hrdata;
+      ahbDataPacket.hrdata = SlaveMonitorCb.hrdata;
       
     end
 
     // Save the current address phase signals for the next cycle's data phase
-    prev_hselx   = hselx;
-    prev_haddr   = haddr;
-    prev_hburst  = hburst;
-    prev_hwrite  = hwrite;
-    prev_hsize   = hsize;
-    prev_htrans  = htrans;
-    prev_hnonsec = hnonsec;
-    prev_hprot   = hprot;
+    prev_hselx   = SlaveMonitorCb.hselx;
+    prev_haddr   = SlaveMonitorCb.haddr;
+    prev_hburst  = SlaveMonitorCb.hburst;
+    prev_hwrite  = SlaveMonitorCb.hwrite;
+    prev_hsize   = SlaveMonitorCb.hsize;
+    prev_htrans  = SlaveMonitorCb.htrans;
+    prev_hnonsec = SlaveMonitorCb.hnonsec;
+    prev_hprot   = SlaveMonitorCb.hprot;
 
   endtask : slaveSampleData
 

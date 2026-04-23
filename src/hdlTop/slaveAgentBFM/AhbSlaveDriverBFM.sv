@@ -91,6 +91,7 @@ reg[7:0]normalReg[longint];
 
     do begin 
      @(SlaveDriverCb);
+      //SlaveDriverCb.hreadyout <= 0;
     end  while((SlaveDriverCb.hselx==0 || $isunknown(SlaveDriverCb.hselx)) || (SlaveDriverCb.hready==0 || $isunknown(SlaveDriverCb.hready))); 
       $display($time, "new call %0d",slave_id);
 

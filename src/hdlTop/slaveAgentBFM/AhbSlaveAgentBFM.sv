@@ -69,7 +69,7 @@ module AhbSlaveAgentBFM #(parameter int SLAVE_ID=0) (AhbInterface ahbInterface);
     uvm_config_db #(virtual AhbSlaveMonitorBFM)::set(null,"*",  ahbSlaveMonitorId, ahbSlaveMonitorBFM); 
   end
 
-/*
+  /*
    bind AhbSlaveMonitorBFM AhbSlaveAssertion ahb_assert (.hclk(ahbInterface.hclk),
                                                          .hresetn(ahbInterface.hresetn),
                                                          .hreadyout(ahbInterface.hreadyout),

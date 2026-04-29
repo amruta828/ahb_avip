@@ -27,7 +27,7 @@ task AhbSlaveSequence::body();
   start_item(req); 
   if(!req.randomize() with { foreach(hrdataSeq[i])
     hrdata[i] == hrdataSeq[i];		
-                           hreadyout        == hreadyoutSeq;
+                            hreadyout        == hreadyoutSeq;
                             hexokay          == hexokaySeq;
                             choosePacketData == choosePacketDataSeq;
                             noOfWaitStates   == noOfWaitStatesSeq;

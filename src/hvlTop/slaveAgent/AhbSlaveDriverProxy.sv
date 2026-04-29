@@ -46,12 +46,12 @@ function void AhbSlaveDriverProxy::end_of_elaboration_phase(uvm_phase phase);
 endfunction : end_of_elaboration_phase
 
 task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
-`uvm_info(get_type_name(), $sformatf(" BEFORERESET \n "), UVM_NONE);
+  `uvm_info(get_type_name(), $sformatf(" BEFORERESET \n "), UVM_NONE);
 /*
   ahbSlaveIdAsci.itoa(ahbSlaveAgentConfig.ahbSlaveDriverId);
   ahbBfmField = {"AhbSlaveDriverBFM" ,ahbSlaveIdAsci};
 
-  $display("\n\nTHE SLAVE BFM FIELD IS %s \n \n",ahbBfmField );
+  $display("\n\nTHE SLAVE BFM FIELD IS %s \n \n",ahbBfmField ); //debug
 
   if(!uvm_config_db #(virtual AhbSlaveDriverBFM)::get(this,"",ahbBfmField, ahbSlaveDriverBFM))
     begin
@@ -60,22 +60,22 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
 */
   ahbSlaveDriverBFM.waitForResetn();
   
-   forever begin
+  forever begin
     ahbTransferCharStruct structPacket;
     ahbTransferConfigStruct structConfig;
    
     seq_item_port.get_next_item(req);
     if(req.choosePacketData) begin  
 
-    AhbSlaveSequenceItemConverter::fromClass(req, structPacket);
-    $display("THE RUN PHASE IS %0d",ahbSlaveAgentConfig.noOfWaitStates); 
-    AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
-    fork
-    ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
-   join_none
-    AhbSlaveSequenceItemConverter::toClass(structPacket, req);  
+      AhbSlaveSequenceItemConverter::fromClass(req, structPacket);
+      $display("THE RUN PHASE IS %0d",ahbSlaveAgentConfig.noOfWaitStates); //debug
+      AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
+      fork
+        ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
+      join_none
+      AhbSlaveSequenceItemConverter::toClass(structPacket, req);  
 
-    `uvm_info("SONAL", $sformatf("STRUCTPACKET = %p",req), UVM_LOW)
+      `uvm_info("SONAL", $sformatf("STRUCTPACKET = %p",req), UVM_LOW)
       
       if(structPacket.hwrite == WRITE)begin   
         `uvm_info("AIL", "ENTERED WRITE LOOP", UVM_LOW)
@@ -85,17 +85,16 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
         taskRead(structPacket);
       end
     end
-    else
-      begin
-        AhbSlaveSequenceItemConverter::fromClass(req, structPacket);
-        $display("THE RUN PHASE IS %0d",ahbSlaveAgentConfig.noOfWaitStates); 
-        AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
-       fork 
-       ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
-       join_none  
-       AhbSlaveSequenceItemConverter::toClass(structPacket, req); 
-      end
-     $display("(((((((((((((((SENT ACK)))))))))))))))");
+    else begin
+      AhbSlaveSequenceItemConverter::fromClass(req, structPacket);
+      $display("THE RUN PHASE IS %0d",ahbSlaveAgentConfig.noOfWaitStates); //debug
+      AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
+      fork 
+        ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
+      join_none  
+      AhbSlaveSequenceItemConverter::toClass(structPacket, req); 
+    end
+    $display("(((((((((((((((SENT ACK)))))))))))))))");//debug
     seq_item_port.item_done();
   end
 
@@ -144,7 +143,7 @@ endfunction  : connect_phase
 
 function void AhbSlaveDriverProxy :: setConfig( AhbSlaveAgentConfig ahbSlaveAgentConfig);
    this.ahbSlaveAgentConfig = ahbSlaveAgentConfig;
-   $display("IN THE SLAVE PROXY THE  %0d",this.ahbSlaveAgentConfig.noOfWaitStates);
+   $display("IN THE SLAVE PROXY THE  %0d",this.ahbSlaveAgentConfig.noOfWaitStates);//debug
 endfunction : setConfig    
 
 `endif

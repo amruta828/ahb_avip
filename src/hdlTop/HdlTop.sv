@@ -18,7 +18,8 @@ module HdlTop;
   bit hresetn;
   //bit SLAVE_ID[NO_OF_SLAVES];
   //bit MASTER_ID[NO_OF_MASTERS];
-/*
+  
+  /*
   initial begin 
     foreach(SLAVE_ID[i])
       SLAVE_ID[i] = i;
@@ -26,21 +27,20 @@ module HdlTop;
     foreach(MASTER_ID[i])
       MASTER_ID[i] = i;
   end 
-*/
+  */
   initial begin
-   hclk = 1'b0;
+    hclk = 1'b0;
     forever #5 hclk =~hclk;
   end
 
   initial begin
-  hresetn = 1'b1;
-   @(posedge hclk) hresetn= 1'b0;
-
-    //repeat(1) begin
+    hresetn = 1'b1;
+     @(posedge hclk) hresetn= 1'b0;
+      //repeat(1) begin
       @(posedge hclk);
       $display("@%T H EY MAN",$time);
-   // end
-   hresetn = 1'b1;
+      // end
+      hresetn = 1'b1;
   end
 
 

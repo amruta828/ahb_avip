@@ -100,24 +100,24 @@ function bit AhbMasterTransaction::do_compare (uvm_object rhs, uvm_comparer comp
   end
 
   return super.do_compare(ahbMasterTransaction, comparer) &&
-  haddr    == ahbMasterTransaction.haddr    &&
-  hselx    == ahbMasterTransaction.hselx    &&
-  hburst   == ahbMasterTransaction.hburst   &&
-  hmastlock == ahbMasterTransaction.hmastlock &&
-  hprot    == ahbMasterTransaction.hprot    &&
-  hsize    == ahbMasterTransaction.hsize    &&
-  hnonsec  == ahbMasterTransaction.hnonsec  &&
-  hexcl    == ahbMasterTransaction.hexcl    &&
-  hmaster  == ahbMasterTransaction.hmaster  &&
-  htrans   == ahbMasterTransaction.htrans   &&
-  hwdata   == ahbMasterTransaction.hwdata   &&
-  hwstrb   == ahbMasterTransaction.hwstrb   &&
-  hwrite   == ahbMasterTransaction.hwrite   &&
-  hrdata   == ahbMasterTransaction.hrdata   &&
-  hreadyout == ahbMasterTransaction.hreadyout &&
-  hresp    == ahbMasterTransaction.hresp    &&
-  hexokay  == ahbMasterTransaction.hexokay  &&
-  hready   == ahbMasterTransaction.hready &&
+  haddr      == ahbMasterTransaction.haddr    &&
+  hselx      == ahbMasterTransaction.hselx    &&
+  hburst     == ahbMasterTransaction.hburst   &&
+  hmastlock  == ahbMasterTransaction.hmastlock &&
+  hprot      == ahbMasterTransaction.hprot    &&
+  hsize      == ahbMasterTransaction.hsize    &&
+  hnonsec    == ahbMasterTransaction.hnonsec  &&
+  hexcl      == ahbMasterTransaction.hexcl    &&
+  hmaster    == ahbMasterTransaction.hmaster  &&
+  htrans     == ahbMasterTransaction.htrans   &&
+  hwdata     == ahbMasterTransaction.hwdata   &&
+  hwstrb     == ahbMasterTransaction.hwstrb   &&
+  hwrite     == ahbMasterTransaction.hwrite   &&
+  hrdata     == ahbMasterTransaction.hrdata   &&
+  hreadyout  == ahbMasterTransaction.hreadyout &&
+  hresp      == ahbMasterTransaction.hresp    &&
+  hexokay    == ahbMasterTransaction.hexokay  &&
+  hready     == ahbMasterTransaction.hready &&
   noOfWaitStatesDetected == ahbMasterTransaction.noOfWaitStatesDetected;
 
 endfunction : do_compare

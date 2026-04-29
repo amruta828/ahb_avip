@@ -6,9 +6,6 @@ class AhbMasterSequence extends AhbMasterBaseSequence;
  
   AhbMasterTransaction req;
   
-
-
-
   rand bit [ADDR_WIDTH-1:0] haddr_list[$]; 
 
   // Keep existing variables for other properties
@@ -26,18 +23,13 @@ class AhbMasterSequence extends AhbMasterBaseSequence;
   rand ahbOperationEnum hwriteSeq;
   rand bit hexokaySeq;
   rand bit busyControlSeq[];
- 
-
-
-
-  
+   
   // Constraint to ensure we generate exactly 4 addresses (for the 4 writes/reads)
   constraint c_list_size { haddr_list.size() == 4; }
 
   // Apply address range constraints to every element in the list
   constraint addr_range_list { 
-    foreach (haddr_list[i]) {
-	     soft haddr_list[i] inside {[0:2000]};
+    foreach (haddr_list[i]) { soft haddr_list[i] inside {[0:2000]};
     }
   }
 
@@ -61,8 +53,6 @@ class AhbMasterSequence extends AhbMasterBaseSequence;
       }
     }
   }
-
-
 
   constraint first_trans_typ1 {
     if (hburstSeq == SINGLE) {
@@ -134,17 +124,13 @@ task AhbMasterSequence::body();
   super.body();
   req = AhbMasterTransaction::type_id::create("req");
   
-
-
-
   foreach(haddr_list[k]) begin 
     start_item(req);
     `uvm_info("AHB", $sformatf("req is of type: %s", req.get_type_name()), UVM_LOW)
 
     if (!req.randomize() with {  
                   hselx      == hselxSeq;
-                  hburst     == hburstSeq;
-             
+                  hburst     == hburstSeq;             
                   haddr      == haddr_list[k]; 
                   hmastlock  == hmastlockSeq;
                   hprot      == hprotSeq;

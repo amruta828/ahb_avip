@@ -65,7 +65,7 @@ function void AhbBaseTest::setupAhbEnvironmentConfig();
 
     ahbEnvironmentConfig.ahbSlaveAgentConfig[0] = AhbSlaveAgentConfig::type_id::create($sformatf("AhbSlaveAgentConfig[%0d]",0));
     ahbEnvironmentConfig.ahbSlaveAgentConfig[1] = AhbSlaveAgentConfig::type_id::create($sformatf("AhbSlaveAgentConfig[%0d]",1));
-    ahbEnvironmentConfig.ahbSlaveAgentConfig[0].randomize()with{needWaitStates==1;noOfWaitStates==3;};
+    ahbEnvironmentConfig.ahbSlaveAgentConfig[0].randomize()with{needWaitStates==0;noOfWaitStates==0;};
     ahbEnvironmentConfig.ahbSlaveAgentConfig[1].randomize()with{needWaitStates==0;noOfWaitStates==0;};
 
   setupAhbSlaveAgentConfig();

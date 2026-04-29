@@ -12,11 +12,11 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
 
     HADDR_CP: coverpoint ahbMasterTransaction.haddr {
       option.comment = "AHB Address Coverage";
-      bins ahbAddrByteAligned  = { [0:'hFFFFFFFF] } ;
-      bins ahbAddrHalfWordAligned   = { [0:'hFFFFFFFF] } iff(ahbMasterTransaction.haddr[0]==0);
-      bins ahbAddrWordAligned   = { [0:'hFFFFFFFF] } iff(ahbMasterTransaction.haddr[1:0]==2'b00);
-      bins ahbAddrAllZeroes      = {32'h00000000};         
-      bins ahbAddrDefault        = default;
+      bins ahbAddrByteAligned      = { [0:'hFFFFFFFF] } ;
+      bins ahbAddrHalfWordAligned  = { [0:'hFFFFFFFF] } iff(ahbMasterTransaction.haddr[0]==0);
+      bins ahbAddrWordAligned      = { [0:'hFFFFFFFF] } iff(ahbMasterTransaction.haddr[1:0]==2'b00);
+      bins ahbAddrAllZeroes        = {32'h00000000};         
+      bins ahbAddrDefault          = default;
     }
 
     HWRITE_CP:coverpoint ahbMasterTransaction.hwrite{
@@ -69,9 +69,9 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
 
     HWSTRB_CP_0:coverpoint ahbMasterTransaction.hwstrb[0]{
       option.comment = " ahb strb";
-      bins ahbStrbSingleBit   = {4'b0001, 4'b0010, 4'b0100, 4'b1000};
-      bins ahbStrbDoubleBits  = {4'b0011, 4'b0101, 4'b1001, 4'b0110, 4'b1010, 4'b1100};
-      bins ahbStrbAllOnes     = {4'b1111};
+      bins ahbStrbSingleBit          = {4'b0001, 4'b0010, 4'b0100, 4'b1000};
+      bins ahbStrbDoubleBits         = {4'b0011, 4'b0101, 4'b1001, 4'b0110, 4'b1010, 4'b1100};
+      bins ahbStrbAllOnes            = {4'b1111};
       ignore_bins ahbStrbThreeBits   = {4'b0111, 4'b1110, 4'b1101, 4'b1011};
       ignore_bins ahbStrbAllZeroes   = {4'b0000};
     }   

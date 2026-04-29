@@ -68,7 +68,9 @@ module AhbMasterAgentBFM #(parameter MASTER_ID = 0)(AhbInterface ahbInterface); 
     uvm_config_db#(virtual AhbMasterDriverBFM)::set(null,"*",ahbMasterDriverId, ahbMasterDriverBFM);
     uvm_config_db#(virtual AhbMasterMonitorBFM)::set(null,"*",ahbMasterMonitorId, ahbMasterMonitorBFM);
   end
-/*
+
+
+  /*
    bind AhbMasterMonitorBFM AhbMasterAssertion ahb_assert (.hclk(ahbInterface.hclk),
                                                          .hresetn(ahbInterface.hresetn),
                                                          .hready(ahbInterface.hready),
@@ -108,6 +110,6 @@ module AhbMasterAgentBFM #(parameter MASTER_ID = 0)(AhbInterface ahbInterface); 
 							     .hexokay(ahbInterface.hexokay),
 							     .hready(ahbInterface.hready)
 							     );
- */
+  */
 endmodule : AhbMasterAgentBFM
 `endif

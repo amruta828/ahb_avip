@@ -31,6 +31,10 @@ package AhbTestPackage;
   `include "AhbLength4WriteFollowedByReadTest.sv"
   `include "AhbLength8WriteFollowedByReadTest.sv"
   `include "AhbLength16WriteFollowedByReadTest.sv"
+
+  `include "AhbWrap4WriteFollowedByReadTest.sv"
+  `include "AhbWrap8WriteFollowedByReadTest.sv"
+  `include "AhbWrap16WriteFollowedByReadTest.sv"
 endpackage : AhbTestPackage
 
 `endif
